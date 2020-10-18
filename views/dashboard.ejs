@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="/javascripts/urlMapping.js"></script>
+</head>
+<header>
+
+    <div class="buttonDiv">
+        <button type="button" value="dashboard" onclick="changeMapping(value)">Dashboard</button>
+        <button type="button" value="newGallery" onclick="changeMapping(value)">Add gallery</button>
+        <button type="button" value="photos" onclick="changeMapping(value)">All photos</button>
+    </div>
+
+</header>
+
+<body>
+    <h2>Hello <%= name%></h2>
+
+    <div class="langDiv">
+        <label for="lang">Language:</label>
+        <select name="lang" id="lang">
+            <option selected>CZ</option>
+            <option>EN</option>
+        </select>
+    </div>
+
+</body>
+
+</html>

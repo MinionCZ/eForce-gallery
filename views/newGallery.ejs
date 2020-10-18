@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="/javascripts/urlMapping.js"></script>
+    <script src="/javascripts/tags.js"></script>
+    <script src="/javascripts/dragAndDrop.js"></script>
+    <link rel="stylesheet" href="/css/dragAndDrop.css">
+
+</head>
+<header>
+
+
+    <div class="buttonDiv">
+        <button type="button" value="dashboard" onclick="changeMapping(value)">Dashboard</button>
+        <button type="button" value="newGallery" onclick="changeMapping(value)">Add gallery</button>
+        <button type="button" value="photos" onclick="changeMapping(value)">All photos</button>
+    </div>
+</header>
+
+<body>
+    <h1>New gallery</h1>
+    <form>
+        <label for="title">Gallery title:</label>
+        <input type="text" id="title" name="title" required>
+        <br>
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required>
+        <br>
+        <label>Tags:</label>
+        <div id="tags" value="1">
+            <input type="hidden" id="tagsCounter" value="1">
+            <script>generateTagInput()</script>
+        </div>
+        <button type="button" onclick="generateTagInput()" id="tagButton">Add tag</button>
+        <br>
+        <textarea rows="10" cols="100" name="label">
+            </textarea>
+        <br>
+        <div id="dragAndDropArea" class="drag_and_drop_area">
+            <h3>Drag&Drop or </h3>
+            <input type="file" name="images" class="upload_button" id="images" multiple>
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+
+</body>
+
+</html>

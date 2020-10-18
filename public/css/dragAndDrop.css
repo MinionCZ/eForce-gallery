@@ -1,0 +1,14 @@
+.drag_and_drop_area {
+  width: 50%;
+  min-height: 250px;
+  max-height: 350px;
+  background-color: lightgray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: dashed gray 3px;
+}
+
+.upload_button {
+  width: auto;
+}
