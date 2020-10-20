@@ -10,6 +10,8 @@ const crypto = require("crypto")
 const tokenVerifier = require("./verifiers/token")
 const newGalleryRouter = require("./routers/newGallery")
 const photosRouter = require("./routers/photos")
+const fileUpload = require('express-fileupload');
+const fileRouter = require("./routers/fileHandler")
 
 app.use(express.urlencoded({
     extended: true
@@ -21,6 +23,10 @@ app.use(loginRouter)
 app.use(newGalleryRouter)
 app.use(dashboardRouter)
 app.use(photosRouter)
+app.use(fileRouter)
+app.use(fileUpload({
+    createParentPath: true
+}))
 app.set('view-engine', 'ejs')
 const server = app.listen(port, function () {
     var host = server.address().address

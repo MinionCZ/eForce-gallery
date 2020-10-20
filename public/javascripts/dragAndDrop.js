@@ -34,16 +34,33 @@ window.onload = function () {
                 goodFiles.push(file)
             }
             if (handleBadFiles(badFiles)) {
-                //send to backend
+                sendDataToBackEnd(goodFiles)
             }
         }
     }
 }
 
-function sendDataToBackEnd() {
-    const xhr = new XMLHttpRequest()
-    const formData = new FormData()
+function createRandomId() {
+    let id = ""
+    let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789<>.?;:{}[]()!@#$%^&*+='
+    for (let i = 0; i < 64; i++) {
+        id += chars[Math.floor(Math.random() * chars.length)]
+    }
+    return id
+}
 
+function sendDataToBackEnd(files) {
+    const xhr = new XMLHttpRequest()
+    let galleryId = createRandomId()
+    document.cookie = "galleryId=" + galleryId
+    xhr.responseType = "json"
+    const formData = new FormData()
+    for (let file of files) {
+        console.log(file)
+        formData.append("photo", file)
+        xhr.open("POST", "/gallery/photos/upload")
+        xhr.send(formData)
+    }
 }
 
 
