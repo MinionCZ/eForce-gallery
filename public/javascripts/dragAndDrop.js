@@ -1,4 +1,6 @@
 const fileTypes = ["jpg", "png", "gif", "psd", "bmp", "jpeg", "eps", "raw"]
+const goodFiles = []
+let index = 0
 window.onload = function () {
     let dropArea = document.getElementById("dragAndDropArea")
     if (dropArea) {
@@ -25,7 +27,6 @@ window.onload = function () {
         let dt = event.dataTransfer
         let files = dt.files
         let badFiles = []
-        let goodFiles = []
         dropArea.style["background-color"] = "lightgray"
         for (let file of files) {
             if (!isItImage(file.name)) {
@@ -33,16 +34,17 @@ window.onload = function () {
             } else {
                 goodFiles.push(file)
             }
-            if (handleBadFiles(badFiles)) {
-                sendDataToBackEnd(goodFiles)
-            }
         }
+        if (handleBadFiles(badFiles)) {
+            sendDataToBackEnd(goodFiles)
+        }
+
     }
 }
 
 function createRandomId() {
     let id = ""
-    let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789<>.?;:{}[]()!@#$%^&*+='
+    let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
     for (let i = 0; i < 64; i++) {
         id += chars[Math.floor(Math.random() * chars.length)]
     }
@@ -50,19 +52,31 @@ function createRandomId() {
 }
 
 function sendDataToBackEnd(files) {
-    const xhr = new XMLHttpRequest()
     let galleryId = createRandomId()
-    document.cookie = "galleryId=" + galleryId
-    xhr.responseType = "json"
-    const formData = new FormData()
-    for (let file of files) {
-        console.log(file)
-        formData.append("photo", file)
-        xhr.open("POST", "/gallery/photos/upload")
-        xhr.send(formData)
-    }
+    console.log(files.length)
+    sendFile(galleryId)
 }
 
+function sendFile(galleryId) {
+    let xhr = new XMLHttpRequest()
+    let formData = new FormData()
+    document.cookie = "galleryId=" + galleryId
+    xhr.responseType = "json"
+    formData.append("photo", getNextPhoto())
+    xhr.onload = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 202 && JSON.parse(xhr.response).status === "success") {
+                if (hasPhotoNext()) {
+                    sendFile(galleryId)
+                }
+            } else {
+                console.log(JSON.parse(xhr.response))
+            }
+        }
+    }
+    xhr.open("POST", "/gallery/photos/upload")
+    xhr.send(formData)
+}
 
 
 function handleBadFiles(badFiles) {
@@ -107,4 +121,17 @@ function reverseString(stringToReverse) {
         string += stringToReverse.charAt(i)
     }
     return string
+}
+
+function getNextPhoto() {
+    let file = null
+    if (index < goodFiles.length) {
+        file = goodFiles[index]
+        index++
+    }
+    return file
+}
+
+function hasPhotoNext() {
+    return index < goodFiles.length
 }

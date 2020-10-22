@@ -8,6 +8,7 @@ const multer = require('multer');
 const uploadPath = "./photos/uploads"
 const path = require('path')
 const fs = require('fs')
+const photoDatabase = require("../databases/photoDatabase")
 
 const storage = multer.diskStorage({
     destination: function (request, file, callback) {
@@ -26,17 +27,23 @@ router.post("/gallery/photos/upload", async function (request, response) {
     if (!tokenVerifier.isTokenValid(token, response)) {
         return
     }
-    tokenVerifier.refreshToken(token, response)
     let username = tokenVerifier.getUsernameFromToken(token)
     let galleryId = request.cookies.galleryId
-    console.log(galleryId)
-    upload(request, response, function (error) {
+
+    upload(request, response, async function (error) {
         if (error) {
             response.status(400)
-            response.send("error status: bad file")
+            response.json(JSON.stringify({
+                status: "error"
+            }))
         } else {
+            await photoDatabase.insertTempPhoto("ahoj", galleryId, username)
             response.status(202)
-            response.send("successfully uploaded")
+            console.log(request)
+            response.json(JSON.stringify({
+                status: "success"
+            }))
+
         }
     })
 

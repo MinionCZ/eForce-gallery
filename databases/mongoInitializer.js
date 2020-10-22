@@ -4,6 +4,7 @@ const {
 let client = null
 const fs = require('fs')
 const tokenDatabase = require("./tokenDatabase")
+const photoDatabase = require("./photoDatabase")
 
 async function initMongo() {
     let mongoUrl = fs.readFileSync(__dirname + "/../configs/mongoConfig.cfg").toString()
@@ -15,6 +16,7 @@ async function initMongo() {
         await client.connect()
         console.log(client.isConnected())
         tokenDatabase.clientInitializer(client)
+        photoDatabase.clientInitializer(client)
     } catch (err) {
         console.log(err)
     }
