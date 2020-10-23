@@ -1,46 +1,9 @@
-const fileTypes = ["jpg", "png", "gif", "psd", "bmp", "jpeg", "eps", "raw"]
-const goodFiles = []
+let goodFiles = []
 let index = 0
-window.onload = function () {
-    let dropArea = document.getElementById("dragAndDropArea")
-    if (dropArea) {
-        dropArea.addEventListener("drop", handleDrop, false)
-        dropArea.addEventListener("dragenter", handleDragging, false)
-        dropArea.addEventListener("dragleave", handleDragLeave, false)
-        dropArea.addEventListener("dragover", function (event) {
-            event.preventDefault()
-        })
-    }
-
-    function handleDragging(event) {
-        event.preventDefault()
-        dropArea.style["background-color"] = "#99CCFF"
-    }
-
-    function handleDragLeave(event) {
-        event.preventDefault()
-        dropArea.style["background-color"] = "lightgray"
-    }
-
-    function handleDrop(event) {
-        event.preventDefault()
-        let dt = event.dataTransfer
-        let files = dt.files
-        let badFiles = []
-        dropArea.style["background-color"] = "lightgray"
-        for (let file of files) {
-            if (!isItImage(file.name)) {
-                badFiles.push(file.name)
-            } else {
-                goodFiles.push(file)
-            }
-        }
-        if (handleBadFiles(badFiles)) {
-            sendDataToBackEnd(goodFiles)
-        }
-
-    }
-}
+let galleryId = createRandomId()
+const fileTypes = ["jpg", "png", "gif", "psd", "bmp", "jpeg", "eps", "raw"]
+let totalFilesUploaded = 0
+let allFilesSum = 0
 
 function createRandomId() {
     let id = ""
@@ -51,13 +14,35 @@ function createRandomId() {
     return id
 }
 
-function sendDataToBackEnd(files) {
-    let galleryId = createRandomId()
-    console.log(files.length)
-    sendFile(galleryId)
+function handleDataUpload(files) {
+    index = 0
+    let badFiles = []
+    let goodFiles = []
+    for (let file of files) {
+        if (!isItImage(file.name)) {
+            badFiles.push(file.name)
+        } else {
+            goodFiles.push(file)
+        }
+    }
+    if (handleBadFiles(badFiles)) {
+        if (goodFiles.length > 0) {
+            allFilesSum += goodFiles.length
+            sendDataToBackend(goodFiles, true)
+
+        }
+    }
 }
 
-function sendFile(galleryId) {
+function sendDataToBackend(files, gallery) {
+    goodFiles = files
+    if (gallery) {
+        sendFileToGallery(galleryId)
+    }
+
+}
+
+function sendFileToGallery(galleryId) {
     let xhr = new XMLHttpRequest()
     let formData = new FormData()
     document.cookie = "galleryId=" + galleryId
@@ -67,7 +52,8 @@ function sendFile(galleryId) {
         if (xhr.readyState === 4) {
             if (xhr.status === 202 && JSON.parse(xhr.response).status === "success") {
                 if (hasPhotoNext()) {
-                    sendFile(galleryId)
+                    sendFileToGallery(galleryId)
+                    console.log("sending" + index)
                 }
             } else {
                 console.log(JSON.parse(xhr.response))
@@ -127,11 +113,28 @@ function getNextPhoto() {
     let file = null
     if (index < goodFiles.length) {
         file = goodFiles[index]
+        totalFilesUploaded++
         index++
+        changeStateOfUpload()
     }
     return file
 }
 
 function hasPhotoNext() {
     return index < goodFiles.length
+}
+
+function changeStateOfUpload() {
+    let fileStatus = document.getElementById("dataStatus")
+    if (allFilesSum > 0) {
+        if (allFilesSum === totalFilesUploaded) {
+            fileStatus.style["background-color"] = "#00BC1B"
+            fileStatus.innerHTML = allFilesSum + " files uploaded"
+
+        } else {
+            fileStatus.style["background-color"] = "orange"
+            fileStatus.innerHTML = "uploading file " + totalFilesUploaded + "/" + allFilesSum
+        }
+    }
+
 }

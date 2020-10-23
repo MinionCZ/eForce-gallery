@@ -10,6 +10,29 @@
   border: dashed gray 3px;
 }
 
-.upload_button {
-  width: auto;
+.upload_label {
+  background-color: #00BC1B;
+  display: inline-block;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  border: solid 0.1rem;
+  border-radius: 0.5rem;
+  padding: 0.7rem;
+}
+
+.upload_label:hover {
+  background-color: white;
+  color: #00BC1B;
+  ;
+}
+
+.data_upload_status {
+  background-color: lightgray;
+  display: inline-block;
+  color: black;
+  font-weight: bold;
+  border-radius: 0.5rem;
+  padding: 0.7rem;
+  margin: 1rem;
 }

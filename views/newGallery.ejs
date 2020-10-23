@@ -2,9 +2,10 @@
 <html>
 
 <head>
+    <script src="/javascripts/uploadScripts/dataUploader.js"></script>
     <script src="/javascripts/urlMapping.js"></script>
     <script src="/javascripts/tags.js"></script>
-    <script src="/javascripts/dragAndDrop.js"></script>
+    <script src="/javascripts/uploadScripts/dragAndDrop.js"></script>
     <link rel="stylesheet" href="/css/dragAndDrop.css">
 
 </head>
@@ -38,10 +39,14 @@
             </textarea>
         <br>
         <div id="dragAndDropArea" class="drag_and_drop_area">
-            <h3>Drag&Drop or </h3>
+            <h3>Drag&Drop</h3>
+            <h3>OR</h3>
             <br>
-            <button type="button" name="images" class="upload_button" id="images" multiple>Upload files</button>
+            <input type="file" id="buttonFiles" name="buttonFiles" hidden multiple>
+            <label for="buttonFiles" name="upload_label" class="upload_label">Upload Files</label>
         </div>
+        <span class="data_upload_status" id="dataStatus">No Files Uploaded Yet</span>
+        <br>
         <button type="submit">Submit</button>
     </form>
 
