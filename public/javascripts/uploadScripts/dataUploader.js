@@ -127,6 +127,7 @@ function hasPhotoNext() {
 function changeStateOfUpload() {
     let fileStatus = document.getElementById("dataStatus")
     if (allFilesSum > 0) {
+        document.getElementById("photoCounter").value = "" + allFilesSum
         if (allFilesSum === totalFilesUploaded) {
             fileStatus.style["background-color"] = "#00BC1B"
             fileStatus.innerHTML = allFilesSum + " files uploaded"

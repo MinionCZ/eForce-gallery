@@ -15,7 +15,17 @@ const storage = multer.diskStorage({
         callback(null, uploadPath)
     },
     filename: function (request, file, callback) {
-        callback(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname)) //to do renaming
+        let generateId = () => {
+            let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+            let id = ""
+            for (let i = 0; i < 16; i++) {
+                id += chars[Math.floor(Math.random() * chars.length)]
+            }
+            return id
+        }
+        request.body.photoId = generateId() + "-" + Date.now() + "" + path.extname(file.originalname)
+        callback(null, request.body.photoId)
+
     }
 })
 const upload = multer({
@@ -29,7 +39,6 @@ router.post("/gallery/photos/upload", async function (request, response) {
     }
     let username = tokenVerifier.getUsernameFromToken(token)
     let galleryId = request.cookies.galleryId
-
     upload(request, response, async function (error) {
         if (error) {
             response.status(400)
@@ -37,9 +46,9 @@ router.post("/gallery/photos/upload", async function (request, response) {
                 status: "error"
             }))
         } else {
-            await photoDatabase.insertTempPhoto("ahoj", galleryId, username)
+            await photoDatabase.insertTempPhoto(request.body.photoId, galleryId, username)
+
             response.status(202)
-            console.log(request)
             response.json(JSON.stringify({
                 status: "success"
             }))
@@ -48,5 +57,9 @@ router.post("/gallery/photos/upload", async function (request, response) {
     })
 
 })
+
+
+
+
 
 module.exports = router

@@ -66,7 +66,6 @@ function refreshToken(token, response) {
         algorithm: 'HS256',
         expiresIn: "15m"
     })
-    console.log(newToken)
     sessions.set(newToken, username)
     response.cookie("token", newToken)
     return newToken

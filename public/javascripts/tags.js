@@ -5,7 +5,6 @@ function deleteTagAndSortOthers(child) {
     if (tagsArray.length == 1) {
         return
     }
-    let divIndex = 0
     for (let i = 0; i < tagsArray.length; i++) {
         if (tagsArray[i].id === child.id) {
             tagsArray.splice(i, 1)
@@ -41,4 +40,16 @@ function generateTagInput() {
     tagsArray.push(root)
     id++
     document.getElementById("tagsCounter").value = JSON.stringify(id)
+}
+
+function submitForm() {
+    let tags = []
+    for (let tag of tagsArray) {
+        let tagValue = document.getElementById(tag.id).children[0].value
+        tags.push({
+            tagValue: tagValue
+        })
+    }
+    document.getElementById("tagsValue").value = (JSON.stringify(tags))
+    document.getElementById("galleryForm").submit()
 }
