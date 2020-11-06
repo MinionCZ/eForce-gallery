@@ -1,6 +1,3 @@
-const {
-    request
-} = require('express')
 const express = require('express')
 const router = express.Router()
 const tokenVerifier = require("../verifiers/token")
@@ -9,6 +6,7 @@ const uploadPath = "./photos/uploads"
 const path = require('path')
 const fs = require('fs')
 const photoDatabase = require("../databases/photoDatabase")
+const PhotoConverter = require("./photoConverter")
 
 const storage = multer.diskStorage({
     destination: function (request, file, callback) {
@@ -24,6 +22,7 @@ const storage = multer.diskStorage({
             return id
         }
         request.body.photoId = generateId() + "-" + Date.now() + "" + path.extname(file.originalname)
+
         callback(null, request.body.photoId)
 
     }
@@ -46,8 +45,7 @@ router.post("/gallery/photos/upload", async function (request, response) {
                 status: "error"
             }))
         } else {
-            await photoDatabase.insertTempPhoto(request.body.photoId, galleryId, username)
-
+            PhotoConverter.handleNewPhoto(request.body.photoId, galleryId, username)
             response.status(202)
             response.json(JSON.stringify({
                 status: "success"

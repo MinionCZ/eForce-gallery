@@ -32,11 +32,14 @@ function getExpirationTime() {
     return hours + ":" + now.getMinutes() + ":" + now.getSeconds()
 }
 
-async function insertTempPhoto(fileName, galleryId, username) {
+async function insertTempPhoto(fileName, galleryId, username, width, height, thumbnailName) {
     let tempPhoto = {
         fileName: fileName,
         galleryID: galleryId,
         username: username,
+        width: width,
+        height: height,
+        thumbnail: thumbnailName,
         expiresIn: getExpirationTime()
     }
     await tempCollection.insertOne(tempPhoto)
@@ -65,9 +68,7 @@ async function generateUniqueGalleryID() {
         generatedId = generate()
     }
     return generatedId
-
 }
-
 
 async function pushGalleryWithPhotos(tempGalleryId, galleryTitle, galleryLabel, tags, dateOfEvent, username) {
     let galleryPhotos = await getTempPhotosByGalleryId(tempGalleryId)
@@ -107,10 +108,39 @@ async function pushGalleryWithPhotos(tempGalleryId, galleryTitle, galleryLabel, 
         })
     }
     await collection.insertMany(newPhotos)
+    deleteTempPhotos(photoNames)
 }
+
+async function deleteTempPhotos(fileNames) {
+    await tempCollection.deleteMany({
+        fileName: {
+            $in: fileNames
+        }
+    })
+}
+
+async function pushGalleryWithoutPhotos(galleryTitle, galleryLabel, tags, eventDate, username) {
+    let today = getToday()
+    let time = getTime()
+    let galleryID = await generateUniqueGalleryID()
+    const gallery = {
+        galleryID: galleryID,
+        galleryTitle: galleryTitle,
+        galleryLabel: galleryLabel,
+        tags: tags,
+        dateOfEvent: eventDate,
+        nameOfContributor: username,
+        lastChanges: today,
+        lastChangesTime: time,
+        photos: []
+    }
+    await galleries.insertOne(gallery)
+}
+
 
 module.exports = {
     clientInitializer,
     insertTempPhoto,
-    pushGalleryWithPhotos
+    pushGalleryWithPhotos,
+    pushGalleryWithoutPhotos
 }

@@ -34,11 +34,11 @@ router.post("/gallery/add", async function (request, response) {
     token = tokenVerifier.refreshToken(token, response)
     console.log(harvestTags(request))
     if (parseInt(request.body.photoCounter) > 0) {
-        photoDatabase.pushGalleryWithPhotos(tempGalleryId, request.body.title, request.body.label, "", request.body.date, tokenVerifier.getUsernameFromToken(token))
+        photoDatabase.pushGalleryWithPhotos(tempGalleryId, request.body.title, request.body.label, harvestTags(request), request.body.date, tokenVerifier.getUsernameFromToken(token))
+    } else {
+        photoDatabase.pushGalleryWithoutPhotos(request.body.title, request.body.label, harvestTags(request), request.body.date, tokenVerifier.getUsernameFromToken(token))
     }
-
-
-
+    response.render("newGallery.ejs")
 })
 
 

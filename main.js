@@ -12,6 +12,7 @@ const newGalleryRouter = require("./routers/newGallery")
 const photosRouter = require("./routers/photos")
 const fileUpload = require('express-fileupload');
 const fileRouter = require("./routers/fileHandler")
+const errorRouter = require("./routers/unauthorized")
 
 app.use(express.urlencoded({
     extended: true
@@ -23,6 +24,7 @@ app.use(loginRouter)
 app.use(newGalleryRouter)
 app.use(dashboardRouter)
 app.use(photosRouter)
+app.use(errorRouter)
 app.use(fileRouter)
 app.use(fileUpload({
     createParentPath: true
