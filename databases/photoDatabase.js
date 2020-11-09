@@ -137,10 +137,31 @@ async function pushGalleryWithoutPhotos(galleryTitle, galleryLabel, tags, eventD
     await galleries.insertOne(gallery)
 }
 
+async function getAllGalleries() {
+    const galleriesFromDatabase = await galleries.find().toArray()
+    const galleriesToFrontEnd = []
+    for (const gallery of galleriesFromDatabase) {
+        let newGallery = {
+            title: gallery.galleryTitle,
+            tags: gallery.tags,
+            eventDate: gallery.dateOfEvent,
+            contributor: gallery.nameOfContributor,
+            lastChanges: gallery.lastChanges,
+            label: gallery.galleryLabel,
+            photos: gallery.photos.length
+        }
+        galleriesToFrontEnd.push(newGallery)
+    }
+    return galleriesToFrontEnd
+}
+
+
+
 
 module.exports = {
     clientInitializer,
     insertTempPhoto,
     pushGalleryWithPhotos,
-    pushGalleryWithoutPhotos
+    pushGalleryWithoutPhotos,
+    getAllGalleries
 }

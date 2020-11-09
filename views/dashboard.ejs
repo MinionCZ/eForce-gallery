@@ -3,6 +3,7 @@
 
 <head>
     <script src="/javascripts/urlMapping.js"></script>
+    <script src="/javascripts/galleriesLayout.js"></script>
 </head>
 <header>
 
@@ -16,14 +17,24 @@
 
 <body>
     <h2>Hello <%= name%></h2>
+    <div id="searchDiv">
+        <label for="searchBar"></label>
+        <input type="text" id="searchBar" title="names, tags, date">
 
-    <div class="langDiv">
-        <label for="lang">Language:</label>
-        <select name="lang" id="lang">
-            <option selected>CZ</option>
-            <option>EN</option>
+        <label for="sortBy">Sort by:</label>
+        <select>
+            <option value="name">Name</option>
+            <option value="creation">Creation date</option>
+            <option value="event">Event date</option>
+            <option value="photos">Photos count</option>
+        </select>
+        <label for="sortAscDesc">Sort: </label>
+        <select id="sortAscDesc">
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
         </select>
     </div>
+    <script>createLayout(" <%= galleries %>")</script>
 
 </body>
 
