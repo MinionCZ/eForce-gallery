@@ -15,4 +15,18 @@ router.get("/dashboard", async function (request, response) {
         galleries: JSON.stringify(await photoDatabase.getAllGalleries())
     });
 })
+
+router.get("/galleries/get-all", async function (request, response) {
+    let token = request.cookies.token
+    if (!await tokenVerifier.isTokenValid(token, response)) {
+        return
+    }
+    console.log("response")
+    token = tokenVerifier.refreshToken(token, response)
+    const allGaleries = await photoDatabase.getAllGalleries()
+    response.json(allGaleries)
+
+})
+
+
 module.exports = router

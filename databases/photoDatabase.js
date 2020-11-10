@@ -4,6 +4,7 @@ let client = null
 let collection = null
 let tempCollection = null
 let galleries = null
+const fs = require("fs")
 
 function clientInitializer(clientInit) {
     client = clientInit
@@ -40,7 +41,7 @@ async function insertTempPhoto(fileName, galleryId, username, width, height, thu
         width: width,
         height: height,
         thumbnail: thumbnailName,
-        expiresIn: getExpirationTime()
+        expirationCounter: 0
     }
     await tempCollection.insertOne(tempPhoto)
 }
@@ -92,6 +93,7 @@ async function pushGalleryWithPhotos(tempGalleryId, galleryTitle, galleryLabel, 
         nameOfContributor: username,
         lastChanges: today,
         lastChangesTime: time,
+        contributionDate: today,
         photos: photoNames
     }
 
@@ -104,6 +106,8 @@ async function pushGalleryWithPhotos(tempGalleryId, galleryTitle, galleryLabel, 
             tags: tags,
             dateOfChange: today,
             dateOfEvent: eventDate,
+            width: photo.width,
+            height: photo.height,
             fileName: photo.fileName
         })
     }
@@ -132,6 +136,7 @@ async function pushGalleryWithoutPhotos(galleryTitle, galleryLabel, tags, eventD
         nameOfContributor: username,
         lastChanges: today,
         lastChangesTime: time,
+        contributionDate: today,
         photos: []
     }
     await galleries.insertOne(gallery)
@@ -148,14 +153,45 @@ async function getAllGalleries() {
             contributor: gallery.nameOfContributor,
             lastChanges: gallery.lastChanges,
             label: gallery.galleryLabel,
-            photos: gallery.photos.length
+            photos: gallery.photos.length,
+            contributionDate: gallery.contributionDate
         }
         galleriesToFrontEnd.push(newGallery)
     }
     return galleriesToFrontEnd
 }
 
+function clearTempGallery() {
+    setInterval(async function () {
+        let tempPhotos = await tempCollection.find().toArray()
+        if (tempPhotos.length !== 0) {
+            for (const photo of tempPhotos) {
+                if (photo.expirationCounter === 20) {
+                    tempCollection.deleteOne({
+                        fileName: photo.fileName
+                    })
+                    fs.unlinkSync("./photos/uploads/" + photo.fileName)
+                    console.log(photo.fileName)
+                    fs.unlinkSync("./photos/thumbnails/" + getThumbnailFromFileName(photo.fileName))
+                } else {
+                    let expirationCounter = photo.expirationCounter + 1
+                    tempCollection.updateOne({
+                        fileName: photo.fileName
+                    }, {
+                        $set: {
+                            expirationCounter: expirationCounter
+                        }
+                    })
+                }
+            }
+        }
+    }, 1000 * 60 * 60)
+}
 
+function getThumbnailFromFileName(fileName) {
+    let filenames = fileName.split(".")
+    return filenames[0] + "-th." + filenames[1]
+}
 
 
 module.exports = {
@@ -163,5 +199,6 @@ module.exports = {
     insertTempPhoto,
     pushGalleryWithPhotos,
     pushGalleryWithoutPhotos,
-    getAllGalleries
+    getAllGalleries,
+    clearTempGallery
 }

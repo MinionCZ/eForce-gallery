@@ -13,6 +13,7 @@ const photosRouter = require("./routers/photos")
 const fileUpload = require('express-fileupload');
 const fileRouter = require("./routers/fileHandler")
 const errorRouter = require("./routers/unauthorized")
+const photoDatabase = require("./databases/photoDatabase")
 
 app.use(express.urlencoded({
     extended: true
@@ -35,6 +36,7 @@ const server = app.listen(port, function () {
     var port = server.address().port
     mongoInitializer.initMongo()
     tokenVerifier.initJWT();
+    photoDatabase.clearTempGallery()
 })
 app.get("/", function (request, response) {
     response.redirect("/login")
