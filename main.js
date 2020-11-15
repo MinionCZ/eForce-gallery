@@ -14,11 +14,13 @@ const fileUpload = require('express-fileupload');
 const fileRouter = require("./routers/fileHandler")
 const errorRouter = require("./routers/unauthorized")
 const photoDatabase = require("./databases/photoDatabase")
+var bodyParser = require('body-parser')
+
 
 app.use(express.urlencoded({
     extended: true
 }));
-
+app.use(bodyParser.json());
 app.use(express.static("public"))
 app.use(cookieParser())
 app.use(loginRouter)

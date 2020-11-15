@@ -1,28 +1,3 @@
-const galleries = []
-
-
-function createLayout(galleries) {
-    console.log(galleries)
-    fetchGalleriesInfo()
-}
-
-function fetchGalleriesInfo() {
-    var request = new XMLHttpRequest()
-    request.addEventListener("load", handleGalleryInformation)
-    request.open("GET", "/galleries/get-all")
-    request.send()
-}
-
-
-function handleGalleryInformation() {
-    let galleriesInfo = JSON.parse(this.responseText)
-    console.log(galleriesInfo)
-    for (const gal of galleriesInfo) {
-        galleries.push(new Gallery(gal))
-    }
-
-
-}
 class Gallery {
     constructor(gallery) {
         this.title = gallery.title
@@ -34,10 +9,9 @@ class Gallery {
         this.contributor = gallery.contributor
         this.lastChanges = gallery.lastChanges
         this.label = gallery.label
-        //this.firstPhoto = firstPhoto
+        this.fetchPhoto()
         this.searchWords = this.generateSearchWords()
         this.isRendered = true
-        console.log(this.searchForHighlightedWords("20"))
     }
 
     generateSearchWords() {
@@ -71,6 +45,23 @@ class Gallery {
         return words
     }
 
+    fetchPhoto() {
+        let request = new XMLHttpRequest()
+        var params = JSON.stringify({
+            galleryTitle: this.title
+        });
+        request.open("POST", "/photo-gallery/get-photo", true)
+        request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        request.responseType = "blob"
+
+        request.onload = () => {
+            let image = request.response
+            var url = URL.createObjectURL(image)
+            this.photoURL = url
+        }
+
+        request.send(params)
+    }
 
     searchForHighlightedWords(search) {
         const foundWords = []
@@ -84,11 +75,33 @@ class Gallery {
                     foundWords.push(word)
                 }
             }
-
         }
         return {
             isHighlighted: foundWords.length > 0,
             highlightedWords: foundWords
         }
     }
+    renderDiv() {
+        const div = document.createElement("div")
+        div.setAttribute("class", "galleryDiv")
+
+        const title = document.createElement("h2")
+        title.textContent = this.title
+        title.setAttribute("class", "galleryTitle")
+
+        const photo = document.createElement("img")
+        photo.setAttribute("src", this.photoURL)
+        photo.setAttribute("class", "galleryThumbnail")
+
+        div.appendChild(title)
+        div.appendChild(photo)
+        return div
+    }
+
+
+
+
+}
+export {
+    Gallery
 }

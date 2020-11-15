@@ -188,6 +188,19 @@ function clearTempGallery() {
     }, 1000 * 60 * 60)
 }
 
+async function findGalleryByTitle(title) {
+    let gallery = await galleries.findOne({
+        galleryTitle: title
+    })
+    if (gallery) {
+        return gallery
+    }
+    return null
+}
+
+
+
+
 function getThumbnailFromFileName(fileName) {
     let filenames = fileName.split(".")
     return filenames[0] + "-th." + filenames[1]
@@ -200,5 +213,6 @@ module.exports = {
     pushGalleryWithPhotos,
     pushGalleryWithoutPhotos,
     getAllGalleries,
-    clearTempGallery
+    clearTempGallery,
+    findGalleryByTitle
 }

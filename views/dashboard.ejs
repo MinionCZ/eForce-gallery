@@ -3,7 +3,10 @@
 
 <head>
     <script src="/javascripts/urlMapping.js"></script>
-    <script src="/javascripts/galleriesLayout.js"></script>
+    <script type="module" src="/javascripts/galleries/galleriesLayout.js"></script>
+    <script type="module" src="/javascripts/galleries/gallery.js"></script>
+    <script type="module" src="/javascripts/galleries/galleryStore.js"></script>
+    <link rel="stylesheet" href="/css/galleryThumbnails.css">
 </head>
 <header>
 
@@ -34,7 +37,7 @@
             <option value="desc">Descending</option>
         </select>
     </div>
-    <script>fetchGalleriesInfo()</script>
+
 
 </body>
 

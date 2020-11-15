@@ -507,6 +507,38 @@ function clearTempGallery() {
   }, 1000 * 60 * 60);
 }
 
+function findGalleryByTitle(title) {
+  var gallery;
+  return regeneratorRuntime.async(function findGalleryByTitle$(_context9) {
+    while (1) {
+      switch (_context9.prev = _context9.next) {
+        case 0:
+          _context9.next = 2;
+          return regeneratorRuntime.awrap(galleries.findOne({
+            galleryTitle: title
+          }));
+
+        case 2:
+          gallery = _context9.sent;
+
+          if (!gallery) {
+            _context9.next = 5;
+            break;
+          }
+
+          return _context9.abrupt("return", gallery);
+
+        case 5:
+          return _context9.abrupt("return", null);
+
+        case 6:
+        case "end":
+          return _context9.stop();
+      }
+    }
+  });
+}
+
 function getThumbnailFromFileName(fileName) {
   var filenames = fileName.split(".");
   return filenames[0] + "-th." + filenames[1];
@@ -518,5 +550,6 @@ module.exports = {
   pushGalleryWithPhotos: pushGalleryWithPhotos,
   pushGalleryWithoutPhotos: pushGalleryWithoutPhotos,
   getAllGalleries: getAllGalleries,
-  clearTempGallery: clearTempGallery
+  clearTempGallery: clearTempGallery,
+  findGalleryByTitle: findGalleryByTitle
 };

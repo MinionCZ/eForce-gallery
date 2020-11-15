@@ -56,6 +56,22 @@ router.post("/gallery/photos/upload", async function (request, response) {
 
 })
 
+router.post("/photo-gallery/get-photo", async function (request, response) {
+    let token = request.cookies.token
+    if (!tokenVerifier.isTokenValid(token, response)) {
+        return
+    }
+    let galleryTitle = request.body.galleryTitle
+    let gallery = await photoDatabase.findGalleryByTitle(galleryTitle)
+    if (gallery.photos.length > 0) {
+
+    } else {
+        response.sendFile(path.resolve(__dirname + "/../photos/thumbnails/no-photo.png"))
+    }
+
+
+})
+
 
 
 
