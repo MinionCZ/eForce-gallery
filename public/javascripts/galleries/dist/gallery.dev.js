@@ -22,11 +22,11 @@ function () {
     this.eventDate = gallery.eventDate;
     this.contributionDate = gallery.contributionDate;
     this.changeDate = gallery.changeDate;
-    this.photosCount = gallery.photosCount;
+    this.photosCount = gallery.photos;
     this.contributor = gallery.contributor;
     this.lastChanges = gallery.lastChanges;
     this.label = gallery.label;
-    this.fetchPhoto();
+    this.photoURL = "/photo-gallery/get-photo?title=" + gallery.title;
     this.searchWords = this.generateSearchWords();
     this.isRendered = true;
   }
@@ -89,27 +89,6 @@ function () {
       return words;
     }
   }, {
-    key: "fetchPhoto",
-    value: function fetchPhoto() {
-      var _this = this;
-
-      var request = new XMLHttpRequest();
-      var params = JSON.stringify({
-        galleryTitle: this.title
-      });
-      request.open("POST", "/photo-gallery/get-photo", true);
-      request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-      request.responseType = "blob";
-
-      request.onload = function () {
-        var image = request.response;
-        var url = URL.createObjectURL(image);
-        _this.photoURL = url;
-      };
-
-      request.send(params);
-    }
-  }, {
     key: "searchForHighlightedWords",
     value: function searchForHighlightedWords(search) {
       var foundWords = [];
@@ -160,12 +139,112 @@ function () {
       var title = document.createElement("h2");
       title.textContent = this.title;
       title.setAttribute("class", "galleryTitle");
+      var imageDiv = document.createElement("div");
+      imageDiv.setAttribute("class", "imageDiv");
       var photo = document.createElement("img");
       photo.setAttribute("src", this.photoURL);
       photo.setAttribute("class", "galleryThumbnail");
       div.appendChild(title);
-      div.appendChild(photo);
+      div.appendChild(imageDiv);
+      imageDiv.appendChild(photo);
+      div.appendChild(this.generateStatsDiv());
+      var tagDivs = this.generateTagDiv();
+      var _iteratorNormalCompletion3 = true;
+      var _didIteratorError3 = false;
+      var _iteratorError3 = undefined;
+
+      try {
+        for (var _iterator3 = tagDivs[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+          var tagDiv = _step3.value;
+          div.appendChild(tagDiv);
+        }
+      } catch (err) {
+        _didIteratorError3 = true;
+        _iteratorError3 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion3 && _iterator3["return"] != null) {
+            _iterator3["return"]();
+          }
+        } finally {
+          if (_didIteratorError3) {
+            throw _iteratorError3;
+          }
+        }
+      }
+
       return div;
+    }
+  }, {
+    key: "generateStatsDiv",
+    value: function generateStatsDiv() {
+      var statsDiv = document.createElement("div");
+      var photosCount = "";
+
+      if (this.photosCount === 0) {
+        photosCount = "empty";
+      } else {
+        photosCount = this.photosCount;
+      }
+
+      statsDiv.setAttribute("class", "statsDiv");
+      statsDiv.innerHTML = "Contributor: " + this.contributor;
+      statsDiv.innerHTML += "<br>" + "Number of photos: " + photosCount;
+      statsDiv.innerHTML += "<br>" + "Date of event: " + this.eventDate;
+      statsDiv.innerHTML += "<br>" + "Date of contribution: " + this.contributionDate;
+      return statsDiv;
+    }
+  }, {
+    key: "generateTagDiv",
+    value: function generateTagDiv() {
+      var tagLines = [];
+      var mainIndex = 0;
+      var div = document.createElement("div");
+      div.setAttribute("class", "tagLine");
+      tagLines.push(div);
+      var _iteratorNormalCompletion4 = true;
+      var _didIteratorError4 = false;
+      var _iteratorError4 = undefined;
+
+      try {
+        for (var _iterator4 = this.tags[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+          var tag = _step4.value;
+
+          if (mainIndex == 3) {
+            mainIndex = 0;
+            div = document.createElement("div");
+            div.setAttribute("class", "tagLine");
+            tagLines.push(div);
+          }
+
+          mainIndex++;
+          div.appendChild(this.generateTag(tag));
+        }
+      } catch (err) {
+        _didIteratorError4 = true;
+        _iteratorError4 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion4 && _iterator4["return"] != null) {
+            _iterator4["return"]();
+          }
+        } finally {
+          if (_didIteratorError4) {
+            throw _iteratorError4;
+          }
+        }
+      }
+
+      tagLines[tagLines.length - 1].setAttribute("class", "tagLineLast");
+      return tagLines;
+    }
+  }, {
+    key: "generateTag",
+    value: function generateTag(tag) {
+      var tagBtn = document.createElement("button");
+      tagBtn.setAttribute("class", "tag");
+      tagBtn.textContent = tag;
+      return tagBtn;
     }
   }]);
 

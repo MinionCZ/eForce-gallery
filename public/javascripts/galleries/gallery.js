@@ -5,11 +5,11 @@ class Gallery {
         this.eventDate = gallery.eventDate
         this.contributionDate = gallery.contributionDate
         this.changeDate = gallery.changeDate
-        this.photosCount = gallery.photosCount
+        this.photosCount = gallery.photos
         this.contributor = gallery.contributor
         this.lastChanges = gallery.lastChanges
         this.label = gallery.label
-        this.fetchPhoto()
+        this.photoURL = "/photo-gallery/get-photo?title=" + gallery.title
         this.searchWords = this.generateSearchWords()
         this.isRendered = true
     }
@@ -45,23 +45,6 @@ class Gallery {
         return words
     }
 
-    fetchPhoto() {
-        let request = new XMLHttpRequest()
-        var params = JSON.stringify({
-            galleryTitle: this.title
-        });
-        request.open("POST", "/photo-gallery/get-photo", true)
-        request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        request.responseType = "blob"
-
-        request.onload = () => {
-            let image = request.response
-            var url = URL.createObjectURL(image)
-            this.photoURL = url
-        }
-
-        request.send(params)
-    }
 
     searchForHighlightedWords(search) {
         const foundWords = []
@@ -89,15 +72,70 @@ class Gallery {
         title.textContent = this.title
         title.setAttribute("class", "galleryTitle")
 
+        const imageDiv = document.createElement("div")
+        imageDiv.setAttribute("class", "imageDiv")
+
         const photo = document.createElement("img")
         photo.setAttribute("src", this.photoURL)
         photo.setAttribute("class", "galleryThumbnail")
 
         div.appendChild(title)
-        div.appendChild(photo)
+        div.appendChild(imageDiv)
+        imageDiv.appendChild(photo)
+        div.appendChild(this.generateStatsDiv())
+        const tagDivs = this.generateTagDiv()
+        for (let tagDiv of tagDivs) {
+            div.appendChild(tagDiv)
+        }
+
+
         return div
     }
 
+
+    generateStatsDiv(){
+        const statsDiv = document.createElement("div")
+        let photosCount = ""
+        if(this.photosCount === 0){
+            photosCount = "empty"
+        }else{
+            photosCount = this.photosCount
+        }
+        statsDiv.setAttribute("class", "statsDiv")
+        statsDiv.innerHTML = "Contributor: " + this.contributor
+        statsDiv.innerHTML += "<br>" + "Number of photos: " + photosCount
+        statsDiv.innerHTML += "<br>" + "Date of event: " + this.eventDate
+        statsDiv.innerHTML += "<br>" + "Date of contribution: " + this.contributionDate
+        return statsDiv
+
+    }
+
+    generateTagDiv() {
+        const tagLines = []
+        let mainIndex = 0
+        let div = document.createElement("div")
+        div.setAttribute("class", "tagLine")
+        tagLines.push(div)
+        for (let tag of this.tags) {
+            if (mainIndex == 3) {
+                mainIndex = 0
+                div = document.createElement("div")
+                div.setAttribute("class", "tagLine")
+                tagLines.push(div)
+            }
+            mainIndex++
+            div.appendChild(this.generateTag(tag))
+        }
+        tagLines[tagLines.length - 1].setAttribute("class", "tagLineLast")
+        return tagLines
+    }
+
+    generateTag(tag) {
+        const tagBtn = document.createElement("button")
+        tagBtn.setAttribute("class", "tag")
+        tagBtn.textContent = tag
+        return tagBtn
+    }
 
 
 

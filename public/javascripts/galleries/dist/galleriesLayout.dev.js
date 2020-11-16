@@ -4,6 +4,8 @@ var _gallery = require("./gallery.js");
 
 var _galleryStore = require("./galleryStore.js");
 
+var _galleryRender = require("./galleryRender.js");
+
 var galleries = [];
 
 function createLayout(galleries) {
@@ -47,8 +49,5 @@ function handleGalleryInformation() {
     }
   }
 
-  console.log(_galleryStore.GalleryStore.getAllGalleries());
-  setTimeout(function () {
-    _galleryStore.GalleryStore.renderGalleries(_galleryStore.GalleryStore.getAllGalleries());
-  }, 2000);
+  _galleryRender.GalleryRender.renderGalleries(_galleryStore.GalleryStore.getAllGalleries());
 }

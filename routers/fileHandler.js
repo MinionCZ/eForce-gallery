@@ -56,20 +56,20 @@ router.post("/gallery/photos/upload", async function (request, response) {
 
 })
 
-router.post("/photo-gallery/get-photo", async function (request, response) {
+router.get("/photo-gallery/get-photo", async function (request, response) {
     let token = request.cookies.token
     if (!tokenVerifier.isTokenValid(token, response)) {
         return
     }
-    let galleryTitle = request.body.galleryTitle
+
+    let galleryTitle = request.query.title
     let gallery = await photoDatabase.findGalleryByTitle(galleryTitle)
     if (gallery.photos.length > 0) {
-
+        let thumbnail = PhotoConverter.convertPhotoNameToThumbnail(gallery.photos[0])
+        response.sendFile(path.resolve(__dirname + "/../photos/thumbnails/" + thumbnail))
     } else {
-        response.sendFile(path.resolve(__dirname + "/../photos/thumbnails/no-photo.png"))
+        response.sendFile(path.resolve(__dirname + "/../photos/no-photo/no-photo.png"))
     }
-
-
 })
 
 

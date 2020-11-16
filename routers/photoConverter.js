@@ -25,8 +25,16 @@ async function handleNewPhoto(fileName, galleryId, username) {
     })
 }
 
+function convertPhotoNameToThumbnail(photoName) {
+    let names = photoName.split(".")
+    return names[0] + "-th." + names[1]
+
+}
+
+
 
 
 module.exports = {
-    handleNewPhoto
+    handleNewPhoto,
+    convertPhotoNameToThumbnail
 }

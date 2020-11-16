@@ -92,8 +92,8 @@ router.post("/gallery/photos/upload", function _callee2(request, response) {
     }
   });
 });
-router.post("/photo-gallery/get-photo", function _callee3(request, response) {
-  var token, galleryTitle, gallery;
+router.get("/photo-gallery/get-photo", function _callee3(request, response) {
+  var token, galleryTitle, gallery, thumbnail;
   return regeneratorRuntime.async(function _callee3$(_context3) {
     while (1) {
       switch (_context3.prev = _context3.next) {
@@ -108,15 +108,18 @@ router.post("/photo-gallery/get-photo", function _callee3(request, response) {
           return _context3.abrupt("return");
 
         case 3:
-          galleryTitle = request.body.galleryTitle;
+          galleryTitle = request.query.title;
           _context3.next = 6;
           return regeneratorRuntime.awrap(photoDatabase.findGalleryByTitle(galleryTitle));
 
         case 6:
           gallery = _context3.sent;
 
-          if (gallery.photos.length > 0) {} else {
-            response.sendFile(path.resolve(__dirname + "/../photos/thumbnails/no-photo.png"));
+          if (gallery.photos.length > 0) {
+            thumbnail = PhotoConverter.convertPhotoNameToThumbnail(gallery.photos[0]);
+            response.sendFile(path.resolve(__dirname + "/../photos/thumbnails/" + thumbnail));
+          } else {
+            response.sendFile(path.resolve(__dirname + "/../photos/no-photo/no-photo.png"));
           }
 
         case 8:

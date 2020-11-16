@@ -1,6 +1,61 @@
 div.galleryDiv {
-    width: 25%;
+    min-width: 460px;
+    max-width: 460px;
     border: 1px solid;
+    display: block;
+    margin: 7px;
+    text-align: center;
+}
+div.imageDiv{
+    width: 420px;
+    height: 290px;
+    display: inline-block;
+    text-align: center;
 }
 
-div.lineDiv {}
+div.tagLine{
+    width: 420px;
+    height: 30px;
+    display: inline-block;
+    text-align: left;
+    margin-left: 10px;
+    margin-bottom: 5px;
+}
+div.tagLineLast{
+    width: 420px;
+    height: 30px;
+    display: inline-block;
+    text-align: left;
+    margin-left: 10px;
+    margin-bottom: 15px;
+}
+
+button.tag{
+    width: 130px;
+    height: 30px;
+    margin-right: 10px;
+    display: inline-block;
+
+}
+
+img{
+    width: 420px;
+}
+
+div.statsDiv{
+    width: 420px;
+    height: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+}
+div.lineDiv {
+    width: 100px;
+    display: flex;
+    height: auto;
+}
+
+div.galleryDiv:hover{
+    background-color: lightblue;
+    transition-duration: 0.2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        terreesafasffsafsads;
+}

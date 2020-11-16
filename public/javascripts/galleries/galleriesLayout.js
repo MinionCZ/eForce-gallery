@@ -6,6 +6,11 @@ import {
     GalleryStore
 } from "./galleryStore.js"
 
+
+import {
+    GalleryRender
+} from "./galleryRender.js"
+
 function createLayout(galleries) {
     console.log(galleries)
     fetchGalleriesInfo()
@@ -24,12 +29,12 @@ fetchGalleriesInfo()
 
 
 function handleGalleryInformation() {
+    
+
     let galleriesInfo = JSON.parse(this.responseText)
     for (const gal of galleriesInfo) {
         GalleryStore.addGallery(new Gallery(gal))
     }
-    console.log(GalleryStore.getAllGalleries())
-    setTimeout(() => {
-        GalleryStore.renderGalleries(GalleryStore.getAllGalleries())
-    }, 2000)
+    GalleryRender.renderGalleries(GalleryStore.getAllGalleries())
+
 }

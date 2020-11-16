@@ -73,13 +73,6 @@ class GalleryStore {
     static getAllGalleries() {
         return this.galleries
     }
-
-    static renderGalleries(galleriesToRender) {
-        for (const gallery of galleriesToRender) {
-            document.body.appendChild(gallery.renderDiv())
-        }
-    }
-
 }
 
 
