@@ -6,7 +6,6 @@ const singleton = Symbol()
 const singletonEnforcer = Symbol()
 class GalleryStore {
     static galleries = []
-
     static addGallery(gallery) {
         this.galleries.push(gallery)
     }
@@ -24,19 +23,22 @@ class GalleryStore {
             }
             return 0
         }
-
         var compareByEventDate = function (a, b) {
-            if (a.eventDate < b.eventDate) {
+            let aEvent = GalleryStore.dateToNumber(a.eventDate)
+            let bEvent = GalleryStore.dateToNumber(b.eventDate)
+            if (aEvent < bEvent) {
                 return -1
-            } else if (a.eventDate > b.eventDate) {
+            } else if (aEvent > bEvent) {
                 return 1
             }
             return 0
         }
         var compareByContributionDate = function (a, b) {
-            if (a.contributionDate < b.contributionDate) {
+            let aDate = GalleryStore.dateToNumber(a.contributionDate)
+            let bDate = GalleryStore.dateToNumber(b.contributionDate)
+            if (aDate < bDate) {
                 return -1
-            } else if (a.contributionDate > b.contributionDate) {
+            } else if (aDate > bDate) {
                 return 1
             }
             return 0
@@ -46,22 +48,29 @@ class GalleryStore {
             case "title":
                 this.galleries.sort(compareByName)
                 break
-
             case "eventDate":
                 this.galleries.sort(compareByEventDate)
                 break
-
             case "contributionDate":
                 this.galleries.sort(compareByContributionDate)
                 break
-
         }
+        if (!ascending){
+            this.galleries.reverse()
+        }
+    }
 
+    static dateToNumber(date){
+        let splitted = date.split(".")
+        let year = parseInt(splitted[2]) * 10000
+        let month = parseInt(splitted[1]) * 100
+        let day = parseInt(splitted[0])
+        return year + month + day
     }
 
     static findGalleries(stringToFind = "") {
         let foundGalleries = []
-        for (const gallery in this.galleries) {
+        for (const gallery of this.galleries) {
             const highlight = gallery.searchForHighlightedWords(stringToFind)
             if (highlight.isHighlighted) {
                 foundGalleries.push(gallery)
@@ -69,6 +78,7 @@ class GalleryStore {
         }
         return foundGalleries
     }
+
 
     static getAllGalleries() {
         return this.galleries

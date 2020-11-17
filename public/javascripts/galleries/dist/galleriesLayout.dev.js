@@ -49,5 +49,35 @@ function handleGalleryInformation() {
     }
   }
 
+  _galleryStore.GalleryStore.sortGalleries();
+
   _galleryRender.GalleryRender.renderGalleries(_galleryStore.GalleryStore.getAllGalleries());
 }
+
+function handleSortAndSearch() {
+  var mainSort = document.getElementById("mainSort").value;
+  var secondSort = document.getElementById("sortAscDesc").value;
+  var asc = true;
+
+  if (secondSort === "desc") {
+    asc = false;
+  }
+
+  _galleryStore.GalleryStore.sortGalleries(mainSort, asc);
+
+  var sortString = document.getElementById("searchBar").value;
+
+  if (sortString === "") {
+    _galleryRender.GalleryRender.renderGalleries(_galleryStore.GalleryStore.getAllGalleries());
+  } else {
+    var foundGalleries = _galleryStore.GalleryStore.findGalleries(sortString);
+
+    _galleryRender.GalleryRender.renderGalleries(foundGalleries);
+  }
+}
+
+window.onload = function () {
+  document.getElementById("mainSort").addEventListener("change", handleSortAndSearch);
+  document.getElementById("sortAscDesc").addEventListener("change", handleSortAndSearch);
+  document.getElementById("searchBar").addEventListener("input", handleSortAndSearch);
+};

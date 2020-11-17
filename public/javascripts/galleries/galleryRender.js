@@ -51,9 +51,8 @@ class GalleryRender {
         for(const lineDiv of this.renderedDivs){
             let maxElement = lineDiv.childElementCount
             for(let i = 0; i < maxElement; i++){
-                lineDiv.removeChild(0)
+                lineDiv.innerHTML = ""
             }
-
         }
     }
 }

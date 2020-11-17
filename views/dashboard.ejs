@@ -26,14 +26,13 @@
         <input type="text" id="searchBar" title="names, tags, date">
 
         <label for="sortBy">Sort by:</label>
-        <select>
-            <option value="name">Name</option>
-            <option value="creation">Creation date</option>
-            <option value="event">Event date</option>
-            <option value="photos">Photos count</option>
+        <select id="mainSort">
+            <option value="title">Title</option>
+            <option value="contributionDate">Creation date</option>
+            <option value="eventDate">Event date</option>
         </select>
         <label for="sortAscDesc">Sort: </label>
-        <select id="sortAscDesc">
+        <select id="sortAscDesc" onchange="handleSort()">
             <option value="asc">Ascending</option>
             <option value="desc">Descending</option>
         </select>

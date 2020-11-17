@@ -22,19 +22,45 @@ function fetchGalleriesInfo() {
     request.open("GET", "/galleries/get-all")
     request.send()
 
-
 }
 
 fetchGalleriesInfo()
 
 
 function handleGalleryInformation() {
-    
 
     let galleriesInfo = JSON.parse(this.responseText)
     for (const gal of galleriesInfo) {
         GalleryStore.addGallery(new Gallery(gal))
     }
+    GalleryStore.sortGalleries()
     GalleryRender.renderGalleries(GalleryStore.getAllGalleries())
 
+}
+
+function handleSortAndSearch() {
+    let mainSort = document.getElementById("mainSort").value
+    let secondSort = document.getElementById("sortAscDesc").value
+    let asc = true
+    if (secondSort === "desc") {
+        asc = false
+    }
+    GalleryStore.sortGalleries(mainSort, asc)
+    let sortString = document.getElementById("searchBar").value
+    if (sortString === "") {
+        GalleryRender.renderGalleries(GalleryStore.getAllGalleries())
+    } else {
+        let foundGalleries = GalleryStore.findGalleries(sortString)
+        GalleryRender.renderGalleries(foundGalleries)
+    }
+
+}
+
+
+
+
+window.onload = () => {
+    document.getElementById("mainSort").addEventListener("change", handleSortAndSearch)
+    document.getElementById("sortAscDesc").addEventListener("change", handleSortAndSearch)
+    document.getElementById("searchBar").addEventListener("input", handleSortAndSearch)
 }
