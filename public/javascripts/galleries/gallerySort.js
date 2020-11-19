@@ -139,7 +139,7 @@ class GallerySort {
 
     }
 
-
+//troll coment
     static handleMapWithAndOperator() {
         let occurrenceMap = new Map()
         for (let tag of this.clickedTags) {
