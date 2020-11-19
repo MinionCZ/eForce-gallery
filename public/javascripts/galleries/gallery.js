@@ -137,8 +137,16 @@ class Gallery {
         return tagBtn
     }
 
-
-
+    hasTag(tag){
+        let hasTag = false
+        for (let i = 0; i < this.tags.length; i++){
+            if(this.tags[i] === tag){
+                hasTag = true
+                break
+            }
+        }
+        return hasTag
+    }
 }
 export {
     Gallery
