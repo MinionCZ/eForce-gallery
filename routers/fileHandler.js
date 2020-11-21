@@ -72,6 +72,15 @@ router.get("/photo-gallery/get-photo", async function (request, response) {
     }
 })
 
+router.get("/photo-gallery/get-all-tags-colors", async function(request, response){
+    let token = request.cookies.token
+    if (!tokenVerifier.isTokenValid(token, response)) {
+        return
+    }
+    let colors = fs.readFileSync(__dirname + "/../configs/colors.cfg")
+    response.json(colors.toString())
+})
+
 
 
 

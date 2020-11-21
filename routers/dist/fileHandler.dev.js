@@ -129,4 +129,30 @@ router.get("/photo-gallery/get-photo", function _callee3(request, response) {
     }
   });
 });
+router.get("/photo-gallery/get-all-tags-colors", function _callee4(request, response) {
+  var token, colors;
+  return regeneratorRuntime.async(function _callee4$(_context4) {
+    while (1) {
+      switch (_context4.prev = _context4.next) {
+        case 0:
+          token = request.cookies.token;
+
+          if (tokenVerifier.isTokenValid(token, response)) {
+            _context4.next = 3;
+            break;
+          }
+
+          return _context4.abrupt("return");
+
+        case 3:
+          colors = fs.readFileSync(__dirname + "/../configs/colors.cfg");
+          response.json(colors.toString());
+
+        case 5:
+        case "end":
+          return _context4.stop();
+      }
+    }
+  });
+});
 module.exports = router;

@@ -1,6 +1,6 @@
 import {
-    fromPairs
-} from "lodash"
+    GalleryRender
+} from "./galleryRender.js"
 import {
     GalleryStore
 } from "./galleryStore.js"
@@ -10,7 +10,6 @@ import {
 } from "./gallery.js"
 class GallerySort {
     static sortedGalleries = []
-    static tagMap = []
     static clickedTags = []
     static sortGalleries(sortBy = "title", ascending = true) {
         var compareByName = function (a, b) {
@@ -57,8 +56,7 @@ class GallerySort {
             this.sortedGalleries.reverse()
         }
     }
-    static findGalleries(stringToFind = "") {
-        let galleries = GalleryStore.getAllGalleries()
+    static findGalleries(stringToFind = "", galleries) {
         let foundGalleries = []
         for (const gallery of galleries) {
             const highlight = gallery.searchForHighlightedWords(stringToFind)
@@ -73,10 +71,20 @@ class GallerySort {
         return this.sortedGalleries
     }
 
-    static handleClickedTag(tag) {
+    static toggleTag(tag){
+        if(this.clickedTags.includes(tag)){
+            this.popClickedTag(tag)
+            return false
+        }else{
+            this.addClickedTag(tag)
+            return true
+        }
+    }
+
+    static addClickedTag(tag) {
         this.clickedTags.push(tag)
     }
-    static handleTagCancel(tag) {
+    static popClickedTag(tag) {
         let helpTags = []
         for (const t of this.clickedTags) {
             if (t !== tag) {
@@ -86,12 +94,7 @@ class GallerySort {
         this.clickedTags = helpTags
     }
 
-    static handleQueryChange() {
-        const queryInfo = this.getQueryInfo()
 
-
-
-    }
     static getQueryInfo() {
         let search = document.getElementById("searchBar").value
         let asc = document.getElementById("sortAscDesc").value
@@ -107,7 +110,6 @@ class GallerySort {
             ascending: ascending,
             mainSort: mainSort,
             logicFunction: logicFunction
-
         }
 
     }
@@ -116,10 +118,7 @@ class GallerySort {
         if (tag === "") {
             return GalleryStore.getAllGalleries()
         }
-        if (this.tagMap.size === 0) {
-            this.tagMap = GalleryStore.getTaggedMap()
-        }
-        return this.tagMap.get(tag)
+        return GalleryStore.getTaggedMap().get(tag)
     }
 
     static getAllTaggedGalleries(logicFunction) {
@@ -128,22 +127,14 @@ class GallerySort {
             return this.findGalleriesByTag()
         } else if (this.clickedTags.length === 1) {
             return this.findGalleriesByTag(this.clickedTags[0])
-        }
-
-        let galleries = []  
-        if (logicFunction === "and") {
-            galleries = this.handleMapWithAndOperator()
-        } else {
-
-        }
-
+        }       
+        return this.handleMapWithAndOperator()
     }
 
-//troll coment
     static handleMapWithAndOperator() {
         let occurrenceMap = new Map()
         for (let tag of this.clickedTags) {
-            let allGalleriesForTag = this.findGalleriesByTags(tag)
+            let allGalleriesForTag = this.findGalleriesByTag(tag)
             for (const gallery of allGalleriesForTag) {
                 if (occurrenceMap.has(gallery.title)) {
                     let galleryFromMap = occurrenceMap.get(gallery.title)
@@ -165,8 +156,22 @@ class GallerySort {
         }
         return finalArray
     }
-}
 
+
+    static handleQueryChange() {
+        const queryInfo = this.getQueryInfo()
+        this.sortedGalleries = GalleryStore.getAllGalleries()
+        this.sortedGalleries = this.getAllTaggedGalleries(queryInfo.logicFunction)
+        this.sortedGalleries = this.findGalleries(queryInfo.search, this.sortedGalleries)
+        this.sortGalleries(queryInfo.mainSort, queryInfo.ascending)
+        GalleryRender.renderGalleries(this.sortedGalleries)
+    }
+    static getSortedGalleries(galleries){
+        this.sortedGalleries = galleries
+        this.sortGalleries()
+        return this.sortedGalleries
+    }
+}
 
 export {
     GallerySort

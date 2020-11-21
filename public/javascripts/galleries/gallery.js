@@ -1,3 +1,8 @@
+import{
+    GallerySort
+} from "./gallerySort.js"
+import { GalleryStore } from "./galleryStore.js"
+import {GalleryRender} from "./galleryRender.js"
 class Gallery {
     constructor(gallery) {
         this.title = gallery.title
@@ -12,6 +17,7 @@ class Gallery {
         this.photoURL = "/photo-gallery/get-photo?title=" + gallery.title
         this.searchWords = this.generateSearchWords()
         this.isRendered = true
+        this.tagButtons = new Map()
     }
 
     generateSearchWords() {
@@ -133,6 +139,21 @@ class Gallery {
     generateTag(tag) {
         const tagBtn = document.createElement("button")
         tagBtn.setAttribute("class", "tag")
+        this.tagButtons.set(tag, tagBtn)
+        tagBtn.onclick = () =>{
+            let backgroundColor = ""
+            if(GallerySort.toggleTag(tag)){
+                backgroundColor = GalleryStore.getTagColor()
+            }else{
+                let color = tagBtn.style.backgroundColor
+                GalleryStore.freeTagColor(color)
+                backgroundColor = "lightgray"
+            }
+            tagBtn.style.backgroundColor = backgroundColor
+            GallerySort.handleQueryChange()
+            GalleryRender.setTagButtonColor(tag, backgroundColor)
+            console.log(tag)
+        }
         tagBtn.textContent = tag
         return tagBtn
     }
@@ -147,6 +168,13 @@ class Gallery {
         }
         return hasTag
     }
+
+    changeTagColor(tag, color){
+        this.tagButtons.get(tag).style.backgroundColor = color
+    }
+
+
+
 }
 export {
     Gallery

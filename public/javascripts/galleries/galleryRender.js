@@ -1,6 +1,7 @@
 import {
     Gallery
 } from "./gallery.js"
+import { GallerySort } from "./gallerySort.js"
 
 import {
     GalleryStore
@@ -53,6 +54,14 @@ class GalleryRender {
             for(let i = 0; i < maxElement; i++){
                 lineDiv.innerHTML = ""
             }
+        }
+    }
+
+    static setTagButtonColor(tag, color){
+        let galleriesToChange = GallerySort.findGalleriesByTag(tag)
+        console.log(galleriesToChange)
+        for(let gallery of galleriesToChange){
+            gallery.changeTagColor(tag, color)
         }
     }
 }

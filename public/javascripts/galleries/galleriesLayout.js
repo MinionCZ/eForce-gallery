@@ -6,10 +6,14 @@ import {
     GalleryStore
 } from "./galleryStore.js"
 
-
 import {
     GalleryRender
 } from "./galleryRender.js"
+
+import {
+    GallerySort
+}from "./gallerySort.js"
+
 
 function createLayout(galleries) {
     console.log(galleries)
@@ -17,6 +21,7 @@ function createLayout(galleries) {
 }
 
 function fetchGalleriesInfo() {
+    GalleryStore.fetchTagColors()
     var request = new XMLHttpRequest()
     request.addEventListener("load", handleGalleryInformation)
     request.open("GET", "/galleries/get-all")
@@ -33,31 +38,12 @@ function handleGalleryInformation() {
     for (const gal of galleriesInfo) {
         GalleryStore.addGallery(new Gallery(gal))
     }
-    GalleryStore.sortGalleries()
-    GalleryRender.renderGalleries(GalleryStore.getAllGalleries())
-
+    GallerySort.handleQueryChange()
 }
 
 function handleSortAndSearch() {
-    let mainSort = document.getElementById("mainSort").value
-    let secondSort = document.getElementById("sortAscDesc").value
-    let asc = true
-    if (secondSort === "desc") {
-        asc = false
-    }
-    GalleryStore.sortGalleries(mainSort, asc)
-    let sortString = document.getElementById("searchBar").value
-    if (sortString === "") {
-        GalleryRender.renderGalleries(GalleryStore.getAllGalleries())
-    } else {
-        let foundGalleries = GalleryStore.findGalleries(sortString)
-        GalleryRender.renderGalleries(foundGalleries)
-    }
-
+    GallerySort.handleQueryChange()
 }
-
-
-
 
 window.onload = () => {
     document.getElementById("mainSort").addEventListener("change", handleSortAndSearch)
