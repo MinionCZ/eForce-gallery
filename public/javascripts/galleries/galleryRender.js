@@ -19,7 +19,7 @@ class GalleryRender {
         return lineDiv
     }
 
-    static renderGalleries(galleries) {
+    static renderGalleries(galleries, highlightText) {
         let max = Math.min(this.maxRenderedGalleries, galleries.length)
         this.clearPage()
         let index = 0
@@ -36,10 +36,13 @@ class GalleryRender {
             if(counter < max){
                 divsToRender[index].appendChild(gallery.renderDiv())
             }
+            gallery.highlightText(highlightText)
             counter++
             innerIndex++
         }
         this.createLayout(divsToRender)
+        this.colorizeAllTags(galleries)
+
     }
 
     static createLayout(lineDivs){
@@ -57,11 +60,13 @@ class GalleryRender {
         }
     }
 
-    static setTagButtonColor(tag, color){
-        let galleriesToChange = GallerySort.findGalleriesByTag(tag)
-        console.log(galleriesToChange)
-        for(let gallery of galleriesToChange){
-            gallery.changeTagColor(tag, color)
+    static colorizeAllTags(galleries){
+        const clickedTags = GallerySort.getClickedTags()
+        for(const tag of clickedTags){
+            const color = GalleryStore.getColorForTag(tag)
+            for (const gallery of galleries){
+                gallery.changeTagColor(tag, color)
+            }
         }
     }
 }

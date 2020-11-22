@@ -1,10 +1,16 @@
 div.galleryDiv {
-    min-width: 460px;
-    max-width: 460px;
-    border: 1px solid;
-    display: block;
-    margin: 7px;
+    min-width: 470px;
+    max-width: 470px;
+    display: table-cell;
     text-align: center;
+}
+div.searchDiv{
+    width: 100%;
+    margin-bottom: 10px;
+    height: 50px;
+    text-align: center;
+    display: block;
+    line-height: 50px;
 }
 div.imageDiv{
     width: 420px;
@@ -50,12 +56,33 @@ div.statsDiv{
 
 }
 div.lineDiv {
-    width: 100px;
-    display: flex;
+    display: table-row;
     height: auto;
+    text-align: center;
 }
 
 div.galleryDiv:hover{
-    background-color: lightblue;
-    transition-duration: 0.2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        terreesafasffsafsads;
+    transition-duration: 0.1s;
+    box-shadow:  0 0 20px;
+}
+
+table.statsTable{
+    width:auto;
+    border-collapse: collapse;
+    text-align: left;
+    margin-right: auto;
+    margin-left: auto;
+}
+th, tr{
+    border-bottom: 1px solid black;
+}
+button.tag{
+    background-color:#DCDCDC;
+    border:0;
+    border-radius: 3px;
+}
+button.tag:hover{
+    transition-duration: 0.02s;
+    box-shadow:  0 0 5px;
+    cursor: pointer;
 }

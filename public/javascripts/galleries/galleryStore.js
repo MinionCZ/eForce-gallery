@@ -9,6 +9,7 @@ class GalleryStore {
     static tagColors = new Map()
     static colors = []
     static colorsInUse = new Set()
+    static colorTagMap = new Map()
     static fetchTagColors(){
         const request = new XMLHttpRequest()
         request.open("GET", "/photo-gallery/get-all-tags-colors")
@@ -28,44 +29,19 @@ class GalleryStore {
         console.log(this.colorsInUse.size)
         return this.colors[randColor]
     }
-    static freeTagColor(color){
-        console.log(color)
-        const allowedTypes = new Set("0123456789,")
-        let colorString = ""
-        for (const ch of color){
-            if(allowedTypes.has(ch)){
-                colorString += ch
-            }
-        }
-        let numbers = colorString.split(",")
-        let colorInHex = "#"
-        for (const num of numbers){
-            colorInHex += this.decToHTMLHex(parseInt(num))
-        }
-        this.colorsInUse.delete(colorInHex)
+    static freeTagColor(tag){
+        let color = this.colorTagMap.get(tag)
+        this.colorTagMap.delete(tag)
+        this.colorsInUse.delete(color)
     }
 
-    static decToHTMLHex(number){
-        const hexChars = "0123456789ABCDEF".split("")
-        console.log(hexChars.length)
-        let hex = ""
-        while(number > 1){
-            let modulo = number%16
-            hex += hexChars[modulo]
-            number -= modulo
-            number /= 16
+    static getColorForTag(tag){
+        if(!this.colorTagMap.has(tag)){
+            this.colorTagMap.set(tag, this.getTagColor())
         }
-
-        while(hex.length < 2){
-            hex += "0"
-        }
-        let helpHex = hex.split("").reverse()
-        hex = ""
-        for (let ch of helpHex){
-            hex += ch
-        }
-        return hex
+        return this.colorTagMap.get(tag)
     }
+
 
     static addGallery(gallery) {
         this.galleries.push(gallery)

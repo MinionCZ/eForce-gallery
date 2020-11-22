@@ -1,8 +1,12 @@
-import{
+import {
     GallerySort
 } from "./gallerySort.js"
-import { GalleryStore } from "./galleryStore.js"
-import {GalleryRender} from "./galleryRender.js"
+import {
+    GalleryStore
+} from "./galleryStore.js"
+import {
+    GalleryRender
+} from "./galleryRender.js"
 class Gallery {
     constructor(gallery) {
         this.title = gallery.title
@@ -18,6 +22,7 @@ class Gallery {
         this.searchWords = this.generateSearchWords()
         this.isRendered = true
         this.tagButtons = new Map()
+        this.componentsToHighlight = []
     }
 
     generateSearchWords() {
@@ -27,7 +32,7 @@ class Gallery {
         words.push(this.contributionDate)
         words.push(this.contributor)
         words = words.concat(this.tags)
-        words = words.concat(this.splitLabel(this.label))
+        //words = words.concat(this.splitLabel(this.label))
         return words
     }
 
@@ -84,7 +89,7 @@ class Gallery {
         const photo = document.createElement("img")
         photo.setAttribute("src", this.photoURL)
         photo.setAttribute("class", "galleryThumbnail")
-
+        this.componentsToHighlight.push(title)
         div.appendChild(title)
         div.appendChild(imageDiv)
         imageDiv.appendChild(photo)
@@ -93,27 +98,39 @@ class Gallery {
         for (let tagDiv of tagDivs) {
             div.appendChild(tagDiv)
         }
-
-
         return div
     }
 
 
-    generateStatsDiv(){
+    generateStatsDiv() {
         const statsDiv = document.createElement("div")
         let photosCount = ""
-        if(this.photosCount === 0){
+        if (this.photosCount === 0) {
             photosCount = "empty"
-        }else{
+        } else {
             photosCount = this.photosCount
         }
         statsDiv.setAttribute("class", "statsDiv")
-        statsDiv.innerHTML = "Contributor: " + this.contributor
-        statsDiv.innerHTML += "<br>" + "Number of photos: " + photosCount
-        statsDiv.innerHTML += "<br>" + "Date of event: " + this.eventDate
-        statsDiv.innerHTML += "<br>" + "Date of contribution: " + this.contributionDate
+        const table = document.createElement("table")
+        table.setAttribute("class", "statsTable")
+        table.appendChild(this.generateStatsTableRow("Contributor: ", this.contributor))
+        table.appendChild(this.generateStatsTableRow("Number of photos: ", this.photosCount))
+        table.appendChild(this.generateStatsTableRow("Event date: ", this.eventDate))
+        table.appendChild(this.generateStatsTableRow("ContributionDate: ", this.contributionDate))
+        statsDiv.appendChild(table)
         return statsDiv
+    }
 
+    generateStatsTableRow(text, value) {
+        const tr = document.createElement("tr")
+        const label = document.createElement("th")
+        label.textContent = "" + text
+        const valueText = document.createElement("th")
+        valueText.textContent = "" + value
+        tr.appendChild(label)
+        tr.appendChild(valueText)
+        this.componentsToHighlight.push(valueText)
+        return tr
     }
 
     generateTagDiv() {
@@ -140,28 +157,19 @@ class Gallery {
         const tagBtn = document.createElement("button")
         tagBtn.setAttribute("class", "tag")
         this.tagButtons.set(tag, tagBtn)
-        tagBtn.onclick = () =>{
-            let backgroundColor = ""
-            if(GallerySort.toggleTag(tag)){
-                backgroundColor = GalleryStore.getTagColor()
-            }else{
-                let color = tagBtn.style.backgroundColor
-                GalleryStore.freeTagColor(color)
-                backgroundColor = "lightgray"
-            }
-            tagBtn.style.backgroundColor = backgroundColor
+        tagBtn.onclick = () => {
+            GallerySort.toggleTag(tag)
             GallerySort.handleQueryChange()
-            GalleryRender.setTagButtonColor(tag, backgroundColor)
-            console.log(tag)
         }
         tagBtn.textContent = tag
+        this.componentsToHighlight.push(tagBtn)
         return tagBtn
     }
 
-    hasTag(tag){
+    hasTag(tag) {
         let hasTag = false
-        for (let i = 0; i < this.tags.length; i++){
-            if(this.tags[i] === tag){
+        for (let i = 0; i < this.tags.length; i++) {
+            if (this.tags[i] === tag) {
                 hasTag = true
                 break
             }
@@ -169,10 +177,46 @@ class Gallery {
         return hasTag
     }
 
-    changeTagColor(tag, color){
+    changeTagColor(tag, color) {
+        console.log(tag)
         this.tagButtons.get(tag).style.backgroundColor = color
     }
 
+    highlightText(stringToHighlight){
+        if (stringToHighlight === ""){
+            return
+        }
+        stringToHighlight = stringToHighlight.toLowerCase()
+        for(const component of this.componentsToHighlight){
+            let highlight = this.getHighlightedText(stringToHighlight, component.textContent)
+            if(highlight.isHighlighted){
+                component.innerHTML = "<mark>" + highlight.highlight + "</mark>" + highlight.rest
+            }
+        }
+
+    }
+
+    getHighlightedText(stringToHighlight, mainString){
+        let isHighlighted = true
+        for(let i = 0; i < stringToHighlight.length; i++){
+            if(stringToHighlight[i] !== mainString[i]){
+                isHighlighted = false
+                break
+            }
+        }
+
+        if (isHighlighted){
+            return {
+                isHighlighted: isHighlighted,
+                highlight:stringToHighlight,
+                rest:mainString.substring(stringToHighlight.length, mainString.length)
+            }
+        }
+        return{
+            isHighlighted:isHighlighted
+        }
+
+    }
 
 
 }

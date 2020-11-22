@@ -83,6 +83,7 @@ class GallerySort {
 
     static addClickedTag(tag) {
         this.clickedTags.push(tag)
+        GalleryStore.getColorForTag(tag)
     }
     static popClickedTag(tag) {
         let helpTags = []
@@ -92,6 +93,7 @@ class GallerySort {
             }
         }
         this.clickedTags = helpTags
+        GalleryStore.freeTagColor(tag)
     }
 
 
@@ -99,7 +101,6 @@ class GallerySort {
         let search = document.getElementById("searchBar").value
         let asc = document.getElementById("sortAscDesc").value
         let mainSort = document.getElementById("mainSort").value
-        let logicFunction = document.getElementById("tagsOrAnd").value
         let ascending = true
         if (asc === "desc") {
             ascending = false
@@ -108,8 +109,7 @@ class GallerySort {
         return {
             search: search,
             ascending: ascending,
-            mainSort: mainSort,
-            logicFunction: logicFunction
+            mainSort: mainSort
         }
 
     }
@@ -121,51 +121,46 @@ class GallerySort {
         return GalleryStore.getTaggedMap().get(tag)
     }
 
-    static getAllTaggedGalleries(logicFunction) {
+    static getAllTaggedGalleries() {
 
         if (this.clickedTags.length === 0) {
             return this.findGalleriesByTag()
         } else if (this.clickedTags.length === 1) {
             return this.findGalleriesByTag(this.clickedTags[0])
-        }       
-        return this.handleMapWithAndOperator()
+        }
+        return this.filterGalleriesByMultipleTags()
     }
 
-    static handleMapWithAndOperator() {
-        let occurrenceMap = new Map()
-        for (let tag of this.clickedTags) {
-            let allGalleriesForTag = this.findGalleriesByTag(tag)
-            for (const gallery of allGalleriesForTag) {
-                if (occurrenceMap.has(gallery.title)) {
-                    let galleryFromMap = occurrenceMap.get(gallery.title)
-                    galleryFromMap.value += 1
-                    occurrenceMap.set(gallery.title, galleryFromMap)
-                } else {
-                    occurrenceMap.set(gallery.title, {
-                        gallery: gallery,
-                        value: 1
-                    })
+    static filterGalleriesByMultipleTags() {
+        console.log(this.clickedTags)
+        let galleries = this.findGalleriesByTag(this.clickedTags[0])
+        console.log(galleries, typeof galleries, galleries.length)
+        for (let i = 1; i < this.clickedTags.length; i++){
+            let helpArr = []
+            for (let gallery of galleries){
+                if (gallery.hasTag(this.clickedTags[i])){
+                    helpArr.push(gallery)
                 }
             }
+            galleries = helpArr
         }
-        let finalArray = []
-        for (let occurrence of occurrenceMap.keys()){
-            if(occurrence.value >= 2){
-                finalArray.push(occurrence.gallery)
-            }
-        }
-        return finalArray
+        return galleries
     }
 
 
     static handleQueryChange() {
         const queryInfo = this.getQueryInfo()
         this.sortedGalleries = GalleryStore.getAllGalleries()
-        this.sortedGalleries = this.getAllTaggedGalleries(queryInfo.logicFunction)
+        this.sortedGalleries = this.getAllTaggedGalleries()
         this.sortedGalleries = this.findGalleries(queryInfo.search, this.sortedGalleries)
         this.sortGalleries(queryInfo.mainSort, queryInfo.ascending)
-        GalleryRender.renderGalleries(this.sortedGalleries)
+        GalleryRender.renderGalleries(this.sortedGalleries, queryInfo.search)
     }
+
+    static getClickedTags(){
+        return this.clickedTags
+    }
+
     static getSortedGalleries(galleries){
         this.sortedGalleries = galleries
         this.sortGalleries()

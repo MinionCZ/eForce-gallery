@@ -7,23 +7,23 @@
     <script type="module" src="/javascripts/galleries/galleryStore.js"></script>
     <script type="module" src="/javascripts/galleries/galleryRender.js"></script>
     <script type="module" src="/javascripts/galleries/gallerySort.js"></script>
-
+    <link rel="stylesheet" href="/css/navButtons.css">
     <link rel="stylesheet" href="/css/galleryThumbnails.css">
 </head>
 <header>
 
     <div class="buttonDiv">
-        <button type="button" value="dashboard" onclick="changeMapping(value)">Dashboard</button>
-        <button type="button" value="newGallery" onclick="changeMapping(value)">Add gallery</button>
-        <button type="button" value="photos" onclick="changeMapping(value)">All photos</button>
+        <button type="button" class="navButton" value="dashboard" onclick="changeMapping(value)">Dashboard</button>
+        <button type="button" class="navButton" value="newGallery" onclick="changeMapping(value)">Add gallery</button>
+        <button type="button" class="navButton" value="photos" onclick="changeMapping(value)">All photos</button>
     </div>
 
 </header>
 
 <body>
     <h2>Hello <%= name%></h2>
-    <div id="searchDiv">
-        <label for="searchBar"></label>
+    <div id="searchDiv" class="searchDiv">
+        <label for="searchBar">Search: </label>
         <input type="text" id="searchBar" title="names, tags, date">
 
         <label for="sortBy">Sort by:</label>
@@ -36,10 +36,6 @@
         <select id="sortAscDesc">
             <option value="asc">Ascending</option>
             <option value="desc">Descending</option>
-        </select>
-        <select id="tagsOrAnd">
-            <option value="and">AND</option>
-            <option value="or">OR</option>
         </select>
     </div>
 
