@@ -7,10 +7,6 @@ import {
 } from "./galleryStore.js"
 
 import {
-    GalleryRender
-} from "./galleryRender.js"
-
-import {
     GallerySort
 }from "./gallerySort.js"
 

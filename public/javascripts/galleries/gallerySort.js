@@ -5,9 +5,7 @@ import {
     GalleryStore
 } from "./galleryStore.js"
 
-import {
-    Gallery
-} from "./gallery.js"
+
 class GallerySort {
     static sortedGalleries = []
     static clickedTags = []

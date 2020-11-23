@@ -81,6 +81,7 @@ button.tag{
     border:0;
     border-radius: 3px;
 }
+
 button.tag:hover{
     transition-duration: 0.02s;
     box-shadow:  0 0 5px;

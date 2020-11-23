@@ -1,6 +1,3 @@
-import {
-    Gallery
-} from "./gallery.js"
 import { GallerySort } from "./gallerySort.js"
 
 import {
@@ -46,17 +43,15 @@ class GalleryRender {
     }
 
     static createLayout(lineDivs){
+        this.renderedDivs = []
         for(let lineDiv of lineDivs){
             document.body.appendChild(lineDiv)
             this.renderedDivs.push(lineDiv)
         }
     }
     static clearPage(){
-        for(const lineDiv of this.renderedDivs){
-            let maxElement = lineDiv.childElementCount
-            for(let i = 0; i < maxElement; i++){
-                lineDiv.innerHTML = ""
-            }
+        for(let i = 0; i<this.renderedDivs.length; i++){
+            document.body.removeChild(document.getElementById("lineDiv" + i))
         }
     }
 

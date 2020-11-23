@@ -1,12 +1,9 @@
 import {
     GallerySort
 } from "./gallerySort.js"
-import {
-    GalleryStore
-} from "./galleryStore.js"
-import {
-    GalleryRender
-} from "./galleryRender.js"
+import{
+    GalleryPreview
+}from "./galleryPreview.js"
 class Gallery {
     constructor(gallery) {
         this.title = gallery.title
@@ -98,6 +95,11 @@ class Gallery {
         for (let tagDiv of tagDivs) {
             div.appendChild(tagDiv)
         }
+        div.onclick = (event) =>{
+            if(event.target.getAttribute("class") !== "tag"){
+                GalleryPreview.createPreview(this)
+            }
+        }
         return div
     }
 
@@ -137,9 +139,14 @@ class Gallery {
         const tagLines = []
         let mainIndex = 0
         let div = document.createElement("div")
+
+
         div.setAttribute("class", "tagLine")
         tagLines.push(div)
         for (let tag of this.tags) {
+            if(tag === ""){
+                continue
+            }
             if (mainIndex == 3) {
                 mainIndex = 0
                 div = document.createElement("div")
@@ -150,6 +157,13 @@ class Gallery {
             div.appendChild(this.generateTag(tag))
         }
         tagLines[tagLines.length - 1].setAttribute("class", "tagLineLast")
+        if (this.tags.length === 1 && this.tags[0] === ""){
+            div.setAttribute("class", "noTagDiv")
+            const title = document.createElement("h3")
+            title.textContent = "This gallery has no tags"
+            div.appendChild(title)
+            tagLines.push(div)
+        }
         return tagLines
     }
 
