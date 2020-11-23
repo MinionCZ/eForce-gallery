@@ -44,9 +44,13 @@ function handleGalleryInformation() {
 function handleSortAndSearch() {
     GallerySort.handleQueryChange()
 }
+function handleQueryCancel(){
+    GallerySort.cancelQuery()
+}
 
 window.onload = () => {
     document.getElementById("mainSort").addEventListener("change", handleSortAndSearch)
     document.getElementById("sortAscDesc").addEventListener("change", handleSortAndSearch)
     document.getElementById("searchBar").addEventListener("input", handleSortAndSearch)
+    document.getElementById("cancelQueryButton").addEventListener("click", handleQueryCancel)
 }

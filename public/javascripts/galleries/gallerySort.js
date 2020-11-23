@@ -132,9 +132,7 @@ class GallerySort {
     }
 
     static filterGalleriesByMultipleTags() {
-        console.log(this.clickedTags)
         let galleries = this.findGalleriesByTag(this.clickedTags[0])
-        console.log(galleries, typeof galleries, galleries.length)
         for (let i = 1; i < this.clickedTags.length; i++){
             let helpArr = []
             for (let gallery of galleries){
@@ -155,8 +153,9 @@ class GallerySort {
         this.sortedGalleries = this.findGalleries(queryInfo.search, this.sortedGalleries)
         this.sortGalleries(queryInfo.mainSort, queryInfo.ascending)
         GalleryRender.renderGalleries(this.sortedGalleries, queryInfo.search)
-    }
+        document.getElementById("cancelQueryButton").disabled = !(queryInfo.search.length > 0 || this.clickedTags.length > 0)
 
+    }
     static getClickedTags(){
         return this.clickedTags
     }
@@ -165,6 +164,15 @@ class GallerySort {
         this.sortedGalleries = galleries
         this.sortGalleries()
         return this.sortedGalleries
+    }
+
+    static cancelQuery(){
+        document.getElementById("searchBar").value = ""
+        for(const clickedTag of this.clickedTags){
+            GalleryStore.freeTagColor(clickedTag)
+        }
+        this.clickedTags = []
+        this.handleQueryChange()
     }
 }
 
