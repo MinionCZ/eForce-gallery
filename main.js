@@ -14,6 +14,7 @@ const fileUpload = require('express-fileupload');
 const fileRouter = require("./routers/fileHandler")
 const errorRouter = require("./routers/unauthorized")
 const photoDatabase = require("./databases/photoDatabase")
+const downloadHandler = require("./routers/downloadHandler")
 var bodyParser = require('body-parser')
 
 
@@ -29,6 +30,7 @@ app.use(dashboardRouter)
 app.use(photosRouter)
 app.use(errorRouter)
 app.use(fileRouter)
+app.use(downloadHandler)
 app.use(fileUpload({
     createParentPath: true
 }))

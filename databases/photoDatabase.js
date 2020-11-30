@@ -198,6 +198,13 @@ async function findGalleryByTitle(title) {
     return null
 }
 
+async function getAllGalleryPhotos(title){
+    let gallery = await findGalleryByTitle(title)
+    return gallery.photos
+}
+
+
+
 
 
 
@@ -214,5 +221,6 @@ module.exports = {
     pushGalleryWithoutPhotos,
     getAllGalleries,
     clearTempGallery,
-    findGalleryByTitle
+    findGalleryByTitle,
+    getAllGalleryPhotos
 }

@@ -31,6 +31,8 @@ var errorRouter = require("./routers/unauthorized");
 
 var photoDatabase = require("./databases/photoDatabase");
 
+var downloadHandler = require("./routers/downloadHandler");
+
 var bodyParser = require('body-parser');
 
 app.use(express.urlencoded({
@@ -45,6 +47,7 @@ app.use(dashboardRouter);
 app.use(photosRouter);
 app.use(errorRouter);
 app.use(fileRouter);
+app.use(downloadHandler);
 app.use(fileUpload({
   createParentPath: true
 }));

@@ -29,7 +29,6 @@ class Gallery {
         words.push(this.contributionDate)
         words.push(this.contributor)
         words = words.concat(this.tags)
-        //words = words.concat(this.splitLabel(this.label))
         return words
     }
 
