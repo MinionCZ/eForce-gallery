@@ -7,14 +7,11 @@ var router = express.Router();
 var tokenVerifier = require("../verifiers/token");
 
 var uploadPath = "./photos/uploads/";
-
-var path = require('path');
+var liteUploadPath = "./photos/lite-photos/";
 
 var fs = require('fs');
 
 var photoDatabase = require("../databases/photoDatabase");
-
-var PhotoConverter = require("./photoConverter");
 
 var AdmZip = require('adm-zip');
 
@@ -38,23 +35,16 @@ router.post("/photo-gallery/download-whole-gallery", function _callee(request, r
         case 3:
           galleryTitle = request.body.title;
           version = request.body.version;
-          console.log(request.body);
           tokenVerifier.refreshToken(token, response);
-
-          if (!(version === "full")) {
-            _context.next = 13;
-            break;
-          }
-
-          response.setHeader('Content-Disposition', 'attachment; filename=' + galleryTitle + ".zip");
-          _context.next = 11;
+          response.setHeader('Content-Disposition', 'attachment; filename=' + galleryTitle + "-" + version + ".zip");
+          _context.next = 9;
           return regeneratorRuntime.awrap(photoDatabase.getAllGalleryPhotos(galleryTitle));
 
-        case 11:
+        case 9:
           photos = _context.sent;
-          createZipFromArray(galleryTitle, photos, version, response);
+          createZipFromArray(photos, version, response);
 
-        case 13:
+        case 11:
         case "end":
           return _context.stop();
       }
@@ -62,8 +52,8 @@ router.post("/photo-gallery/download-whole-gallery", function _callee(request, r
   });
 });
 
-function createZipFromArray(galleryTitle, array, version, response) {
-  var archive, filePath, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, photo, file;
+function createZipFromArray(array, version, response) {
+  var archive, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, photo, file;
 
   return regeneratorRuntime.async(function createZipFromArray$(_context2) {
     while (1) {
@@ -72,7 +62,7 @@ function createZipFromArray(galleryTitle, array, version, response) {
           archive = archiver("zip", {
             store: true
           });
-          filePath = __dirname + "/../photos/zips/" + galleryTitle + "-" + version + ".zip";
+          archive.pipe(response);
           _iteratorNormalCompletion = true;
           _didIteratorError = false;
           _iteratorError = undefined;
@@ -80,7 +70,8 @@ function createZipFromArray(galleryTitle, array, version, response) {
 
           for (_iterator = array[Symbol.iterator](); !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
             photo = _step.value;
-            file = uploadPath + photo;
+            file = version === "full" ? uploadPath : liteUploadPath;
+            file += photo;
             archive.append(fs.createReadStream(file), {
               name: photo
             });
@@ -120,14 +111,12 @@ function createZipFromArray(galleryTitle, array, version, response) {
           return _context2.finish(13);
 
         case 21:
-          archive.pipe(response);
+          archive.finalize();
           archive.on("end", function () {
             response.end();
           });
-          archive.finalize();
-          return _context2.abrupt("return", filePath);
 
-        case 25:
+        case 23:
         case "end":
           return _context2.stop();
       }

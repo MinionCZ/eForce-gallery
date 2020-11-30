@@ -17,25 +17,3 @@ function changeMapping(mapping) {
             break
     }
 }
-
-function appendUrlParam(url, paramName, param){
-    if (isFirstParam(url)){
-        url += "?" + paramName + "=" + param
-    }else{
-        url += "&" + paramName + "=" + param
-    }
-    return url
-
-}
-
-function isFirstParam(url){
-    for (let i = url.length -1; i>=0; i--){
-        if (url[i] === "?" ){
-            return false
-        }
-    }
-    return true
-}
-export{
-    appendUrlParam
-    }

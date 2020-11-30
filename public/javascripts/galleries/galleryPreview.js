@@ -1,4 +1,3 @@
-import {appendUrlParam} from "../urlMapping.js"
 class GalleryPreview {
     static shadowDiv = new Object()
     static rootDiv = new Object()

@@ -2,10 +2,9 @@ const express = require('express')
 const router = express.Router()
 const tokenVerifier = require("../verifiers/token")
 const uploadPath = "./photos/uploads/"
-const path = require('path')
+const liteUploadPath = "./photos/lite-photos/"
 const fs = require('fs')
 const photoDatabase = require("../databases/photoDatabase")
-const PhotoConverter = require("./photoConverter")
 const AdmZip = require('adm-zip')
 const archiver = require("archiver")
 router.post("/photo-gallery/download-whole-gallery", async function(request, response){
@@ -15,29 +14,26 @@ router.post("/photo-gallery/download-whole-gallery", async function(request, res
     }
     const galleryTitle = request.body.title
     const version = request.body.version
-    console.log(request.body)
     tokenVerifier.refreshToken(token, response)
 
-    if (version === "full"){
-        response.setHeader('Content-Disposition','attachment; filename=' + galleryTitle + ".zip");
-        const photos = await photoDatabase.getAllGalleryPhotos(galleryTitle)
-        createZipFromArray(galleryTitle ,photos, version, response)
-    }
-})
-async function createZipFromArray(galleryTitle, array, version, response){
-    const archive = archiver("zip", {store: true})
-    const filePath = __dirname + "/../photos/zips/" + galleryTitle + "-" + version + ".zip"
     
+        response.setHeader('Content-Disposition','attachment; filename=' + galleryTitle + "-" + version + ".zip");
+        const photos = await photoDatabase.getAllGalleryPhotos(galleryTitle)
+        createZipFromArray(photos, version, response)
+    
+})
+async function createZipFromArray(array, version, response){
+    const archive = archiver("zip", {store: true})
+    archive.pipe(response)
     for (const photo of array){
-        const file = uploadPath + photo
+        let file = version === "full" ? uploadPath : liteUploadPath
+        file += photo
         archive.append(fs.createReadStream(file), {name: photo})
     }
-    archive.pipe(response)
-    archive.on("end", function(){
+    archive.finalize()
+    archive.on("end", () =>{
         response.end()
     })
-    archive.finalize()
-    return filePath
 }
 
 
