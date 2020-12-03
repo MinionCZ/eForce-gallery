@@ -8,6 +8,7 @@ class Gallery {
     constructor(gallery) {
         this.title = gallery.title
         this.tags = gallery.tags
+        this.id = gallery.galleryID
         this.eventDate = gallery.eventDate
         this.contributionDate = gallery.contributionDate
         this.changeDate = gallery.changeDate
@@ -15,7 +16,7 @@ class Gallery {
         this.contributor = gallery.contributor
         this.lastChanges = gallery.lastChanges
         this.label = gallery.label
-        this.photoURL = "/photo-gallery/get-photo?title=" + gallery.title
+        this.photoURL = "/photo-gallery/get-photo?galleryID=" + this.id
         this.searchWords = this.generateSearchWords()
         this.isRendered = true
         this.tagButtons = new Map()

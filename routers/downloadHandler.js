@@ -12,14 +12,13 @@ router.post("/photo-gallery/download-whole-gallery", async function(request, res
     if (!tokenVerifier.isTokenValid(token, response)) {
         return
     }
-    const galleryTitle = request.body.title
+    const galleryID = request.body.galleryID
     const version = request.body.version
     tokenVerifier.refreshToken(token, response)
+    const gallery = await photoDatabase.findGalleryByID(galleryID)
 
-    
-        response.setHeader('Content-Disposition','attachment; filename=' + galleryTitle + "-" + version + ".zip");
-        const photos = await photoDatabase.getAllGalleryPhotos(galleryTitle)
-        createZipFromArray(photos, version, response)
+    response.setHeader('Content-Disposition','attachment; filename=' + gallery.galleryTitle + "-" + version + ".zip");
+    createZipFromArray(gallery.photos, version, response)
     
 })
 async function createZipFromArray(array, version, response){

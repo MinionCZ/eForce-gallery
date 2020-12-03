@@ -1,19 +1,21 @@
 "use strict";
 
-var mongoClient = require("mongodb");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var databaseHelper = require("./databaseHelpers");
 
 var client = null;
-var collection = null;
+var photos = null;
 var tempCollection = null;
 var galleries = null;
 
-var fs = require("fs");
-
 function clientInitializer(clientInit) {
   client = clientInit;
-  collection = client.db("eForceGallery").collection("photos");
+  photos = client.db("eForceGallery").collection("photos");
   tempCollection = client.db("eForceGallery").collection("tempPhotos");
   galleries = client.db("eForceGallery").collection("galleries");
 }
@@ -27,17 +29,6 @@ function getToday() {
   var now = new Date();
   var month = parseInt(now.getMonth()) + 1;
   return now.getDate() + "." + month + "." + now.getFullYear();
-}
-
-function getExpirationTime() {
-  var now = new Date();
-  var hours = now.getHours() + 10;
-
-  if (now.getHours() + 10 > 24) {
-    hours = (now.getHours() + 10) % 24;
-  }
-
-  return hours + ":" + now.getMinutes() + ":" + now.getSeconds();
 }
 
 function insertTempPhoto(fileName, galleryId, username, width, height, thumbnailName) {
@@ -226,9 +217,13 @@ function pushGalleryWithPhotos(tempGalleryId, galleryTitle, galleryLabel, tags, 
 
           for (_iterator2 = galleryPhotos[Symbol.iterator](); !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
             _photo = _step2.value;
+            galleryTitles = [];
+            galleryTitles.push(galleryTitle);
+            galleryIDs = [];
+            galleryIDs.push(galleryID);
             newPhotos.push({
-              galleryID: galleryID,
-              galleryTitle: galleryTitle,
+              galleryIDs: galleryIDs,
+              galleryTitles: galleryTitles,
               tags: tags,
               dateOfChange: today,
               dateOfEvent: eventDate,
@@ -273,7 +268,7 @@ function pushGalleryWithPhotos(tempGalleryId, galleryTitle, galleryLabel, tags, 
 
         case 52:
           _context4.next = 54;
-          return regeneratorRuntime.awrap(collection.insertMany(newPhotos));
+          return regeneratorRuntime.awrap(photos.insertMany(newPhotos));
 
         case 54:
           deleteTempPhotos(photoNames);
@@ -364,6 +359,7 @@ function getAllGalleries() {
             gallery = _step3.value;
             newGallery = {
               title: gallery.galleryTitle,
+              galleryID: gallery.galleryID,
               tags: gallery.tags,
               eventDate: gallery.dateOfEvent,
               contributor: gallery.nameOfContributor,
@@ -450,9 +446,7 @@ function clearTempGallery() {
                 tempCollection.deleteOne({
                   fileName: photo.fileName
                 });
-                fs.unlinkSync("./photos/uploads/" + photo.fileName);
-                console.log(photo.fileName);
-                fs.unlinkSync("./photos/thumbnails/" + getThumbnailFromFileName(photo.fileName));
+                databaseHelper.deletePhoto(photo.fileName);
               } else {
                 expirationCounter = photo.expirationCounter + 1;
                 tempCollection.updateOne({
@@ -507,31 +501,22 @@ function clearTempGallery() {
   }, 1000 * 60 * 60);
 }
 
-function findGalleryByTitle(title) {
+function findGalleryByID(galleryID) {
   var gallery;
-  return regeneratorRuntime.async(function findGalleryByTitle$(_context9) {
+  return regeneratorRuntime.async(function findGalleryByID$(_context9) {
     while (1) {
       switch (_context9.prev = _context9.next) {
         case 0:
           _context9.next = 2;
           return regeneratorRuntime.awrap(galleries.findOne({
-            galleryTitle: title
+            galleryID: galleryID
           }));
 
         case 2:
           gallery = _context9.sent;
-
-          if (!gallery) {
-            _context9.next = 5;
-            break;
-          }
-
           return _context9.abrupt("return", gallery);
 
-        case 5:
-          return _context9.abrupt("return", null);
-
-        case 6:
+        case 4:
         case "end":
           return _context9.stop();
       }
@@ -539,39 +524,12 @@ function findGalleryByTitle(title) {
   });
 }
 
-function getAllGalleryPhotos(title) {
-  var gallery;
-  return regeneratorRuntime.async(function getAllGalleryPhotos$(_context10) {
-    while (1) {
-      switch (_context10.prev = _context10.next) {
-        case 0:
-          _context10.next = 2;
-          return regeneratorRuntime.awrap(findGalleryByTitle(title));
-
-        case 2:
-          gallery = _context10.sent;
-          return _context10.abrupt("return", gallery.photos);
-
-        case 4:
-        case "end":
-          return _context10.stop();
-      }
-    }
-  });
-}
-
-function getThumbnailFromFileName(fileName) {
-  var filenames = fileName.split(".");
-  return filenames[0] + "-th." + filenames[1];
-}
-
-module.exports = {
+module.exports = _objectSpread({
   clientInitializer: clientInitializer,
   insertTempPhoto: insertTempPhoto,
   pushGalleryWithPhotos: pushGalleryWithPhotos,
   pushGalleryWithoutPhotos: pushGalleryWithoutPhotos,
   getAllGalleries: getAllGalleries,
   clearTempGallery: clearTempGallery,
-  findGalleryByTitle: findGalleryByTitle,
-  getAllGalleryPhotos: getAllGalleryPhotos
-};
+  findGalleryByID: findGalleryByID
+}, require("./galleryModifier"));

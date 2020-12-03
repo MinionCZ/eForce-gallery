@@ -29,7 +29,7 @@ app.use(newGalleryRouter)
 app.use(dashboardRouter)
 app.use(photosRouter)
 app.use(errorRouter)
-app.use(fileRouter)
+app.use(fileRouter.router)
 app.use(downloadHandler)
 app.use(fileUpload({
     createParentPath: true

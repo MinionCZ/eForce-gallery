@@ -1,14 +1,12 @@
-const mongoClient = require("mongodb")
 const databaseHelper = require("./databaseHelpers")
 let client = null
-let collection = null
+let photos = null
 let tempCollection = null
 let galleries = null
-const fs = require("fs")
 
 function clientInitializer(clientInit) {
     client = clientInit
-    collection = client.db("eForceGallery").collection("photos")
+    photos = client.db("eForceGallery").collection("photos")
     tempCollection = client.db("eForceGallery").collection("tempPhotos")
     galleries = client.db("eForceGallery").collection("galleries")
 }
@@ -22,15 +20,6 @@ function getToday() {
     let now = new Date()
     let month = parseInt(now.getMonth()) + 1
     return now.getDate() + "." + month + "." + now.getFullYear()
-}
-
-function getExpirationTime() {
-    let now = new Date()
-    let hours = now.getHours() + 10
-    if (now.getHours() + 10 > 24) {
-        hours = (now.getHours() + 10) % 24
-    }
-    return hours + ":" + now.getMinutes() + ":" + now.getSeconds()
 }
 
 async function insertTempPhoto(fileName, galleryId, username, width, height, thumbnailName) {
@@ -100,9 +89,13 @@ async function pushGalleryWithPhotos(tempGalleryId, galleryTitle, galleryLabel, 
     await galleries.insertOne(gallery)
 
     for (let photo of galleryPhotos) {
+        galleryTitles = []
+        galleryTitles.push(galleryTitle)
+        galleryIDs = []
+        galleryIDs.push(galleryID)
         newPhotos.push({
-            galleryID: galleryID,
-            galleryTitle: galleryTitle,
+            galleryIDs: galleryIDs,
+            galleryTitles: galleryTitles,
             tags: tags,
             dateOfChange: today,
             dateOfEvent: eventDate,
@@ -111,7 +104,7 @@ async function pushGalleryWithPhotos(tempGalleryId, galleryTitle, galleryLabel, 
             fileName: photo.fileName
         })
     }
-    await collection.insertMany(newPhotos)
+    await photos.insertMany(newPhotos)
     deleteTempPhotos(photoNames)
 }
 
@@ -148,6 +141,7 @@ async function getAllGalleries() {
     for (const gallery of galleriesFromDatabase) {
         let newGallery = {
             title: gallery.galleryTitle,
+            galleryID: gallery.galleryID,
             tags: gallery.tags,
             eventDate: gallery.dateOfEvent,
             contributor: gallery.nameOfContributor,
@@ -170,9 +164,7 @@ function clearTempGallery() {
                     tempCollection.deleteOne({
                         fileName: photo.fileName
                     })
-                    fs.unlinkSync("./photos/uploads/" + photo.fileName)
-                    console.log(photo.fileName)
-                    fs.unlinkSync("./photos/thumbnails/" + getThumbnailFromFileName(photo.fileName))
+                    databaseHelper.deletePhoto(photo.fileName)
                 } else {
                     let expirationCounter = photo.expirationCounter + 1
                     tempCollection.updateOne({
@@ -188,19 +180,12 @@ function clearTempGallery() {
     }, 1000 * 60 * 60)
 }
 
-async function findGalleryByTitle(title) {
+
+async function findGalleryByID(galleryID) {
     let gallery = await galleries.findOne({
-        galleryTitle: title
+        galleryID: galleryID
     })
-    if (gallery) {
-        return gallery
-    }
-    return null
-}
-
-async function getAllGalleryPhotos(title){
-    let gallery = await findGalleryByTitle(title)
-    return gallery.photos
+    return gallery
 }
 
 
@@ -208,10 +193,7 @@ async function getAllGalleryPhotos(title){
 
 
 
-function getThumbnailFromFileName(fileName) {
-    let filenames = fileName.split(".")
-    return filenames[0] + "-th." + filenames[1]
-}
+
 
 
 module.exports = {
@@ -221,6 +203,6 @@ module.exports = {
     pushGalleryWithoutPhotos,
     getAllGalleries,
     clearTempGallery,
-    findGalleryByTitle,
-    getAllGalleryPhotos
+    findGalleryByID,
+    ...require("./galleryModifier")
 }

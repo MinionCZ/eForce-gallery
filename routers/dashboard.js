@@ -21,10 +21,9 @@ router.get("/galleries/get-all", async function (request, response) {
     if (!await tokenVerifier.isTokenValid(token, response)) {
         return
     }
-    console.log("response")
     token = tokenVerifier.refreshToken(token, response)
-    const allGaleries = await photoDatabase.getAllGalleries()
-    response.json(allGaleries)
+    const allGalleries = await photoDatabase.getAllGalleries()
+    response.json(allGalleries)
 
 })
 

@@ -17,6 +17,7 @@ async function initMongo() {
         console.log(client.isConnected())
         tokenDatabase.clientInitializer(client)
         photoDatabase.clientInitializer(client)
+        photoDatabase.galleryModifierInit(client)
     } catch (err) {
         console.log(err)
     }

@@ -63,14 +63,14 @@ class GalleryPreview {
             if (this.gallery.photosCount === 0) {
                 alert("This gallery is empty")
             }else{
-                this.sendRequestToDownloadGallery(this.gallery.title, "full")
+                this.sendRequestToDownloadGallery(this.gallery.id, "full")
             }
         }
         downloadLiteButton.onclick = () => {
             if (this.gallery.photosCount === 0) {
                 alert("This gallery is empty")
             }else{
-            this.sendRequestToDownloadGallery(this.gallery.title, "lite")
+            this.sendRequestToDownloadGallery(this.gallery.id, "lite")
             }
         }
         buttonRow.appendChild(downloadButton)
@@ -87,7 +87,9 @@ class GalleryPreview {
             alert("manage")
         }
         deleteButton.onclick = () => {
-            alert("delete")
+            if (confirm("Are you sure you want to delete this gallery?")){
+                this.deleteGallery()
+            }
         }
         buttonRow.appendChild(manageButton)
         buttonRow.appendChild(deleteButton)
@@ -102,32 +104,48 @@ class GalleryPreview {
         this.rootDiv.appendChild(this.renderButtonRowManage())
     }
 
-    static createFormForGalleryDownload(url, galleryTitle, version){
+    static createFormForGalleryDownload(url, galleryID, version){
         const form = document.createElement("form")
         form.setAttribute("method", "post")
         form.setAttribute("action", url)
         
-        const titleInput = document.createElement("input")
-        titleInput.setAttribute("name", "title")
-        titleInput.setAttribute("type", "text")
-        titleInput.setAttribute("value", galleryTitle)
+        const idInput = document.createElement("input")
+        idInput.setAttribute("name", "galleryID")
+        idInput.setAttribute("type", "text")
+        idInput.setAttribute("value", galleryID)
 
         const versionInput = document.createElement("input")
         versionInput.setAttribute("type", "hidden")
         versionInput.setAttribute("name", "version")
         versionInput.setAttribute("value", version)
 
-        form.appendChild(titleInput)
+        form.appendChild(idInput)
         form.appendChild(versionInput)
-        console.log(form.children)
         return form
     }
 
 
+    static deleteGallery(){
+        const form = document.createElement("form")
+        form.setAttribute("method", "post")
+        form.setAttribute("action", "/delete/gallery")
 
-    static async sendRequestToDownloadGallery(galleryTitle, version) {
+        const idInput = document.createElement("input")
+        idInput.setAttribute("name", "galleryID")
+        idInput.setAttribute("type", "text")
+        idInput.setAttribute("value", this.gallery.id)
+
+        form.appendChild(idInput)
+        document.appendChild(form)
+        form.submit()
+        document.removeChild(form)
+
+    }
+
+
+    static async sendRequestToDownloadGallery(galleryID, version) {
         let url = "/photo-gallery/download-whole-gallery"
-        const form = this.createFormForGalleryDownload(url, galleryTitle, version)
+        const form = this.createFormForGalleryDownload(url, galleryID, version)
         document.body.appendChild(form)
         form.submit()
         document.body.removeChild(form)

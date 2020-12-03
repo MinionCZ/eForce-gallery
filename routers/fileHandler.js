@@ -62,8 +62,8 @@ router.get("/photo-gallery/get-photo", async function (request, response) {
         return
     }
 
-    let galleryTitle = request.query.title
-    let gallery = await photoDatabase.findGalleryByTitle(galleryTitle)
+    let galleryID = request.query.galleryID
+    let gallery = await photoDatabase.findGalleryByID(galleryID)
     if (gallery.photos.length > 0) {
         let thumbnail = PhotoConverter.convertPhotoNameToThumbnail(gallery.photos[0])
         response.sendFile(path.resolve(__dirname + "/../photos/thumbnails/" + thumbnail))
@@ -72,7 +72,7 @@ router.get("/photo-gallery/get-photo", async function (request, response) {
     }
 })
 
-router.get("/photo-gallery/get-all-tags-colors", async function(request, response){
+router.get("/photo-gallery/get-all-tags-colors", async function (request, response) {
     let token = request.cookies.token
     if (!tokenVerifier.isTokenValid(token, response)) {
         return
@@ -89,4 +89,4 @@ router.get("/photo-gallery/get-all-tags-colors", async function(request, respons
 
 
 
-module.exports = router
+module.exports = {router}
