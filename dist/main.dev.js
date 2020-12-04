@@ -33,6 +33,8 @@ var photoDatabase = require("./databases/photoDatabase");
 
 var downloadHandler = require("./routers/downloadHandler");
 
+var galleryManager = require("./routers/galleryManager");
+
 var bodyParser = require('body-parser');
 
 app.use(express.urlencoded({
@@ -43,6 +45,7 @@ app.use(express["static"]("public"));
 app.use(cookieParser());
 app.use(loginRouter);
 app.use(newGalleryRouter);
+app.use(galleryManager.router);
 app.use(dashboardRouter);
 app.use(photosRouter);
 app.use(errorRouter);

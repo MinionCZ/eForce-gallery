@@ -33,19 +33,30 @@ async function updatePhoto(fileName, galleryID, add) {
     })
 }
 
+async function findPhotoByFileName(fileName){
+    return await photos.findOne({fileName:fileName})
+}
+
+async function deletePhotos(photosToDelete){
+    databaseHelper.deleteManyPhotos(photosToDelete)
+    photos.deleteMany({fileName : {$in: photosToDelete}})
+}
+
+
 
 async function deleteGalleryByID(galleryID){
     const gallery = await galleries.findOne({galleryID:galleryID})
     galleries.deleteOne({galleryID:galleryID})
-    const photosToDestroy = []
-    for (let photo of gallery.photos){
+    const photosToDelete = []
+    for (let fileName of gallery.photos){
+        const photo = await findPhotoByFileName(fileName)
         if (photo.galleryIDs.length > 1){
             updatePhoto(photo, gallery.galleryID, gallery.galleryTitle)
         }else{
-            photosToDestroy.push(photo)
+            photosToDelete.push(fileName)
         }
     }
-    databaseHelper.deleteManyPhotos(photos)
+    deletePhotos(photosToDelete)
 }
 
 

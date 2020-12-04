@@ -136,9 +136,9 @@ class GalleryPreview {
         idInput.setAttribute("value", this.gallery.id)
 
         form.appendChild(idInput)
-        document.appendChild(form)
+        document.body.appendChild(form)
         form.submit()
-        document.removeChild(form)
+        document.body.removeChild(form)
 
     }
 

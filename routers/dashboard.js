@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router()
 const tokenVerifier = require("../verifiers/token")
-const data = require("../databases/userDatabase")
 const photoDatabase = require("../databases/photoDatabase")
 router.get("/dashboard", async function (request, response) {
     let token = request.cookies.token

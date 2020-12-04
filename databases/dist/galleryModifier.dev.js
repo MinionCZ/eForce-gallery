@@ -54,81 +54,138 @@ function updatePhoto(fileName, galleryID, add) {
   });
 }
 
-function deleteGalleryByID(galleryID) {
-  var gallery, photosToDestroy, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, photo;
-
-  return regeneratorRuntime.async(function deleteGalleryByID$(_context2) {
+function findPhotoByFileName(fileName) {
+  return regeneratorRuntime.async(function findPhotoByFileName$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:
           _context2.next = 2;
+          return regeneratorRuntime.awrap(photos.findOne({
+            fileName: fileName
+          }));
+
+        case 2:
+          return _context2.abrupt("return", _context2.sent);
+
+        case 3:
+        case "end":
+          return _context2.stop();
+      }
+    }
+  });
+}
+
+function deletePhotos(photosToDelete) {
+  return regeneratorRuntime.async(function deletePhotos$(_context3) {
+    while (1) {
+      switch (_context3.prev = _context3.next) {
+        case 0:
+          databaseHelper.deleteManyPhotos(photosToDelete);
+          photos.deleteMany({
+            fileName: {
+              $in: photosToDelete
+            }
+          });
+
+        case 2:
+        case "end":
+          return _context3.stop();
+      }
+    }
+  });
+}
+
+function deleteGalleryByID(galleryID) {
+  var gallery, photosToDelete, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, fileName, photo;
+
+  return regeneratorRuntime.async(function deleteGalleryByID$(_context4) {
+    while (1) {
+      switch (_context4.prev = _context4.next) {
+        case 0:
+          _context4.next = 2;
           return regeneratorRuntime.awrap(galleries.findOne({
             galleryID: galleryID
           }));
 
         case 2:
-          gallery = _context2.sent;
+          gallery = _context4.sent;
           galleries.deleteOne({
             galleryID: galleryID
           });
-          photosToDestroy = [];
+          photosToDelete = [];
           _iteratorNormalCompletion = true;
           _didIteratorError = false;
           _iteratorError = undefined;
-          _context2.prev = 8;
+          _context4.prev = 8;
+          _iterator = gallery.photos[Symbol.iterator]();
 
-          for (_iterator = gallery.photos[Symbol.iterator](); !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            photo = _step.value;
-
-            if (photo.galleryIDs.length > 1) {
-              updatePhoto(photo, gallery.galleryID, gallery.galleryTitle);
-            } else {
-              photosToDestroy.push(photo);
-            }
+        case 10:
+          if (_iteratorNormalCompletion = (_step = _iterator.next()).done) {
+            _context4.next = 19;
+            break;
           }
 
-          _context2.next = 16;
-          break;
+          fileName = _step.value;
+          _context4.next = 14;
+          return regeneratorRuntime.awrap(findPhotoByFileName(fileName));
 
-        case 12:
-          _context2.prev = 12;
-          _context2.t0 = _context2["catch"](8);
-          _didIteratorError = true;
-          _iteratorError = _context2.t0;
+        case 14:
+          photo = _context4.sent;
+
+          if (photo.galleryIDs.length > 1) {
+            updatePhoto(photo, gallery.galleryID, gallery.galleryTitle);
+          } else {
+            photosToDelete.push(fileName);
+          }
 
         case 16:
-          _context2.prev = 16;
-          _context2.prev = 17;
+          _iteratorNormalCompletion = true;
+          _context4.next = 10;
+          break;
+
+        case 19:
+          _context4.next = 25;
+          break;
+
+        case 21:
+          _context4.prev = 21;
+          _context4.t0 = _context4["catch"](8);
+          _didIteratorError = true;
+          _iteratorError = _context4.t0;
+
+        case 25:
+          _context4.prev = 25;
+          _context4.prev = 26;
 
           if (!_iteratorNormalCompletion && _iterator["return"] != null) {
             _iterator["return"]();
           }
 
-        case 19:
-          _context2.prev = 19;
+        case 28:
+          _context4.prev = 28;
 
           if (!_didIteratorError) {
-            _context2.next = 22;
+            _context4.next = 31;
             break;
           }
 
           throw _iteratorError;
 
-        case 22:
-          return _context2.finish(19);
+        case 31:
+          return _context4.finish(28);
 
-        case 23:
-          return _context2.finish(16);
+        case 32:
+          return _context4.finish(25);
 
-        case 24:
-          databaseHelper.deleteManyPhotos(photos);
+        case 33:
+          deletePhotos(photosToDelete);
 
-        case 25:
+        case 34:
         case "end":
-          return _context2.stop();
+          return _context4.stop();
       }
     }
-  }, null, null, [[8, 12, 16, 24], [17,, 19, 23]]);
+  }, null, null, [[8, 21, 25, 33], [26,, 28, 32]]);
 }
 
 module.exports = {
