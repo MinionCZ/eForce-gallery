@@ -16,6 +16,7 @@ div.searchDiv{
 div.imageDiv{
     width: 420px;
     height: 290px;
+    max-height: 290px;
     display: inline-block;
     text-align: center;
 }
@@ -46,7 +47,8 @@ button.tag{
 }
 
 img{
-    width: 420px;
+    max-width: 420px;
+    max-height: 280px;
 }
 
 div.statsDiv{

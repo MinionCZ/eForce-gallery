@@ -4,7 +4,7 @@ body{
 
 div.buttonDiv{
     background-color: red;
-    position: absolute;
+    position: fixed;
     height:50px;
     top: 0px;
     right: 0px;
@@ -25,6 +25,19 @@ button.navButton{
     font-size: 20px;
     cursor: pointer;
 }
+button.navButton-selected{
+    height:50px;
+    width:20%;
+    margin:0px;
+    background-color: white;
+    border: 0;
+    text-align: center;
+    color: red;
+    font-size: 20px;
+    cursor: pointer;
+    border: 1px solid red;
+}
+
 
 button.navButton:hover{
     transition-duration: 0.2s;
