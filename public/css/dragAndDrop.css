@@ -1,5 +1,8 @@
 .drag_and_drop_area {
   width: 50%;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
   min-height: 250px;
   max-height: 350px;
   background-color: lightgray;
@@ -24,7 +27,6 @@
 .upload_label:hover {
   background-color: white;
   color: #00BC1B;
-  ;
 }
 
 .data_upload_status {

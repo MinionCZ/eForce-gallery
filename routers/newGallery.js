@@ -14,9 +14,6 @@ function harvestTags(request) {
     return tagArray
 }
 
-
-
-
 router.get("/gallery/add", async function (request, response) {
     let token = request.cookies.token
     if (!await tokenVerifier.isTokenValid(token, response)) {
@@ -32,7 +29,6 @@ router.post("/gallery/add", async function (request, response) {
         return
     }
     token = tokenVerifier.refreshToken(token, response)
-    console.log(harvestTags(request))
     if (parseInt(request.body.photoCounter) > 0) {
         photoDatabase.pushGalleryWithPhotos(tempGalleryId, request.body.title, request.body.label, harvestTags(request), request.body.date, tokenVerifier.getUsernameFromToken(token))
     } else {
@@ -41,7 +37,25 @@ router.post("/gallery/add", async function (request, response) {
     response.render("newGallery.ejs")
 })
 
-
+router.get("/galleries/fetch-titles-and-tags", async function(request, response){
+    let token = request.cookies.token
+    if (!await tokenVerifier.isTokenValid(token, response)) {
+        return
+    }
+    token = tokenVerifier.refreshToken(token, response)
+    const galleries = await photoDatabase.getAllGalleries()
+    const titles = []
+    const tags = new Set()
+    for (let gallery of galleries){
+        titles.push(gallery.title)
+        for (const tag of gallery.tags){
+            tags.add(tag)
+        }
+    }
+    const data = {titles:titles,
+    tags:Array.from(tags)}
+    response.json(data)
+})
 
 
 

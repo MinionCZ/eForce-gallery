@@ -188,14 +188,6 @@ async function findGalleryByID(galleryID) {
     return gallery
 }
 
-
-
-
-
-
-
-
-
 module.exports = {
     clientInitializer,
     insertTempPhoto,

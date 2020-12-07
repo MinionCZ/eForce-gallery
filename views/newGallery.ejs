@@ -2,42 +2,44 @@
 <html>
 
 <head>
-    <script src="/javascripts/uploadScripts/dataUploader.js"></script>
+    <script type="module" src="/javascripts/galleriesUpload/dataVerifier.js"></script>
+    <script src="/javascripts/galleriesUpload/uploadScripts/dataUploader.js"></script>
     <script src="/javascripts/urlMapping.js"></script>
-    <script src="/javascripts/tags.js"></script>
-    <script src="/javascripts/uploadScripts/dragAndDrop.js"></script>
+    <script type="module" src="/javascripts/galleriesUpload/tags.js"></script>
+    <script type="module" src="/javascripts/galleriesUpload/uploadScripts/dragAndDrop.js"></script>
     <link rel="stylesheet" href="/css/dragAndDrop.css">
+    <link rel="stylesheet" href="/css/navButtons.css">
+    <link rel="stylesheet" href="/css/newGalleryForm.css">
 
 </head>
 <header>
-
-
     <div class="buttonDiv">
-        <button type="button" value="dashboard" onclick="changeMapping(value)">Dashboard</button>
-        <button type="button" value="newGallery" onclick="changeMapping(value)">Add gallery</button>
-        <button type="button" value="photos" onclick="changeMapping(value)">All photos</button>
+        <button type="button" class="navButton" value="dashboard" onclick="changeMapping(value)">Dashboard</button>
+        <button type="button" class="navButton" value="newGallery" onclick="changeMapping(value)">Add gallery</button>
+        <button type="button" class="navButton" value="photos" onclick="changeMapping(value)">All photos</button>
     </div>
 </header>
 
 <body>
-    <h1>New gallery</h1>
-    <form id="galleryForm" method="POST">
+    <form id="galleryForm" class="gallery-form" method="POST">
         <label for="title">Gallery title:</label>
-        <input type="text" id="title" name="title" required>
         <br>
-        <label for="date">Date:</label>
+        <input type="text" id="title" name="title" required/>
+        <br>
+        <label for="date">Event date:</label>
+        <br>
         <input type="date" id="date" name="date" required>
         <br>
         <label>Tags:</label>
         <div id="tags" value="1">
             <input type="hidden" id="tagsCounter" name="tagsCounter" value="1">
             <input type="hidden" id="tagsValue" name="tagsValue" value="">
-            <script>generateTagInput()</script>
         </div>
-        <button type="button" onclick="generateTagInput()" id="tagButton">Add tag</button>
+        <button type="button" class="add-tag-button" id="tagButton">Add tag</button>
         <br>
-        <textarea rows="10" cols="100" name="label">
-            </textarea>
+        <label for="label">Gallery label:</label>
+        <br>
+        <textarea rows="10" id="label" class="label" cols="100" name="label"></textarea>
         <br>
         <div id="dragAndDropArea" class="drag_and_drop_area">
             <input type="hidden" id="photoCounter" name="photoCounter" value="0">
@@ -49,7 +51,7 @@
         </div>
         <span class="data_upload_status" id="dataStatus">No Files Uploaded Yet</span>
         <br>
-        <button type="button" onclick="submitForm()">Submit</button>
+        <button type="button" id="submitButton" class="submit-button" disabled>Submit</button>
     </form>
 
 </body>

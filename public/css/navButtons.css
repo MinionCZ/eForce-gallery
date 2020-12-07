@@ -1,3 +1,7 @@
+body{
+    margin-top: 50px;
+}
+
 div.buttonDiv{
     background-color: red;
     position: absolute;
@@ -23,7 +27,7 @@ button.navButton{
 }
 
 button.navButton:hover{
-    transition-duration: 0.4s;
+    transition-duration: 0.2s;
     background-color: #FFFFFF;
     color: red;
     border: 1px solid red;

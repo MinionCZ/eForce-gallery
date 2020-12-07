@@ -1,0 +1,90 @@
+body{
+    text-align:center;
+}
+form.gallery-form{
+    margin-top: 100px;
+    text-align: inherit;
+    width: 100%;
+
+}
+label{
+    font-size: 20px;
+
+}
+input{
+    width: 200px;
+    height: 30px;
+    border: 1.5px solid orangered;
+    border-radius: 10px;
+    font-size: 15px;
+    margin-bottom:10px;
+    outline: none;
+}
+
+button.delete-button{
+    background-color: red;
+    width: 50px;
+    height: 50px;
+    margin-left: 10px;
+    color: white;
+    font-size: 25px;
+    border: 2px solid white;
+    border-radius: 25px;
+    cursor: pointer;
+    box-shadow: 0 9px #999;
+    outline: none;
+}
+button.delete-button:hover{
+    background-color: white;
+    color:red;
+    border: 2px solid black;
+}
+button.delete-button:active{
+    border-radius: 25px;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
+button.add-tag-button{
+    background-color:#4CAF50;
+    height: 40px;
+    width: 150px;
+    font-size: 20px;
+    color: white;
+    border-radius: 10px;
+    border: 2px solid white;
+    margin-bottom: 20px;
+    outline: none;
+}
+button.add-tag-button:hover{
+    border: 2px solid #4CAF50;
+    background-color:white;
+    color: #4CAF50;
+}
+textarea.label{
+    min-width: 50%;
+    max-width: 50%;
+}
+
+input.tag-input{
+margin-left: 60px;
+}
+button.submit-button{
+    height: 40px;
+    width: 150px;
+    font-size:20px;
+    border-radius: 10px;
+    border: none;
+    background-color: lightblue;
+    outline: none;
+    box-shadow: 0 9px #999;
+
+}
+button.submit-button:hover{
+    background-color: #73A1BF;
+}
+button.submit-button:active{
+    background-color: #73A1BF;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}

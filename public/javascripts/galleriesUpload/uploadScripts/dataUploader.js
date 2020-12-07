@@ -5,6 +5,9 @@ const fileTypes = ["jpg", "png", "gif", "psd", "bmp", "jpeg", "eps", "raw"]
 let totalFilesUploaded = 0
 let allFilesSum = 0
 
+/*
+creates randomID
+*/
 function createRandomId() {
     let id = ""
     let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
@@ -13,6 +16,9 @@ function createRandomId() {
     }
     return id
 }
+/*
+sorts pictures from non picture files and uploads them to server
+*/
 
 function handleDataUpload(files) {
     index = 0
@@ -34,6 +40,9 @@ function handleDataUpload(files) {
     }
 }
 
+/*
+iterate trough files which are ready to be send to backend
+*/
 function sendDataToBackend(files, gallery) {
     goodFiles = files
     if (gallery) {
@@ -41,6 +50,9 @@ function sendDataToBackend(files, gallery) {
     }
 
 }
+/*
+send file to backend with gallery ID
+*/
 
 function sendFileToGallery(galleryId) {
     let xhr = new XMLHttpRequest()
@@ -64,6 +76,9 @@ function sendFileToGallery(galleryId) {
     xhr.send(formData)
 }
 
+/*
+creates popup window for user that he knows which files are non picture and will not be uploaded
+*/
 
 function handleBadFiles(badFiles) {
     let status = true
@@ -77,6 +92,9 @@ function handleBadFiles(badFiles) {
     return status
 }
 
+/*
+check if file is image (has correct extension)
+*/
 function isItImage(fileName) {
     let fileType = parseFileType(fileName)
     let isIn = false
@@ -89,6 +107,9 @@ function isItImage(fileName) {
     return isIn
 }
 
+/*
+parses file type from file aka extension
+*/
 function parseFileType(fileName) {
     let length = fileName.length
     let fileType = ""
@@ -101,6 +122,9 @@ function parseFileType(fileName) {
     return reverseString(fileType)
 }
 
+/*
+reverses string
+*/
 function reverseString(stringToReverse) {
     let string = ""
     for (let i = stringToReverse.length; i >= 0; i--) {
@@ -109,6 +133,9 @@ function reverseString(stringToReverse) {
     return string
 }
 
+/*
+iterator trough photos, if is photo in array, then returns it, else returns null
+*/
 function getNextPhoto() {
     let file = null
     if (index < goodFiles.length) {
@@ -120,10 +147,16 @@ function getNextPhoto() {
     return file
 }
 
+/*
+returns if array has photos
+*/
 function hasPhotoNext() {
     return index < goodFiles.length
 }
 
+/*
+changes state of upload div 
+*/
 function changeStateOfUpload() {
     let fileStatus = document.getElementById("dataStatus")
     if (allFilesSum > 0) {
