@@ -9,6 +9,14 @@ router.get("/photos", async function (request, response) {
         return
     }
     token = tokenVerifier.refreshToken(token, response)
+    console.log("hello")
     response.render("allPhotos.ejs")
 })
+
+
+router.get("/get-all-photos", async function (request, response){
+    
+})
+
+
 module.exports = router

@@ -1,9 +1,7 @@
 "use strict";
 
-document.cookie = "mapping=dashboard";
-
 function changeMapping(mapping) {
-  document.cookie = "mapping=" + mapping;
+  document.cookie = "mapping=" + mapping + "; path=/;";
 
   switch (mapping) {
     case "dashboard":
@@ -21,10 +19,6 @@ function changeMapping(mapping) {
     case "photos":
       window.location = "/photos";
       break;
-
-    default:
-      window.location = "/dashboard";
-      break;
   }
 }
 
@@ -32,6 +26,7 @@ window.addEventListener("load", setClickedButton);
 
 function setClickedButton() {
   var value = parseCookie("mapping");
+  console.log(document.cookie.split(";"));
   var div = document.getElementById("buttonDiv").children;
   var _iteratorNormalCompletion = true;
   var _didIteratorError = false;

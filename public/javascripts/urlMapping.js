@@ -1,31 +1,32 @@
-document.cookie = "mapping=dashboard"
 function changeMapping(mapping) {
-    document.cookie = "mapping=" + mapping
+    document.cookie = "mapping=" + mapping + "; path=/;"
     switch (mapping) {
         case "dashboard":
             window.location = "/dashboard"
+          
             break
         case "newGallery":
             window.location = "/gallery/add"
+
             break
         case "galleries":
             window.location = "/galleries"
+
             break
         case "photos":
             window.location = "/photos"
-            break
-        default:
-            window.location = "/dashboard"
+
             break
     }
 }
-window.addEventListener("load",setClickedButton)
+window.addEventListener("load", setClickedButton)
 
 
 
 
 function setClickedButton(){
     let value = parseCookie("mapping")
+    console.log(document.cookie.split(";"))
     let div = document.getElementById("buttonDiv").children
     for(var button of div){
         if(button.value === value){

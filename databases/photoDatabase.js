@@ -4,6 +4,10 @@ let photos = null
 let tempCollection = null
 let galleries = null
 
+/*
+initialize client
+*/
+
 function clientInitializer(clientInit) {
     client = clientInit
     photos = client.db("eForceGallery").collection("photos")
@@ -11,16 +15,28 @@ function clientInitializer(clientInit) {
     galleries = client.db("eForceGallery").collection("galleries")
 }
 
+/*
+returns time
+*/
+
+
 function getTime() {
     let now = new Date()
     return now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds()
 }
+/*
+get today date
+*/
 
 function getToday() {
     let now = new Date()
     let month = parseInt(now.getMonth()) + 1
     return now.getDate() + "." + month + "." + now.getFullYear()
 }
+/*
+inserts temp photo into the database after receiving it from user
+*/
+
 
 async function insertTempPhoto(fileName, galleryId, username, width, height, thumbnailName) {
     let tempPhoto = {
@@ -34,6 +50,10 @@ async function insertTempPhoto(fileName, galleryId, username, width, height, thu
     }
     await tempCollection.insertOne(tempPhoto)
 }
+/*
+returns array of temp photos matching gallery ID
+*/
+
 async function getTempPhotosByGalleryId(galleryId) {
     let allTempPhotos = await tempCollection.find({
         galleryID: galleryId
@@ -41,6 +61,9 @@ async function getTempPhotosByGalleryId(galleryId) {
     return allTempPhotos
 }
 
+/*
+generates ID for gallery
+*/
 async function generateUniqueGalleryID() {
     let generate = function () {
         const chars = "0123456789abcdefghijklmnopgrstuvwxyz"
@@ -60,6 +83,9 @@ async function generateUniqueGalleryID() {
     return generatedId
 }
 
+/*
+pushes new gallery with new photos to database
+*/
 async function pushGalleryWithPhotos(tempGalleryId, galleryTitle, galleryLabel, tags, dateOfEvent, username) {
     let galleryPhotos = await getTempPhotosByGalleryId(tempGalleryId)
     let photoNames = []
@@ -97,7 +123,7 @@ async function pushGalleryWithPhotos(tempGalleryId, galleryTitle, galleryLabel, 
             galleryIDs: galleryIDs,
             galleryTitles: galleryTitles,
             tags: tags,
-            dateOfChange: today,
+            dateOfContribution: today,
             dateOfEvent: eventDate,
             width: photo.width,
             height: photo.height,
@@ -108,6 +134,11 @@ async function pushGalleryWithPhotos(tempGalleryId, galleryTitle, galleryLabel, 
     deleteTempPhotos(photoNames)
 }
 
+/*
+deletes temp photos
+*/
+
+
 async function deleteTempPhotos(fileNames) {
     await tempCollection.deleteMany({
         fileName: {
@@ -115,6 +146,9 @@ async function deleteTempPhotos(fileNames) {
         }
     })
 }
+/*
+pushes new gallery without photos to database
+*/
 
 async function pushGalleryWithoutPhotos(galleryTitle, galleryLabel, tags, eventDate, username) {
     let today = getToday()
@@ -135,8 +169,11 @@ async function pushGalleryWithoutPhotos(galleryTitle, galleryLabel, tags, eventD
     await galleries.insertOne(gallery)
 }
 
+/*
+returns all galleries, which are then send to frontend
+*/
 async function getAllGalleries() {
-    const galleriesFromDatabase = await galleries.find().toArray()
+    const galleriesFromDatabase = await galleries.find({}).toArray()
     const galleriesToFrontEnd = []
     for (const gallery of galleriesFromDatabase) {
         let newGallery = {
@@ -154,6 +191,10 @@ async function getAllGalleries() {
     }
     return galleriesToFrontEnd
 }
+
+/*
+clears temporary gallery periodically, here are saved photos, which are waiting for gallery to be submitted
+*/
 
 function clearTempGallery() {
     setInterval(async function () {
@@ -180,6 +221,9 @@ function clearTempGallery() {
     }, 1000 * 60 * 60)
 }
 
+/*
+finds gallery by id
+*/
 
 async function findGalleryByID(galleryID) {
     let gallery = await galleries.findOne({
@@ -187,6 +231,8 @@ async function findGalleryByID(galleryID) {
     })
     return gallery
 }
+
+
 
 module.exports = {
     clientInitializer,
@@ -196,5 +242,6 @@ module.exports = {
     getAllGalleries,
     clearTempGallery,
     findGalleryByID,
-    ...require("./galleryModifier")
+    ...require("./galleryModifier"),
+    ...require("./photoGetters")
 }

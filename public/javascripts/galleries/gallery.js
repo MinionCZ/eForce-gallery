@@ -157,7 +157,7 @@ class Gallery {
             div.appendChild(this.generateTag(tag))
         }
         tagLines[tagLines.length - 1].setAttribute("class", "tagLineLast")
-        if (this.tags.length === 1 && this.tags[0] === ""){
+        if (this.tags.length === 0){
             div.setAttribute("class", "noTagDiv")
             const title = document.createElement("h3")
             title.textContent = "This gallery has no tags"
