@@ -1,3 +1,6 @@
+/*
+changes current mapping + sets cookie which button is pressed now
+*/
 function changeMapping(mapping) {
     document.cookie = "mapping=" + mapping + "; path=/;"
     switch (mapping) {
@@ -19,11 +22,17 @@ function changeMapping(mapping) {
             break
     }
 }
+
+/*
+calls function after window is loaded
+*/
+
 window.addEventListener("load", setClickedButton)
 
 
-
-
+/*
+sets clicked button after page is loaded
+*/
 function setClickedButton(){
     let value = parseCookie("mapping")
     console.log(document.cookie.split(";"))
@@ -66,5 +75,3 @@ function parseName(name){
     return nameToReturn
 
 }
-
-

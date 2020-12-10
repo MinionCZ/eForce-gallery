@@ -36,15 +36,18 @@ function addWrapperToResponse(count, photos){
 
 function getPhotosToPage(page, photosPerPage, photos){
     const photosToReturn = []
-    if(photos.length <= page * photosPerPage){
+    if(photos.length >= page * photosPerPage){
+        console.log("prvni")
         for (let i = (page - 1) * photosPerPage; i < page * photosPerPage; i++){
             photosToReturn.push(photos[i])
         }
-    }else if (photos.length <= (page - 1) * photosPerPage){
+    }else if (photos.length >= (page - 1) * photosPerPage){
+        console.log("druhz")
         for (let i = (page - 1); i < photos.length; i++){
             photosToReturn.push(photos[i])
         }
     }
+    console.log(photosToReturn)
     return addWrapperToResponse(photos.length, photosToReturn)
 }
 

@@ -7,6 +7,7 @@ const path = require('path')
 const fs = require('fs')
 const photoDatabase = require("../databases/photoDatabase")
 const PhotoConverter = require("./photoConverter")
+const databaseHelpers = require("../databases/databaseHelpers")
 
 const storage = multer.diskStorage({
     destination: function (request, file, callback) {
@@ -81,11 +82,20 @@ router.get("/photo-gallery/get-all-tags-colors", async function (request, respon
     response.json(colors.toString())
 })
 
-
-
-
-
-
+router.get("/photos/fetch-photo-by-id", async function (request, response){
+    let token = request.cookies.token
+    if (!tokenVerifier.isTokenValid(token, response)) {
+        return
+    }
+    token = tokenVerifier.refreshToken(token, response)
+    const fileName = request.query.fileName
+    const thumbnail = request.query.thumbnail
+    if (thumbnail === "true"){
+        response.sendFile(path.resolve(__dirname  + "/../photos/thumbnails/" + databaseHelpers.getThumbnailFromFileName(fileName)))
+    }else{
+        response.sendFile(path.resolve(__dirname + "/../photos/lite-photos/" + fileName))
+    }
+})
 
 
 
