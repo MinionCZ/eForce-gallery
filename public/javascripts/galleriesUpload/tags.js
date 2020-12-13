@@ -41,7 +41,7 @@ function generateTagInput() {
         deleteTagAndSortOthers(root)
     })
     deleteButton.className = "delete-button"
-    deleteButton.textContent = "X"
+    deleteButton.textContent = "\u2715"
     root.appendChild(input)
     root.appendChild(deleteButton)
     root.appendChild(getDatalistWithTagsForInput(input.id))

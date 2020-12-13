@@ -34,6 +34,8 @@ function () {
       var picture = document.createElement("img");
       picture.setAttribute("src", this.getImageLink(true));
       picture.setAttribute("class", "thumbnail");
+      picture.setAttribute("width", "420px");
+      picture.setAttribute("height", "280px");
       root.appendChild(picture);
       return root;
     }

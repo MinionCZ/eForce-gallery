@@ -1,0 +1,69 @@
+div.tags{
+    position: fixed;
+    width: 0px;
+    height:100%;
+    display: block;
+    overflow-x: hidden;
+    top: 50px;
+    left: 0;
+    background-color: lightgray;
+    text-align: center;
+    z-index: 1;
+    transition-duration: 0.3s;
+}
+div.galleries{
+    position: fixed;
+    right: 0;
+    width: 0px;
+    display: block;
+    background-color: lightgray;
+    overflow-x: hidden;
+    height: 100%;
+    text-align: center;
+    z-index: 1;
+    transition-duration: 0.3s;
+}
+
+button.tags-toggle-left{
+    position: fixed;
+    height: 100%;
+    width: 20px;
+    top: 50px;
+    left: 0px;
+    border: 0;
+    outline: none;
+    
+}
+button.tags-toggle-left:hover{
+    background-color: gray;
+}
+button.tags-toggle-right:hover{
+    background-color: gray;
+}
+
+
+button.tags-toggle-right{
+    position: fixed;
+    height: 100%;
+    width: 20px;
+    top: 50px;
+    right: 0px;
+    border: 0;
+    outline: none;
+}
+
+button.close-btn{
+    position: absolute;
+    right: 0;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    border:0;
+    background-color: inherit;
+    font-size: 35px;
+    color: white;
+    outline: none;
+}
+button.close-btn:hover{
+    color: black;
+}

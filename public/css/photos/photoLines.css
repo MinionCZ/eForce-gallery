@@ -1,0 +1,16 @@
+div.photo-div{
+    display: inline-block;
+    text-align: center;
+    border: 1px black solid;
+    width: calc(100%/6);
+    
+}
+img.thumbnail{
+    object-fit:scale-down;
+}
+div.lineDiv{
+    height: auto;
+    text-align: center;
+    display:flex;
+    justify-content: left;
+}

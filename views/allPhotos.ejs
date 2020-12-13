@@ -4,9 +4,12 @@
 <head>
     <script src="/javascripts/urlMapping.js"></script>
     <link rel="stylesheet" href="/css/navButtons.css">
+    <link rel="stylesheet" href="/css/photos/toggleBars.css">
+    <link rel="stylesheet" href="/css/photos/photoLines.css">
     <script type="module" src="/javascripts/photos/mainPhotoPage.js"></script>
     <script type="module" src="/javascripts/photos/photo.js"></script>
     <script type="module" src="/javascripts/photos/photosStore.js"></script>
+    <script type="module" src="/javascripts/photos/sideBars.js"></script>
 </head>
 <header>
     <div class="buttonDiv" id="buttonDiv">
@@ -17,12 +20,28 @@
 </header>
 
 <body>
-    <form>
-        <form>
-            <label for="searchBar"></label>
-            <input type="text" name="searchBar" id="searchBar">
-        </form>
-    </form>
+    <div id="tags" class="tags">
+        <button class="close-btn" id="closeTags" value= "tags">&#10005</button>
+        <h3>Tags:</h3>
+        <div id="logicDiv" class="logic-div">
+            <button type="button" id="andButton" class="and-button">AND</button>
+            <button type="button" id="orButton" class="or-button">OR</button>
+        </div>
+    </div>
+    <button type="button" id="tagsToggleLeft" class="tags-toggle-left" value="tags">
+        *<br>*<br>*
+    </button>
+    <div id="galleries" class="galleries">
+        <button class="close-btn" id="closeGalleries" value= "galleries">&#10005</button>
+        <h3>Galleries:</h3>
+        <div id="logicDiv" class="logic-div">
+            <button type="button" id="andButton" class="and-button">AND</button>
+            <button type="button" id="orButton" class="or-button">OR</button>
+        </div>
+    </div>
+    <button type="button" id="tagsToggleRight" class="tags-toggle-right" value="galleries">
+        *<br>*<br>*
+    </button>
 </body>
 
 </html>
