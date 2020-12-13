@@ -23,6 +23,8 @@ function () {
     this.tags = jsonObject.tags;
     this.galleries = jsonObject.galleryTitles;
     this.contributionDate = jsonObject.dateOfContribution;
+    this.thumbnailHeight = 0;
+    this.thumbnailWidth = 0;
   }
 
   _createClass(Photo, [{
@@ -45,6 +47,9 @@ function () {
       var thumbnail = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
       return "/photos/fetch-photo-by-id?fileName=" + this.fileName + "&thumbnail=" + thumbnail;
     }
+  }, {
+    key: "getThumbnailSize",
+    value: function getThumbnailSize() {}
   }]);
 
   return Photo;

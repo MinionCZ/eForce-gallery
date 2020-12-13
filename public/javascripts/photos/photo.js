@@ -6,6 +6,8 @@ class Photo{
         this.tags = jsonObject.tags
         this.galleries = jsonObject.galleryTitles
         this.contributionDate = jsonObject.dateOfContribution
+        this.thumbnailHeight = 0
+        this.thumbnailWidth = 0
     }
     getDivForRender(){
         const root = document.createElement("div")
@@ -21,6 +23,10 @@ class Photo{
     }
     getImageLink(thumbnail = false){
         return "/photos/fetch-photo-by-id?fileName=" + this.fileName + "&thumbnail=" + thumbnail
+    }
+
+    getThumbnailSize(){
+        
     }
 
 }

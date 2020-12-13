@@ -7,6 +7,9 @@ div.photo-div{
 }
 img.thumbnail{
     object-fit:scale-down;
+    width:90%;
+    max-height: 192px;
+    margin:2%;
 }
 div.lineDiv{
     height: auto;
