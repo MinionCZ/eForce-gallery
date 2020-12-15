@@ -1,19 +1,47 @@
 div.photo-div{
     display: inline-block;
     text-align: center;
-    border: 1px black solid;
-    width: calc(100%/6);
-    
+    width: calc(100%/6.1);
+}
+
+div.photo-div:hover{
+    transition-duration: 0.02s;
+    box-shadow:  0 0 5px;
+    cursor: pointer;
 }
 img.thumbnail{
     object-fit:scale-down;
-    width:90%;
+    width:95%;
     max-height: 192px;
     margin:2%;
 }
-div.lineDiv{
+div.line-div{
+    transition-duration: 0.2s;
     height: auto;
     text-align: center;
     display:flex;
-    justify-content: left;
+    justify-content: center;
+}
+div.first-line-div{
+    transition-duration: 0.2s;
+    height: auto;
+    text-align: center;
+    display:flex;
+    justify-content: center;
+    margin-top: 100px;;
+
+}
+
+div.blank-div{
+    width: calc(100%/6.1);
+    display: inline-block;
+}
+
+input.photo-checkbox{
+    position: fixed;
+    width: 30px;
+    height: 30px;
+    margin-top: 7px;
+    margin-left: -40px;
+    z-index: 10;
 }

@@ -1,3 +1,4 @@
+import {CheckStore} from "./checkStore.js"
 class Photo{
     constructor(jsonObject){
         this.fileName = jsonObject.fileName
@@ -18,17 +19,26 @@ class Photo{
         picture.setAttribute("class", "thumbnail")
         picture.setAttribute("width", "420px")
         picture.setAttribute("height", "280px")
+        const checkBox = document.createElement("input")
+        checkBox.setAttribute("type", "checkbox")
+        checkBox.setAttribute("class", "photo-checkbox")
+        checkBox.setAttribute("value", this.fileName)
+        checkBox.checked = CheckStore.isPhotoChecked(this.fileName)
+        checkBox.addEventListener("change", this.changeClickState)
         root.appendChild(picture)
+        root.appendChild(checkBox)
         return root
     }
     getImageLink(thumbnail = false){
         return "/photos/fetch-photo-by-id?fileName=" + this.fileName + "&thumbnail=" + thumbnail
     }
-
-    getThumbnailSize(){
-        
+    changeClickState(){
+        if(this.checked){
+            CheckStore.addCheckedPhoto(this.value)
+        }else{
+            CheckStore.removeCheckedPhoto(this.value)
+        }
     }
-
 }
 export{
     Photo

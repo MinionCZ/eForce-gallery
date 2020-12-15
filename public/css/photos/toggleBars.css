@@ -4,7 +4,7 @@ div.tags{
     height:100%;
     display: block;
     overflow-x: hidden;
-    top: 50px;
+    top: 100px;
     left: 0;
     background-color: lightgray;
     text-align: center;
@@ -14,6 +14,7 @@ div.tags{
 div.galleries{
     position: fixed;
     right: 0;
+    top: 100px;
     width: 0px;
     display: block;
     background-color: lightgray;
@@ -28,7 +29,7 @@ button.tags-toggle-left{
     position: fixed;
     height: 100%;
     width: 20px;
-    top: 50px;
+    top: 100px;
     left: 0px;
     border: 0;
     outline: none;
@@ -46,7 +47,7 @@ button.tags-toggle-right{
     position: fixed;
     height: 100%;
     width: 20px;
-    top: 50px;
+    top: 100px;
     right: 0px;
     border: 0;
     outline: none;

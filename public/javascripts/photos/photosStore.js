@@ -1,4 +1,6 @@
-import {Photo} from "./photo.js"
+import {
+    Photo
+} from "./photo.js"
 class PhotosStore {
     static photos = []
     static photosCount = 0
@@ -14,16 +16,16 @@ class PhotosStore {
         }
         request.send();
     }
-/*
-fills array with photos from backend
-*/
+    /*
+    fills array with photos from backend
+    */
 
 
-    static fillPhotosArray(json){
+    static fillPhotosArray(json) {
         this.photos = []
         const parsedJson = JSON.parse(json)
         this.photosCount = parsedJson.photosCount
-        for(const photo of parsedJson.photos){
+        for (const photo of parsedJson.photos) {
             this.photos.push(new Photo(photo))
         }
         this.renderPhotos()
@@ -31,18 +33,18 @@ fills array with photos from backend
     /*
     sets state of sidebar, true if it is open, false if it is closed
     */
-    static setToggleState(state, barValue){
-        if (barValue === "tags"){
+    static setToggleState(state, barValue) {
+        if (barValue === "tags") {
             this.rightToggled = state
-        }else{
+        } else {
             this.leftToggled = state
         }
     }
     /*
     get state of sidebar
     */
-    static getToggleState(barValue){
-        if (barValue === "tags"){
+    static getToggleState(barValue) {
+        if (barValue === "tags") {
             return this.rightToggled
         }
         return this.leftToggled
@@ -51,13 +53,20 @@ fills array with photos from backend
     /*
     renders photos from photo array
     */
-    static renderPhotos(){
+    static renderPhotos() {
+        this.destroyLineDivs()
         this.createPhotoDivs()
-        //console.log(this.divs[0], 0/this.photosPerLine)
-        for (let i = 0; i < this.photos.length; i++){
+        for (let i = 0; i < this.photos.length; i++) {
             this.divs[Math.floor(i / this.photosPerLine)].appendChild(this.photos[i].getDivForRender())
         }
-        for (const div of this.divs){
+        const lastDiv = this.divs[this.divs.length - 1]
+        console.log(lastDiv)
+        if (lastDiv.children.length !== this.photosPerLine) {
+            for (let i = lastDiv.childNodes.length; i < this.photosPerLine; i++) {
+                lastDiv.appendChild(this.createBlankPhotoDiv())
+            }
+        }
+        for (const div of this.divs) {
             document.body.appendChild(div)
         }
     }
@@ -65,32 +74,48 @@ fills array with photos from backend
     /*
     creates line divs for layout
     */
-    static createPhotoDivs(){
+    static createPhotoDivs() {
         this.photosPerLine = this.getPhotosPerLine()
         let lines = Math.floor(this.photos.length / this.photosPerLine)
-        if(this.photos.length % this.photosPerLine !== 0){
+        if (this.photos.length % this.photosPerLine !== 0) {
             lines++
         }
-        for (let i = 0; i < lines; i++){
+        for (let i = 0; i < lines; i++) {
             const div = document.createElement("div")
             div.setAttribute("id", "lineDiv=" + i)
-            div.setAttribute("class", "lineDiv")
+            div.setAttribute("class", "line-div")
             this.divs.push(div)
         }
+        this.divs[0].setAttribute("class", "first-line-div")
     }
 
     /*
     calculates photos per line in layout
     */
-    static getPhotosPerLine(){
-        if (this.rightToggled && this.leftToggled){
-            return 4
-        }else if(this.rightToggled && this.leftToggled){
+    static getPhotosPerLine() {
+        if (this.rightToggled || this.leftToggled) {
             return 5
         }
         return 6
     }
 
+    /*
+    clears dom object and prepares for new photos
+    */
+    static destroyLineDivs() {
+        for (const element of this.divs) {
+            document.body.removeChild(element)
+        }
+        this.divs = []
+    }
+    /*
+    creates filler divs for line div - only to fill blank space in divs
+    */
+    static createBlankPhotoDiv() {
+        const blankDiv = document.createElement("div")
+        blankDiv.setAttribute("class", "blank-div")
+        return blankDiv
+    }
 
 }
 export {

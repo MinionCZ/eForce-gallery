@@ -1,0 +1,29 @@
+
+div.top-selector{
+    display: inline-block;
+    height: 50px;
+    text-align: center;
+    width: 100%;
+    line-height: 50px;
+    position: fixed;
+    margin-bottom: 50px;
+    top: 50px;
+    right: 0px;
+    background-color:red;
+
+}
+form.page-form{
+    display: inline-block;
+}
+
+input.page-input{
+    display:inline-block;
+    width: 3ch;
+}
+
+.button{
+    font-size: 25px;
+}
+button.select-all-button{
+    font-size: 20px;
+}

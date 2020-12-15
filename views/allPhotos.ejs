@@ -6,10 +6,12 @@
     <link rel="stylesheet" href="/css/navButtons.css">
     <link rel="stylesheet" href="/css/photos/toggleBars.css">
     <link rel="stylesheet" href="/css/photos/photoLines.css">
+    <link rel="stylesheet" href="/css/photos/topSelector.css">
     <script type="module" src="/javascripts/photos/mainPhotoPage.js"></script>
     <script type="module" src="/javascripts/photos/photo.js"></script>
     <script type="module" src="/javascripts/photos/photosStore.js"></script>
     <script type="module" src="/javascripts/photos/sideBars.js"></script>
+    <script type="module" src="/javascripts/photos/checkStore.js"></script>
 </head>
 <header>
     <div class="buttonDiv" id="buttonDiv">
@@ -20,6 +22,21 @@
 </header>
 
 <body>
+    <div class="top-selector" id="topSelector">
+        <button class="select-all-button" id="selectAllPhotos">Select all</button>
+        <button class="select-all-on-page-button" id="selectAllPhotosOnPage">Select all on page</button>
+        <button class="download-button" id="downloadButton">Download selected</button>
+        <button class="delete-button" id="deleteButton">Delete selected</button>
+        <button class="add-to-gallery-button" id="addToGallery">Add selected to gallery</button>
+        <label for="pageInput">Page:</label>
+        <button class="change-page-button" id="decrementPageButton">&lt</button>
+        <form class="page-form" id="pageForm" method="GET">
+            <input type="text" value="1" class="page-input" id="pageInput">
+            /10
+        </form>
+        <button class="change-page-button" id="incrementPageButton">&gt</button>
+    </div>
+
     <div id="tags" class="tags">
         <button class="close-btn" id="closeTags" value= "tags">&#10005</button>
         <h3>Tags:</h3>

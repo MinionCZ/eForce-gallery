@@ -6,6 +6,6 @@ window.onload = () =>{
     document.getElementById("closeGalleries").addEventListener("click", toggleSideBar)
     document.getElementById("closeTags").addEventListener("click", toggleSideBar)
 
-    PhotosStore.fetchPage(1, 40)
+    PhotosStore.fetchPage(1, 60)
 
 }
