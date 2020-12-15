@@ -1,6 +1,7 @@
 import {
     Photo
 } from "./photo.js"
+import{setMaxPage} from "./topSelectorHandler.js"
 class PhotosStore {
     static photos = []
     static photosCount = 0
@@ -8,9 +9,9 @@ class PhotosStore {
     static leftToggled = false
     static rightToggled = false
     static photosPerLine = 0
-    static fetchPage(page, photosPerPage) {
+    static fetchPage(page) {
         let request = new XMLHttpRequest()
-        request.open("GET", "/get-all-photos?page=" + page + "&photosPerPage=" + photosPerPage)
+        request.open("GET", "/get-all-photos?page=" + page + "&photosPerPage=" + 60)
         request.onload = () => {
             this.fillPhotosArray(request.responseText)
         }
@@ -25,6 +26,7 @@ class PhotosStore {
         this.photos = []
         const parsedJson = JSON.parse(json)
         this.photosCount = parsedJson.photosCount
+        setMaxPage(this.photosCount)
         for (const photo of parsedJson.photos) {
             this.photos.push(new Photo(photo))
         }

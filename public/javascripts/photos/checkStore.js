@@ -9,7 +9,6 @@ class CheckStore {
     static isPhotoChecked(fileName){
         return this.checkedPhotos.has(fileName)
     }
-    
 }
 export{
     CheckStore

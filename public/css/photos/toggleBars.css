@@ -33,7 +33,7 @@ button.tags-toggle-left{
     left: 0px;
     border: 0;
     outline: none;
-    
+    background-color:lightgrey;
 }
 button.tags-toggle-left:hover{
     background-color: gray;
@@ -51,6 +51,7 @@ button.tags-toggle-right{
     right: 0px;
     border: 0;
     outline: none;
+    background-color: lightgray;
 }
 
 button.close-btn{

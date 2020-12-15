@@ -7,8 +7,7 @@ class Photo{
         this.tags = jsonObject.tags
         this.galleries = jsonObject.galleryTitles
         this.contributionDate = jsonObject.dateOfContribution
-        this.thumbnailHeight = 0
-        this.thumbnailWidth = 0
+        this.checkBox = null
     }
     getDivForRender(){
         const root = document.createElement("div")
@@ -27,6 +26,7 @@ class Photo{
         checkBox.addEventListener("change", this.changeClickState)
         root.appendChild(picture)
         root.appendChild(checkBox)
+        this.checkBox = checkBox
         return root
     }
     getImageLink(thumbnail = false){
