@@ -8,6 +8,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 var databaseHelper = require("./databaseHelpers");
 
+var galleryModifier = require("./galleryModifier");
+
 var fs = require("fs");
 
 var client = null;
@@ -233,7 +235,9 @@ function pushGalleryWithPhotos(tempGalleryId, galleryTitle, galleryLabel, tags, 
             lastChanges: today,
             lastChangesTime: time,
             contributionDate: today,
-            photos: photoNames
+            photos: photoNames,
+            fullSizeInMB: -1000,
+            liteSizeInMB: -1000
           };
           _context4.next = 33;
           return regeneratorRuntime.awrap(galleries.insertOne(gallery));
@@ -304,7 +308,7 @@ function pushGalleryWithPhotos(tempGalleryId, galleryTitle, galleryLabel, tags, 
         case 54:
           deleteTempPhotos(photoNames);
           setTimeout(function () {
-            getLiteSizes(galleryPhotos);
+            getLiteSizes(galleryPhotos, gallery.galleryID);
           }, 5000);
 
         case 56:
@@ -314,16 +318,29 @@ function pushGalleryWithPhotos(tempGalleryId, galleryTitle, galleryLabel, tags, 
     }
   }, null, null, [[14, 18, 22, 30], [23,, 25, 29], [36, 40, 44, 52], [45,, 47, 51]]);
 }
+/*
+gets sizes of generated photos, bcs they are generated async so they are not generated while photos are pushed to database
+*/
+
 
 function getLiteSizes(photosToGetSize) {
-  var path, newPhotoList, _iteratorNormalCompletion3, _didIteratorError3, _iteratorError3, _iterator3, _step3, photo;
+  var galleryID,
+      path,
+      newPhotoList,
+      _iteratorNormalCompletion3,
+      _didIteratorError3,
+      _iteratorError3,
+      _iterator3,
+      _step3,
+      photo,
+      _args5 = arguments;
 
   return regeneratorRuntime.async(function getLiteSizes$(_context5) {
     while (1) {
       switch (_context5.prev = _context5.next) {
         case 0:
+          galleryID = _args5.length > 1 && _args5[1] !== undefined ? _args5[1] : null;
           path = __dirname + "/../photos/lite-photos/";
-          console.log("runs");
           newPhotoList = [];
           _iteratorNormalCompletion3 = true;
           _didIteratorError3 = false;
@@ -402,8 +419,12 @@ function getLiteSizes(photosToGetSize) {
         case 33:
           if (newPhotoList.length !== 0) {
             setTimeout(function () {
-              getLiteSizes(newPhotoList);
+              getLiteSizes(newPhotoList, galleryID);
             }, 5000);
+          } else {
+            if (galleryID) {
+              galleryModifier.syncGallerySizes(galleryID);
+            }
           }
 
         case 34:
@@ -465,7 +486,9 @@ function pushGalleryWithoutPhotos(galleryTitle, galleryLabel, tags, eventDate, u
             lastChanges: today,
             lastChangesTime: time,
             contributionDate: today,
-            photos: []
+            photos: [],
+            fullSizeInMB: 0,
+            liteSizeInMB: 0
           };
           _context7.next = 8;
           return regeneratorRuntime.awrap(galleries.insertOne(gallery));
@@ -511,7 +534,9 @@ function getAllGalleries() {
               lastChanges: gallery.lastChanges,
               label: gallery.galleryLabel,
               photos: gallery.photos.length,
-              contributionDate: gallery.contributionDate
+              contributionDate: gallery.contributionDate,
+              fullSizeInMB: gallery.fullSizeInMB,
+              liteSizeInMB: gallery.liteSizeInMB
             };
             galleriesToFrontEnd.push(newGallery);
           }

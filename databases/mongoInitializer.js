@@ -33,10 +33,6 @@ function getClient() {
     return client
 }
 
-
-
-
-
 module.exports = {
     initMongo,
     verifyDatabaseConnection,

@@ -1,4 +1,5 @@
 const databaseHelper = require("./databaseHelpers")
+const galleryModifier = require("./galleryModifier")
 const fs = require("fs")
 let client = null
 let photos = null
@@ -110,7 +111,9 @@ async function pushGalleryWithPhotos(tempGalleryId, galleryTitle, galleryLabel, 
         lastChanges: today,
         lastChangesTime: time,
         contributionDate: today,
-        photos: photoNames
+        photos: photoNames,
+        fullSizeInMB: -1000,
+        liteSizeInMB: -1000
     }
 
     await galleries.insertOne(gallery)
@@ -134,13 +137,15 @@ async function pushGalleryWithPhotos(tempGalleryId, galleryTitle, galleryLabel, 
     }
     await photos.insertMany(newPhotos)
     deleteTempPhotos(photoNames)
-    setTimeout(() =>{getLiteSizes(galleryPhotos)}, 5000)
+    setTimeout(() =>{getLiteSizes(galleryPhotos, gallery.galleryID)}, 5000)
 }
 
 
-async function getLiteSizes(photosToGetSize){
+/*
+gets sizes of generated photos, bcs they are generated async so they are not generated while photos are pushed to database
+*/
+async function getLiteSizes(photosToGetSize, galleryID = null){
     const path = __dirname + "/../photos/lite-photos/"
-    console.log("runs")
     const newPhotoList = []
     for (const photo of photosToGetSize){
         if (fs.existsSync(path + photo.fileName)){
@@ -154,7 +159,11 @@ async function getLiteSizes(photosToGetSize){
         }
     }
     if (newPhotoList.length !== 0){
-        setTimeout(() =>{getLiteSizes(newPhotoList)}, 5000)
+        setTimeout(() =>{getLiteSizes(newPhotoList, galleryID)}, 5000)
+    }else{
+        if(galleryID){
+            galleryModifier.syncGallerySizes(galleryID)
+        }
     }
 }
 
@@ -188,7 +197,9 @@ async function pushGalleryWithoutPhotos(galleryTitle, galleryLabel, tags, eventD
         lastChanges: today,
         lastChangesTime: time,
         contributionDate: today,
-        photos: []
+        photos: [],
+        fullSizeInMB: 0,
+        liteSizeInMB: 0
     }
     await galleries.insertOne(gallery)
 }
@@ -209,7 +220,9 @@ async function getAllGalleries() {
             lastChanges: gallery.lastChanges,
             label: gallery.galleryLabel,
             photos: gallery.photos.length,
-            contributionDate: gallery.contributionDate
+            contributionDate: gallery.contributionDate,
+            fullSizeInMB: gallery.fullSizeInMB,
+            liteSizeInMB: gallery.liteSizeInMB
         }
         galleriesToFrontEnd.push(newGallery)
     }
