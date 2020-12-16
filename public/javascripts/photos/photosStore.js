@@ -119,6 +119,15 @@ class PhotosStore {
         return blankDiv
     }
 
+    /*
+    sets all rendered photos as selected/not selected
+    */
+    static setStateOfAllPhotos(state){
+        for (const photo of this.photos){
+            photo.checkBox.checked = state
+        }
+    }
+
 }
 export {
     PhotosStore

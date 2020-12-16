@@ -38,10 +38,10 @@ div.blank-div{
 }
 
 input.photo-checkbox{
-    position: fixed;
+    position: absolute;
     width: 30px;
     height: 30px;
     margin-top: 7px;
     margin-left: -40px;
-    z-index: 10;
+    z-index: 1;
 }

@@ -1,4 +1,5 @@
 const databaseHelper = require("./databaseHelpers")
+const fs = require("fs")
 let client = null
 let photos = null
 let tempCollection = null
@@ -113,7 +114,6 @@ async function pushGalleryWithPhotos(tempGalleryId, galleryTitle, galleryLabel, 
     }
 
     await galleries.insertOne(gallery)
-
     for (let photo of galleryPhotos) {
         galleryTitles = []
         galleryTitles.push(galleryTitle)
@@ -127,18 +127,42 @@ async function pushGalleryWithPhotos(tempGalleryId, galleryTitle, galleryLabel, 
             dateOfEvent: eventDate,
             width: photo.width,
             height: photo.height,
-            fileName: photo.fileName
-        })
+            fileName: photo.fileName,
+            fullSizeInMB: fs.statSync(__dirname + "/../photos/uploads/" + photo.fileName).size/1000/1000,
+            liteSizeInMB: -1000
+            })
     }
     await photos.insertMany(newPhotos)
     deleteTempPhotos(photoNames)
+    setTimeout(() =>{getLiteSizes(galleryPhotos)}, 5000)
 }
+
+
+async function getLiteSizes(photosToGetSize){
+    const path = __dirname + "/../photos/lite-photos/"
+    console.log("runs")
+    const newPhotoList = []
+    for (const photo of photosToGetSize){
+        if (fs.existsSync(path + photo.fileName)){
+            await photos.updateOne({fileName:photo.fileName}, {
+                $set:{
+                    liteSizeInMB: fs.statSync(path + photo.fileName).size/1000/1000
+                }
+            })
+        }else{
+            newPhotoList.push(photo)
+        }
+    }
+    if (newPhotoList.length !== 0){
+        setTimeout(() =>{getLiteSizes(newPhotoList)}, 5000)
+    }
+}
+
+
 
 /*
 deletes temp photos
 */
-
-
 async function deleteTempPhotos(fileNames) {
     await tempCollection.deleteMany({
         fileName: {
