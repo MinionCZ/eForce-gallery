@@ -14,13 +14,16 @@ router.get("/photos", async function (request, response) {
 })
 
 
+/*
+
+*/
 router.get("/get-all-photos", async function (request, response){
     let token = request.cookies.token
     if (!await tokenVerifier.isTokenValid(token, response)) {
         return
     }
     token = tokenVerifier.refreshToken(token, response)
-    response.json(await photoDatabase.filterPhotosByTags([], 1, 40))
+    response.json(await photoDatabase.filterPhotosByTags([], 1, 60))
 })
 
 

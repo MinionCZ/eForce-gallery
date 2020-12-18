@@ -37,6 +37,10 @@ router.get("/photos", function _callee(request, response) {
     }
   });
 });
+/*
+
+*/
+
 router.get("/get-all-photos", function _callee2(request, response) {
   var token;
   return regeneratorRuntime.async(function _callee2$(_context2) {
@@ -59,7 +63,7 @@ router.get("/get-all-photos", function _callee2(request, response) {
           token = tokenVerifier.refreshToken(token, response);
           _context2.t0 = response;
           _context2.next = 9;
-          return regeneratorRuntime.awrap(photoDatabase.filterPhotosByTags([], 1, 40));
+          return regeneratorRuntime.awrap(photoDatabase.filterPhotosByTags([], 1, 60));
 
         case 9:
           _context2.t1 = _context2.sent;

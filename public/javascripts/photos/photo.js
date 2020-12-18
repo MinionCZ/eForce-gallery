@@ -1,4 +1,5 @@
 import {CheckStore} from "./checkStore.js"
+import {PhotosStore} from "./photosStore.js"
 class Photo{
     constructor(jsonObject){
         this.fileName = jsonObject.fileName
@@ -8,7 +9,12 @@ class Photo{
         this.galleries = jsonObject.galleryTitles
         this.contributionDate = jsonObject.dateOfContribution
         this.checkBox = null
+        this.fullSize = jsonObject.fullSizeInMB
+        this.liteSize = jsonObject.liteSizeInMB
     }
+
+
+
     getDivForRender(){
         const root = document.createElement("div")
         root.setAttribute("id", "photoDiv")

@@ -47,6 +47,26 @@ class CheckStore {
         PhotosStore.setStateOfAllPhotos(this.allSelected)
     }
 
+    /*
+    returns selected photos depending on if all is selected
+    if all is selected returns array with which are excluded from all selector
+    else returns array with selected photos
+    */
+    static getSelectedPhotos(){
+        const photosToReturn = []
+        if(!this.allSelected){
+            for(const photo of this.checkedPhotos){
+                photosToReturn.push(PhotosStore.getPhotoByFileName(photo))
+            }
+        }else{
+            for(const photo of this.excludedPhotos){
+                photosToReturn.push(PhotosStore.getPhotoByFileName(photo))
+            }
+        }
+        return {photos: photosToReturn, allSelected:this.allSelected}
+    }
+
+
 }
 export {
     CheckStore

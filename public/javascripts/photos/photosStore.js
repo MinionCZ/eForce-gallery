@@ -1,14 +1,22 @@
 import {
     Photo
 } from "./photo.js"
-import{setMaxPage} from "./topSelectorHandler.js"
+import {
+    setMaxPage
+} from "./topSelectorHandler.js"
+import {
+    CheckStore
+} from "./checkStore.js"
 class PhotosStore {
     static photos = []
+    static allPhotosMap = new Map()
     static photosCount = 0
     static divs = []
     static leftToggled = false
     static rightToggled = false
     static photosPerLine = 0
+    static liteSize = 0
+    static fullSize = 0
     static fetchPage(page) {
         let request = new XMLHttpRequest()
         request.open("GET", "/get-all-photos?page=" + page + "&photosPerPage=" + 60)
@@ -17,18 +25,21 @@ class PhotosStore {
         }
         request.send();
     }
+
     /*
     fills array with photos from backend
     */
-
-
     static fillPhotosArray(json) {
         this.photos = []
         const parsedJson = JSON.parse(json)
         this.photosCount = parsedJson.photosCount
         setMaxPage(this.photosCount)
+        this.liteSize = parsedJson.liteSize
+        this.fullSize = parsedJson.fullSize
         for (const photo of parsedJson.photos) {
-            this.photos.push(new Photo(photo))
+            const parsedPhoto = new Photo(photo)
+            this.photos.push(parsedPhoto)
+            this.allPhotosMap.set(parsedPhoto.fileName, parsedPhoto)
         }
         this.renderPhotos()
     }
@@ -122,11 +133,71 @@ class PhotosStore {
     /*
     sets all rendered photos as selected/not selected
     */
-    static setStateOfAllPhotos(state){
-        for (const photo of this.photos){
+    static setStateOfAllPhotos(state) {
+        for (const photo of this.photos) {
             photo.checkBox.checked = state
+            if (state) {
+                CheckStore.addCheckedPhoto(photo.fileName)
+            } else {
+                CheckStore.removeCheckedPhoto(photo.fileName)
+            }
         }
     }
+    /*
+    returns photo by its name
+    */
+    static getPhotoByFileName(fileName) {
+        if (this.allPhotosMap.has(fileName)) {
+            return this.allPhotosMap.get(fileName)
+        }
+        return null
+    }
+
+    /*
+    sums file sizes of photos in lite and full version
+     */
+    static sumPhotosSize(photosToSum, isAllSelected) {
+        let liteSize = 0,
+            fullSize = 0
+        if (!isAllSelected) {
+            for (const photo of photosToSum) {
+                liteSize += photo.liteSize
+                fullSize += photo.fullSize
+            }
+        }else{
+            liteSize = this.liteSize
+            fullSize = this.fullSize
+            for (const photo of photosToSum){
+                liteSize -= photo.liteSize
+                fullSize -= photo.fullSize
+            }
+        }
+        return {
+            fullSize: this.getSizeWithUnits(this.floorToTwoDigits(fullSize)),
+            liteSize: this.getSizeWithUnits(this.floorToTwoDigits(liteSize))
+        }
+    }
+
+    /*
+    returns size of selected photos in MB or GB, depending on file sizes
+     */
+    static getSizeWithUnits(size) {
+        if (size > 1000) {
+            size /= 1000
+            size = this.floorToTwoDigits(size)
+            return size + "GB"
+        }
+        return size + "MB"
+    }
+
+
+    static floorToTwoDigits(number) {
+        number *= 100
+        number = Math.floor(number)
+        number /= 100
+        return number
+    }
+
 
 }
 export {
