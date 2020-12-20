@@ -79,8 +79,20 @@ function initTopSelector() {
     document.getElementById("downloadButton").addEventListener("click", handleDownload)
 }
 
+/*
+disables and enables buttons: download selected, delete selected and add selected to gallery, preventing using when is nothing selected
+can be called without argument to disable
+*/
+function topButtonsDisable(status = true){
+    document.getElementById("downloadButton").disabled = status
+    document.getElementById("deleteButton").disabled = status
+    document.getElementById("addToGalleryButton").disabled = status
+}
+
+
 
 export {
     setMaxPage,
-    initTopSelector
+    initTopSelector,
+    topButtonsDisable
 }

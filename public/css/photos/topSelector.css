@@ -50,3 +50,6 @@ input.page-input{
 button.change-page-button{
     margin: 0px;
 }
+.button:disabled{
+    background-color:rgba(0,139,139, 0.5);
+}

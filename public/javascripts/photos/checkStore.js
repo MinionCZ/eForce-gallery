@@ -1,6 +1,9 @@
 import {
     PhotosStore
 } from "./photosStore.js"
+import{
+    topButtonsDisable
+}from "./topSelectorHandler.js"
 class CheckStore {
     static checkedPhotos = new Set()
     static allSelected = false
@@ -14,6 +17,10 @@ class CheckStore {
         } else {
             this.checkedPhotos.add(fileName)
         }
+        if (this.checkedPhotos.size > 0 || this.excludedPhotos.size > 0){
+            topButtonsDisable(false)
+            
+        }
     }
 
     /*
@@ -24,6 +31,9 @@ class CheckStore {
             this.excludedPhotos.add(fileName)
         } else {
             this.checkedPhotos.delete(fileName)
+        }
+        if (this.checkedPhotos.size === 0 && this.excludedPhotos.size === PhotosStore.photosCount){
+            topButtonsDisable(true)
         }
     }
     /*
@@ -45,6 +55,7 @@ class CheckStore {
         }
         this.checkedPhotos = new Set()
         PhotosStore.setStateOfAllPhotos(this.allSelected)
+        topButtonsDisable(!this.allSelected)
     }
 
     /*
@@ -65,6 +76,11 @@ class CheckStore {
         }
         return {photos: photosToReturn, allSelected:this.allSelected}
     }
+
+
+
+
+
 
 
 }

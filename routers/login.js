@@ -1,7 +1,6 @@
 const cookieParser = require('cookie-parser');
 const express = require('express')
 const router = express.Router()
-const data = require("../databases/userDatabase");
 const tokenVerifier = require("../verifiers/token")
 router.get("/login", function (request, response) {
     let token = request.cookies.token
