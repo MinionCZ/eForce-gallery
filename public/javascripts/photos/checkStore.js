@@ -19,7 +19,6 @@ class CheckStore {
         }
         if (this.checkedPhotos.size > 0 || this.excludedPhotos.size > 0){
             topButtonsDisable(false)
-            
         }
     }
 
@@ -32,7 +31,7 @@ class CheckStore {
         } else {
             this.checkedPhotos.delete(fileName)
         }
-        if (this.checkedPhotos.size === 0 && this.excludedPhotos.size === PhotosStore.photosCount){
+        if (this.checkedPhotos.size === 0 || this.excludedPhotos.size === PhotosStore.photosCount){
             topButtonsDisable(true)
         }
     }
@@ -41,7 +40,7 @@ class CheckStore {
     */
     static isPhotoChecked(fileName) {
         if (this.allSelected) {
-            return !this.excludedPhoto.has(fileName)
+            return !this.excludedPhotos.has(fileName)
         }
         return this.checkedPhotos.has(fileName)
     }

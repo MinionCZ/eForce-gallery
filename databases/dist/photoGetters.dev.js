@@ -63,7 +63,7 @@ function getPhotosToPage(page, photosPerPage, photos) {
       photosToReturn.push(photos[i]);
     }
   } else if (photos.length >= (page - 1) * photosPerPage) {
-    for (var _i = page - 1; _i < photos.length; _i++) {
+    for (var _i = (page - 1) * photosPerPage; _i < photos.length; _i++) {
       photosToReturn.push(photos[_i]);
     }
   }

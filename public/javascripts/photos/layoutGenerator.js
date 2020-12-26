@@ -23,6 +23,9 @@ builds download layout
 
 function buildDownloadLayout(selectedPhotos, size){
     const root = document.createElement("div")
+    root.onclick = () =>{
+        document.body.removeChild(root)
+    }
     root.setAttribute("class", "root")
     const downloadDiv = document.createElement("div")
     downloadDiv.setAttribute("class", "download-div")

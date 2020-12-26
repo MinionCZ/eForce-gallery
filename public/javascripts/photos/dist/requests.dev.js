@@ -80,3 +80,9 @@ function cropPhotos(photos) {
 
   return croppedPhotos;
 }
+/*
+sends request to the backend and waits for response, delete photos
+*/
+
+
+function deleteSelected() {}

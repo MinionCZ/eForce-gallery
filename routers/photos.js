@@ -23,7 +23,7 @@ router.get("/get-all-photos", async function (request, response){
         return
     }
     token = tokenVerifier.refreshToken(token, response)
-    response.json(await photoDatabase.filterPhotosByTags([], 1, 60))
+    response.json(await photoDatabase.filterPhotosByTags([], request.query.page, request.query.photosPerPage))
 })
 
 

@@ -2,7 +2,6 @@ const databaseHelper = require("./databaseHelpers")
 const fs = require("fs")
 let client = null
 let photos = null
-let tempCollection = null
 let galleries = null
 
 /*
@@ -11,7 +10,6 @@ init function
 function galleryModifierInit(clientInit) {
     client = clientInit
     photos = client.db("eForceGallery").collection("photos")
-    tempCollection = client.db("eForceGallery").collection("tempPhotos")
     galleries = client.db("eForceGallery").collection("galleries")
 }
 
@@ -50,16 +48,64 @@ async function findPhotoByFileName(fileName) {
 }
 /*
 delete photos from db and from disk
+param clearInDatabase is optional and useable, when only photos are selected
 */
 
-async function deletePhotos(photosToDelete) {
+async function deletePhotos(photosToDelete, clearInDatabase = false) {
     databaseHelper.deleteManyPhotos(photosToDelete)
     photos.deleteMany({
         fileName: {
             $in: photosToDelete
         }
     })
+    if (clearInDatabase){
+        const deleteMap = await getGalleriesToClear(photosToDelete)
+        for (const gallery of deleteMap){
+            deletePhotosFromGallery(gallery[0], gallery[1])
+        }
+    }
 }
+
+/*
+creates map with databases and their photos which are going to be deleted and in which galleries they are
+*/
+async function getGalleriesToClear(photosToDelete){
+    const deleteDatabaseMap = new Map()
+    for (const filename of photosToDelete){
+        const photo = await findPhotoByFileName(fileName)
+        for (const database of photo.galleryTitles){
+            if (!deleteDatabaseMap.has(database)){
+                deleteDatabaseMap.set(database, [])
+                deleteDatabaseMap.get(database).push(filename)
+            }else{
+                deleteDatabaseMap.get(database).push(filename)
+            }
+        }
+    }
+    return deleteDatabaseMap
+}
+
+/*
+delete photos from galleries, clears their existence in photo list
+*/
+async function deletePhotosFromGallery(galleryTitle, photos){
+    const gallery = await galleries.findOne({galleryTitle : galleryTitle})
+    const galleryPhotos = new Set(gallery)
+    for (const photo of photos){
+        galleryPhotos.delete(photo)
+    }
+    await galleries.updateOne({galleryTitle:galleryTitle}, {
+        $set:{
+            photos:Array.from(galleryPhotos)
+        }
+    })
+    syncGallerySizes(gallery.galleryID)
+}
+
+
+
+
+
 /*
 deletes gallery by her id
 */
@@ -138,6 +184,10 @@ function calculateSizeOfGallery(gallery) {
     }
 }
 setInterval(syncGallerySizes, 24 * 60 * 60 * 1000)
+
+
+
+
 
 
 module.exports = {

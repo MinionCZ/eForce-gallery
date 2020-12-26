@@ -4,23 +4,18 @@ import {
 import {
     CheckStore
 } from "./checkStore.js"
-let selectAllOnPageClicked = false
-
 import {
     buildDownloadLayout,
 }from "./layoutGenerator.js"
 
-/*
-sets max page on top of div
-*/
+import{
+    incrementHandler,
+    decrementHandler,
+    handleWritePage,
+    getPage
+} from "./pageHandler.js"
 
-function setMaxPage(photos) {
-    let pages = Math.floor(photos / 60)
-    if (photos % 60 > 0) {
-        pages++
-    }
-    document.getElementById("maxPages").innerHTML = "/" + pages
-}
+const selectedPages = new Set()
 
 /*
 handles button that selects all photos on page, works iff not all photos are selected
@@ -30,13 +25,14 @@ function selectAllOnPage() {
     if (CheckStore.allSelected) {
         return
     }
-    if (!selectAllOnPageClicked) {
+    if (!selectedPages.has(getPage())) {
         document.getElementById("selectAllPhotosOnPage").textContent = "Deselect all on page"
+        selectedPages.add(getPage())
     } else {
         document.getElementById("selectAllPhotosOnPage").textContent = "Select all on page"
+        selectedPages.delete(getPage())
     }
-    selectAllOnPageClicked = !selectAllOnPageClicked
-    PhotosStore.setStateOfAllPhotos(selectAllOnPageClicked)
+    PhotosStore.setStateOfAllPhotos(selectedPages.has(getPage()))
 }
 
 /*
@@ -48,7 +44,6 @@ function selectAll() {
     }else{
         document.getElementById("selectAllPhotos").textContent = "Deselect all"
         document.getElementById("selectAllPhotosOnPage").textContent = "Select all on page"
-        selectAllOnPageClicked = false
     }
     CheckStore.toggleAllSelected()
 }
@@ -77,6 +72,9 @@ function initTopSelector() {
     document.getElementById("selectAllPhotosOnPage").addEventListener("click", selectAllOnPage)
     document.getElementById("selectAllPhotos").addEventListener("click", selectAll)
     document.getElementById("downloadButton").addEventListener("click", handleDownload)
+    document.getElementById("incrementPageButton").addEventListener("click", incrementHandler)
+    document.getElementById("decrementPageButton").addEventListener("click", decrementHandler)
+    document.getElementById("pageInput").addEventListener("keydown", handleWritePage)
 }
 
 /*
@@ -88,11 +86,14 @@ function topButtonsDisable(status = true){
     document.getElementById("deleteButton").disabled = status
     document.getElementById("addToGalleryButton").disabled = status
 }
+function isPageSelected(page){
+    return selectedPages.has(page)
+}
 
 
 
 export {
-    setMaxPage,
     initTopSelector,
-    topButtonsDisable
+    topButtonsDisable,
+    isPageSelected
 }

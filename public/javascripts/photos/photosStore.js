@@ -1,12 +1,13 @@
 import {
     Photo
 } from "./photo.js"
-import {
-    setMaxPage
-} from "./topSelectorHandler.js"
+
 import {
     CheckStore
 } from "./checkStore.js"
+import {
+    setMaxPage
+} from "./pageHandler.js"
 class PhotosStore {
     static photos = []
     static allPhotosMap = new Map()
@@ -197,6 +198,13 @@ class PhotosStore {
         number /= 100
         return number
     }
+
+    static getAllPhotosCount(){
+        return this.photosCount
+    }
+    
+
+
 
 
 }

@@ -34,6 +34,18 @@ function cropPhotos(photos){
 
 }
 
+
+/*
+sends request to the backend and waits for response, delete photos
+*/
+function deleteSelected(){
+
+}
+
+
+
+
+
 export {
     downloadSelectedPhotos
 }

@@ -173,7 +173,6 @@ router.get("/photos/fetch-photo-by-id", function _callee5(request, response) {
           return _context5.abrupt("return");
 
         case 3:
-          token = tokenVerifier.refreshToken(token, response);
           fileName = request.query.fileName;
           thumbnail = request.query.thumbnail;
 
@@ -183,7 +182,7 @@ router.get("/photos/fetch-photo-by-id", function _callee5(request, response) {
             response.sendFile(path.resolve(__dirname + "/../photos/lite-photos/" + fileName));
           }
 
-        case 7:
+        case 6:
         case "end":
           return _context5.stop();
       }

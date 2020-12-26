@@ -63,7 +63,7 @@ router.get("/get-all-photos", function _callee2(request, response) {
           token = tokenVerifier.refreshToken(token, response);
           _context2.t0 = response;
           _context2.next = 9;
-          return regeneratorRuntime.awrap(photoDatabase.filterPhotosByTags([], 1, 60));
+          return regeneratorRuntime.awrap(photoDatabase.filterPhotosByTags([], request.query.page, request.query.photosPerPage));
 
         case 9:
           _context2.t1 = _context2.sent;

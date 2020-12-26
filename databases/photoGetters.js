@@ -43,7 +43,7 @@ function getPhotosToPage(page, photosPerPage, photos) {
             photosToReturn.push(photos[i])
         }
     } else if (photos.length >= (page - 1) * photosPerPage) {
-        for (let i = (page - 1); i < photos.length; i++) {
+        for (let i = (page - 1)*photosPerPage; i < photos.length; i++) {
             photosToReturn.push(photos[i])
         }
     }
@@ -140,6 +140,8 @@ function getExcludedPhotos(photos, excludedFilenames, onlyFileNames = false) {
     }
     return photosToReturn
 }
+
+
 
 
 

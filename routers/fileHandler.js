@@ -87,7 +87,6 @@ router.get("/photos/fetch-photo-by-id", async function (request, response){
     if (!tokenVerifier.isTokenValid(token, response)) {
         return
     }
-    token = tokenVerifier.refreshToken(token, response)
     const fileName = request.query.fileName
     const thumbnail = request.query.thumbnail
     if (thumbnail === "true"){
