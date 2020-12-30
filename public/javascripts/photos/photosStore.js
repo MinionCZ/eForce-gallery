@@ -8,6 +8,10 @@ import {
 import {
     setMaxPage
 } from "./pageHandler.js"
+import {
+    PhotoPreview
+} from "../photoPresenter/photoPreview.js"
+
 class PhotosStore {
     static photos = []
     static allPhotosMap = new Map()
@@ -18,6 +22,7 @@ class PhotosStore {
     static photosPerLine = 0
     static liteSize = 0
     static fullSize = 0
+    static photoPreview = null
     static fetchPage(page) {
         let request = new XMLHttpRequest()
         request.open("GET", "/get-all-photos?page=" + page + "&photosPerPage=" + 60)
@@ -71,10 +76,14 @@ class PhotosStore {
         this.destroyLineDivs()
         this.createPhotoDivs()
         for (let i = 0; i < this.photos.length; i++) {
-            this.divs[Math.floor(i / this.photosPerLine)].appendChild(this.photos[i].getDivForRender())
+            const div = this.photos[i].getDivForRender()
+            div.onclick = () => {
+                PhotosStore.photoPreview = new PhotoPreview(this.photos[i].fileName, null, this.getNextPhoto, i)
+                console.log(this.photoPreview)
+            }
+            this.divs[Math.floor(i / this.photosPerLine)].appendChild(div)
         }
         const lastDiv = this.divs[this.divs.length - 1]
-        console.log(lastDiv)
         if (lastDiv.children.length !== this.photosPerLine) {
             for (let i = lastDiv.childNodes.length; i < this.photosPerLine; i++) {
                 lastDiv.appendChild(this.createBlankPhotoDiv())
@@ -165,10 +174,10 @@ class PhotosStore {
                 liteSize += photo.liteSize
                 fullSize += photo.fullSize
             }
-        }else{
+        } else {
             liteSize = this.liteSize
             fullSize = this.fullSize
-            for (const photo of photosToSum){
+            for (const photo of photosToSum) {
                 liteSize -= photo.liteSize
                 fullSize -= photo.fullSize
             }
@@ -199,10 +208,14 @@ class PhotosStore {
         return number
     }
 
-    static getAllPhotosCount(){
+    static getAllPhotosCount() {
         return this.photosCount
     }
-    
+
+    static getNextPhoto() {
+        console.log(PhotosStore.photoPreview.getIndex())
+        PhotosStore.photoPreview.incrementIndex(true)
+    }
 
 
 

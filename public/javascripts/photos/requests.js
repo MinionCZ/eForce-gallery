@@ -1,4 +1,5 @@
 import {createPopupWindow} from "./layoutGenerator.js"
+import {PhotosStore} from "./photosStore.js"
 
 /*
 sends request to download selected photos from backend
@@ -53,7 +54,9 @@ async function deleteSelected(selectedPhotos, allPhotos){
         body: JSON.stringify(data)
     })
     createPopupWindow((await response.json()).deleted)
+    PhotosStore.fetchPage(1)
 }
+
 
 
 
