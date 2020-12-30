@@ -5,7 +5,9 @@ import {
     CheckStore
 } from "./checkStore.js"
 import {
+    buildDeleteLayout,
     buildDownloadLayout,
+    createPopupWindow
 }from "./layoutGenerator.js"
 
 import{
@@ -58,6 +60,17 @@ function handleDownload(){
     buildDownloadLayout(selectedPhotos, size)
 }
 
+function handleDelete(){
+    const selectedPhotos = CheckStore.getSelectedPhotos()
+    const photosCount = PhotosStore.photosCount
+    let photosToDeleteCount = 0
+    if (selectedPhotos.allSelected){
+        photosToDeleteCount = photosCount - selectedPhotos.photos.length
+    }else{
+        photosToDeleteCount = selectedPhotos.photos.length
+    }
+    buildDeleteLayout(photosToDeleteCount, selectedPhotos)
+}
 
 
 
@@ -75,6 +88,7 @@ function initTopSelector() {
     document.getElementById("incrementPageButton").addEventListener("click", incrementHandler)
     document.getElementById("decrementPageButton").addEventListener("click", decrementHandler)
     document.getElementById("pageInput").addEventListener("keydown", handleWritePage)
+    document.getElementById("deleteButton").addEventListener("click", handleDelete)
 }
 
 /*

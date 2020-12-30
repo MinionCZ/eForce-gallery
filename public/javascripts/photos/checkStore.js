@@ -31,7 +31,10 @@ class CheckStore {
         } else {
             this.checkedPhotos.delete(fileName)
         }
-        if (this.checkedPhotos.size === 0 || this.excludedPhotos.size === PhotosStore.photosCount){
+        if (this.checkedPhotos.size === 0 && !this.allSelected){
+            topButtonsDisable(true)
+        }
+        if(this.excludedPhotos.size === PhotosStore.photosCount && this.allSelected){
             topButtonsDisable(true)
         }
     }

@@ -108,71 +108,73 @@ function deletePhotos(photosToDelete) {
         case 0:
           clearInDatabase = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : false;
           databaseHelper.deleteManyPhotos(photosToDelete);
-          photos.deleteMany({
-            fileName: {
-              $in: photosToDelete
-            }
-          });
 
           if (!clearInDatabase) {
-            _context3.next = 26;
+            _context3.next = 25;
             break;
           }
 
-          _context3.next = 6;
+          _context3.next = 5;
           return regeneratorRuntime.awrap(getGalleriesToClear(photosToDelete));
 
-        case 6:
+        case 5:
           deleteMap = _context3.sent;
           _iteratorNormalCompletion = true;
           _didIteratorError = false;
           _iteratorError = undefined;
-          _context3.prev = 10;
+          _context3.prev = 9;
 
           for (_iterator = deleteMap[Symbol.iterator](); !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
             gallery = _step.value;
             deletePhotosFromGallery(gallery[0], gallery[1]);
           }
 
-          _context3.next = 18;
+          _context3.next = 17;
           break;
 
-        case 14:
-          _context3.prev = 14;
-          _context3.t0 = _context3["catch"](10);
+        case 13:
+          _context3.prev = 13;
+          _context3.t0 = _context3["catch"](9);
           _didIteratorError = true;
           _iteratorError = _context3.t0;
 
-        case 18:
+        case 17:
+          _context3.prev = 17;
           _context3.prev = 18;
-          _context3.prev = 19;
 
           if (!_iteratorNormalCompletion && _iterator["return"] != null) {
             _iterator["return"]();
           }
 
-        case 21:
-          _context3.prev = 21;
+        case 20:
+          _context3.prev = 20;
 
           if (!_didIteratorError) {
-            _context3.next = 24;
+            _context3.next = 23;
             break;
           }
 
           throw _iteratorError;
 
+        case 23:
+          return _context3.finish(20);
+
         case 24:
-          return _context3.finish(21);
+          return _context3.finish(17);
 
         case 25:
-          return _context3.finish(18);
+          photos.deleteMany({
+            fileName: {
+              $in: photosToDelete
+            }
+          });
 
         case 26:
         case "end":
           return _context3.stop();
       }
     }
-  }, null, null, [[10, 14, 18, 26], [19,, 21, 25]]);
+  }, null, null, [[9, 13, 17, 25], [18,, 20, 24]]);
 }
 /*
 creates map with databases and their photos which are going to be deleted and in which galleries they are
@@ -201,7 +203,7 @@ function getGalleriesToClear(photosToDelete) {
 
           filename = _step2.value;
           _context4.next = 10;
-          return regeneratorRuntime.awrap(findPhotoByFileName(fileName));
+          return regeneratorRuntime.awrap(findPhotoByFileName(filename));
 
         case 10:
           photo = _context4.sent;
@@ -322,7 +324,7 @@ function deletePhotosFromGallery(galleryTitle, photos) {
 
         case 2:
           gallery = _context5.sent;
-          galleryPhotos = new Set(gallery);
+          galleryPhotos = new Set(gallery.photos);
           _iteratorNormalCompletion4 = true;
           _didIteratorError4 = false;
           _iteratorError4 = undefined;
@@ -392,7 +394,7 @@ deletes gallery by her id
 
 
 function deleteGalleryByID(galleryID) {
-  var gallery, photosToDelete, _iteratorNormalCompletion5, _didIteratorError5, _iteratorError5, _iterator5, _step5, _fileName, photo;
+  var gallery, photosToDelete, _iteratorNormalCompletion5, _didIteratorError5, _iteratorError5, _iterator5, _step5, fileName, photo;
 
   return regeneratorRuntime.async(function deleteGalleryByID$(_context6) {
     while (1) {
@@ -421,9 +423,9 @@ function deleteGalleryByID(galleryID) {
             break;
           }
 
-          _fileName = _step5.value;
+          fileName = _step5.value;
           _context6.next = 14;
-          return regeneratorRuntime.awrap(findPhotoByFileName(_fileName));
+          return regeneratorRuntime.awrap(findPhotoByFileName(fileName));
 
         case 14:
           photo = _context6.sent;
@@ -431,7 +433,7 @@ function deleteGalleryByID(galleryID) {
           if (photo.galleryIDs.length > 1) {
             updatePhoto(photo, gallery.galleryID, gallery.galleryTitle);
           } else {
-            photosToDelete.push(_fileName);
+            photosToDelete.push(fileName);
           }
 
         case 16:
@@ -670,5 +672,6 @@ module.exports = {
   deleteGalleryByID: deleteGalleryByID,
   galleryModifierInit: galleryModifierInit,
   updatePhoto: updatePhoto,
-  syncGallerySizes: syncGallerySizes
+  syncGallerySizes: syncGallerySizes,
+  deletePhotos: deletePhotos
 };

@@ -53,17 +53,18 @@ param clearInDatabase is optional and useable, when only photos are selected
 
 async function deletePhotos(photosToDelete, clearInDatabase = false) {
     databaseHelper.deleteManyPhotos(photosToDelete)
-    photos.deleteMany({
-        fileName: {
-            $in: photosToDelete
-        }
-    })
+    
     if (clearInDatabase){
         const deleteMap = await getGalleriesToClear(photosToDelete)
         for (const gallery of deleteMap){
             deletePhotosFromGallery(gallery[0], gallery[1])
         }
     }
+    photos.deleteMany({
+        fileName: {
+            $in: photosToDelete
+        }
+    })
 }
 
 /*
@@ -72,7 +73,7 @@ creates map with databases and their photos which are going to be deleted and in
 async function getGalleriesToClear(photosToDelete){
     const deleteDatabaseMap = new Map()
     for (const filename of photosToDelete){
-        const photo = await findPhotoByFileName(fileName)
+        const photo = await findPhotoByFileName(filename)
         for (const database of photo.galleryTitles){
             if (!deleteDatabaseMap.has(database)){
                 deleteDatabaseMap.set(database, [])
@@ -90,7 +91,7 @@ delete photos from galleries, clears their existence in photo list
 */
 async function deletePhotosFromGallery(galleryTitle, photos){
     const gallery = await galleries.findOne({galleryTitle : galleryTitle})
-    const galleryPhotos = new Set(gallery)
+    const galleryPhotos = new Set(gallery.photos)
     for (const photo of photos){
         galleryPhotos.delete(photo)
     }
@@ -194,5 +195,6 @@ module.exports = {
     deleteGalleryByID,
     galleryModifierInit,
     updatePhoto,
-    syncGallerySizes
+    syncGallerySizes,
+    deletePhotos
 }

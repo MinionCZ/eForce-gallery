@@ -77,4 +77,51 @@ router.get("/get-all-photos", function _callee2(request, response) {
     }
   });
 });
+router.post("/photos/delete", function _callee3(request, response) {
+  var token, photosToDelete, data;
+  return regeneratorRuntime.async(function _callee3$(_context3) {
+    while (1) {
+      switch (_context3.prev = _context3.next) {
+        case 0:
+          token = request.cookies.token;
+          _context3.next = 3;
+          return regeneratorRuntime.awrap(tokenVerifier.isTokenValid(token, response));
+
+        case 3:
+          if (_context3.sent) {
+            _context3.next = 5;
+            break;
+          }
+
+          return _context3.abrupt("return");
+
+        case 5:
+          token = tokenVerifier.refreshToken(token, response);
+          photosToDelete = request.body.photos;
+
+          if (!request.body.allPhotos) {
+            _context3.next = 11;
+            break;
+          }
+
+          _context3.next = 10;
+          return regeneratorRuntime.awrap(photoDatabase.getAllPhotos(request.body.photos));
+
+        case 10:
+          photosToDelete = _context3.sent;
+
+        case 11:
+          photoDatabase.deletePhotos(photosToDelete, true);
+          data = {
+            deleted: photosToDelete.length + (photosToDelete.length === 1 ? " photo" : " photos") + " deleted"
+          };
+          response.json(data);
+
+        case 14:
+        case "end":
+          return _context3.stop();
+      }
+    }
+  });
+});
 module.exports = router;

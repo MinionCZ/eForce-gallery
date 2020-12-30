@@ -1,3 +1,5 @@
+import {createPopupWindow} from "./layoutGenerator.js"
+
 /*
 sends request to download selected photos from backend
 */
@@ -38,8 +40,19 @@ function cropPhotos(photos){
 /*
 sends request to the backend and waits for response, delete photos
 */
-function deleteSelected(){
-
+async function deleteSelected(selectedPhotos, allPhotos){
+    const data = {
+        photos: cropPhotos(selectedPhotos),
+        allPhotos: allPhotos
+    }
+    const response = await fetch("/photos/delete", {
+        method:"POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    createPopupWindow((await response.json()).deleted)
 }
 
 
@@ -47,5 +60,6 @@ function deleteSelected(){
 
 
 export {
-    downloadSelectedPhotos
+    downloadSelectedPhotos,
+    deleteSelected
 }
