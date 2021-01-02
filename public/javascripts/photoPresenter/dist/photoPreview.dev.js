@@ -92,6 +92,12 @@ function () {
         this.indexOnPage--;
       }
     }
+  }, {
+    key: "setPhotoToPreview",
+    value: function setPhotoToPreview(photo) {
+      this.photo = photo;
+      (0, _photoPreviewGenerator.setPhotoToPreview)(photo.getImageLink());
+    }
   }]);
 
   return PhotoPreview;

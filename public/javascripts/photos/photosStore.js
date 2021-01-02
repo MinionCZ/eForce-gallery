@@ -78,7 +78,7 @@ class PhotosStore {
         for (let i = 0; i < this.photos.length; i++) {
             const div = this.photos[i].getDivForRender()
             div.onclick = () => {
-                PhotosStore.photoPreview = new PhotoPreview(this.photos[i], null, this.getNextPhoto, i)
+                PhotosStore.photoPreview = new PhotoPreview(this.photos[i], this.getPreviousPhoto, this.getNextPhoto, i)
                 console.log(this.photoPreview)
             }
             this.divs[Math.floor(i / this.photosPerLine)].appendChild(div)
@@ -201,6 +201,9 @@ class PhotosStore {
     }
 
 
+    /*
+    floors number to two digits if it is too long
+    */
     static floorToTwoDigits(number) {
         number *= 100
         number = Math.floor(number)
@@ -208,13 +211,45 @@ class PhotosStore {
         return number
     }
 
+    /*
+    returns photos count
+    */
     static getAllPhotosCount() {
         return this.photosCount
     }
 
+    /*
+    returns photo if it is in range, else returns null
+    */
+    static getPhotoAtIndex(index){
+        if (index >= 0 && index < this.photos.length){
+            return this.photos[index]
+        }
+        return null
+
+    }
+    /*
+    gets next photo to show as preview
+    */
     static getNextPhoto() {
-        console.log(PhotosStore.photoPreview.getIndex())
         PhotosStore.photoPreview.incrementIndex(true)
+        const index = PhotosStore.photoPreview.getIndex()
+        const nextPhoto = PhotosStore.getPhotoAtIndex(index)
+        if (nextPhoto !== null){
+            PhotosStore.photoPreview.setPhotoToPreview(nextPhoto)
+        }else{
+            /* TBD - needs to go to another page*/
+        }
+    }
+    static getPreviousPhoto(){
+        PhotosStore.photoPreview.incrementIndex(false)
+        const index = PhotosStore.photoPreview.getIndex()
+        const nextPhoto = PhotosStore.getPhotoAtIndex(index)
+        if (nextPhoto !== null){
+            PhotosStore.photoPreview.setPhotoToPreview(nextPhoto)
+        }else{
+            /* TBD - needs to go to another page*/
+        }
     }
 
 

@@ -2,7 +2,8 @@ import {
     generateRootElement,
     generateSideButtons,
     generateTopLine,
-    generatePhotoView
+    generatePhotoView,
+    setPhotoToPreview
 } from "./photoPreviewGenerator.js"
 class PhotoPreview {
     constructor(photo, lastCallback, nextCallback, indexOnPage) {
@@ -32,20 +33,24 @@ class PhotoPreview {
     /*
     returns index
     */
-    getIndex(){
+    getIndex() {
         return this.indexOnPage
     }
     /*
     increments index of photo on page
     */
-    incrementIndex(increment){
-        if (increment){
+    incrementIndex(increment) {
+        if (increment) {
             this.indexOnPage++
-        }else{
+        } else {
             this.indexOnPage--
         }
     }
+    setPhotoToPreview(photo){
+        this.photo = photo
+        setPhotoToPreview(photo.getImageLink())
+    }
 }
-export{
+export {
     PhotoPreview
 }

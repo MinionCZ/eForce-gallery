@@ -3,7 +3,7 @@ div.photo-div-preview {
   width: 90%;
   height: 90%;
   left: 5%;
-  top: 5%;
+  top: 8%;
   display: flex;
   vertical-align: middle;
   background-color: transparent;
@@ -17,6 +17,91 @@ img.photo {
   image-rendering: auto;
   position: absolute;
 }
-img.bottom{
-    position: relative;
+img.bottom {
+  position: relative;
+}
+
+button.photo-button {
+  position: fixed;
+  width: 50px;
+  height: 85%;
+  border: none;
+  border-radius: 25px;
+  font-size: 35px;
+  background-color:transparent;
+  color: white;
+  outline: none;
+  transition: background-color 400ms, color 400ms, transform 75ms;
+
+}
+button.right {
+    left: calc(100% - 60px);
+    top: 7.55%;
+}
+button.left{
+    left: 10px;
+    top: 7.5%;
+}
+button.photo-button:hover{
+    background-color: white;
+    color: black;
+}
+button.exit-button{
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    border: none;
+    outline: none;
+    border-radius: 25px;
+    font-size: 30px;
+    background-color: transparent;
+    color: white;
+    top: 10px;
+    left: calc(100% - 50px);
+    transition: 200ms;
+}
+button.exit-button:hover{
+    background-color: white;
+    color: black;
+}
+button.exit-button:active{
+    color: red;
+}
+button.top-button{
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    border: none;
+    outline: none;
+    border-radius: 25px;
+    font-size: 30px;
+    background-color: transparent;
+    color: white;
+    top: 10px;
+    transition: background-color 400ms, color 400ms, transform 75ms;
+}
+button.top-button:hover{
+    background-color: white;
+    color: black;
+}
+button.top-button:active{
+    transform: translate(0, 10px);
+}
+button.download-full{
+    left: 80%;
+}
+button.download-lite{
+    left: calc(80% + 60px);
+}
+button.delete{
+    left: calc(80% + 120px);
+}
+button.left:active{
+    transform: translate(-10px, 0px);
+}
+button.right:active{
+    transform: translate(10px, 0px);
+}
+button.delete{
+    width: auto;
 }

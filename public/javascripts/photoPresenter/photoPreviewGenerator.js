@@ -5,6 +5,13 @@ function generateRootElement(){
     const root = document.createElement("div")
     root.setAttribute("id", "root")
     root.setAttribute("class", "root")
+    root.onclick = (event) => {
+        if (document.body.contains(root)) {
+            if (event.target.id === "root" || event.target.id === "photoDiv") {
+                document.body.removeChild(root)
+            }
+        }
+    }
     return root
 }
 
@@ -68,9 +75,9 @@ generates top line of buttons
 function generateTopLine(filename, callbackDownload, callbackDelete, root){
     const div = document.createElement("div")
     div.setAttribute("class", "top-line-div")
-    div.appendChild(generateBackendButton(filename, callbackDownload, "download-full", "⟱", "download full version of photo", "full"))
-    div.appendChild(generateBackendButton(filename, callbackDownload, "download-lite", "↓", "download lite version of photo", "lite"))
-    div.appendChild(generateBackendButton(filename, callbackDownload, "download-lite", "🗑", "delete photo", ""))
+    div.appendChild(generateBackendButton(filename, callbackDownload, "top-button download-full", "⟱", "download full version of photo", "full"))
+    div.appendChild(generateBackendButton(filename, callbackDownload, "top-button download-lite", "⇓", "download lite version of photo", "lite"))
+    div.appendChild(generateBackendButton(filename, callbackDelete, "top-button delete", "🗑", "delete photo", ""))
     div.appendChild(generateExitButton(root))
     return div
 }
@@ -80,6 +87,7 @@ generates photo template with fetched photo from backend
 */
 function generatePhotoView(source = ""){
     const photoDiv = document.createElement("div")
+    photoDiv.setAttribute("id", "photoDiv")
     const photo = document.createElement("img")
     photo.setAttribute("class", "photo bottom")
     photo.setAttribute("id", "photo")
@@ -101,7 +109,6 @@ sets new photo to be previewed
 function setPhotoToPreview(source){
     document.getElementById("photo").src = source
 }
-
 
 export{
     generateTopLine,
