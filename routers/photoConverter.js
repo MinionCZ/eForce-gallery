@@ -1,6 +1,7 @@
 const sharp = require("sharp")
 const savingPath = "./photos/thumbnails/"
 const loadingPath = "./photos/uploads/"
+const bigThumbnails = "./photos/big-thumbnails/"
 const fs = require('fs')
 const gm = require("gm")
 const path = require("path")
@@ -15,16 +16,21 @@ async function handleNewPhoto(fileName, galleryId, username) {
     }
     const thumbnailName = getThumbnailName()
     gm(pathToPhoto).thumbnail(420, 280).write(savingPath + thumbnailName, function (err) {})
+
     gm(pathToPhoto).size(function (err, size) {
         if (!err) {
             const height = size.height
             const width = size.width
-            console.log(size)
             photoDatabase.insertTempPhoto(fileName, galleryId, username, width, height, thumbnailName)
             createLitePhoto(pathToPhoto, fileName)
+            if (width > 1920 || height > 1080) {
+                gm(pathToPhoto).thumbnail(1920, 1080).define("jpeg:extent=100kb").write(bigThumbnails + thumbnailName, () => {})
+            }else{
+                fs.writeFileSync(bigThumbnails + thumbnailName, fs.readFileSync(pathToPhoto))
+            }
         }
     })
-    
+
 }
 
 function convertPhotoNameToThumbnail(photoName) {
@@ -34,14 +40,14 @@ function convertPhotoNameToThumbnail(photoName) {
 async function createLitePhoto(pathToPhoto, fileName) {
     const lite = __dirname + "/../photos/lite-photos/" + fileName
     let size = fs.statSync(pathToPhoto).size
-    let sizeInMB = size/1000/1000
-    if (sizeInMB < 2.0){
+    let sizeInMB = size / 1000 / 1000
+    if (sizeInMB < 2.0) {
         fs.writeFileSync(lite, fs.readFileSync(pathToPhoto))
-    }else{
-                gm(pathToPhoto).resize(6144000, "@").write(lite, async (err) =>{
-            if (err){
-                size = fs.statSync(lite).size/1000/1000
-                if (size > 2.0){
+    } else {
+        gm(pathToPhoto).resize(6144000, "@").write(lite, async (err) => {
+            if (err) {
+                size = fs.statSync(lite).size / 1000 / 1000
+                if (size > 2.0) {
                     gm(lite).define("jpeg:extent=2mb").write(lite, () => {})
                 }
             }

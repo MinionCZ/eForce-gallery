@@ -74,8 +74,39 @@ function generateTopLine(filename, callbackDownload, callbackDelete, root){
     div.appendChild(generateExitButton(root))
     return div
 }
+
+/*
+generates photo template with fetched photo from backend
+*/
+function generatePhotoView(source = ""){
+    const photoDiv = document.createElement("div")
+    const photo = document.createElement("img")
+    photo.setAttribute("class", "photo bottom")
+    photo.setAttribute("id", "photo")
+    photo.setAttribute("src", source)
+    photo.onload = () =>{
+        let newPhoto = document.createElement("img")
+        newPhoto.setAttribute("class", "photo")
+        newPhoto.src = source
+        photoDiv.appendChild(newPhoto)
+        photoDiv.removeChild(newPhoto)
+    }
+    photoDiv.setAttribute("class", "photo-div-preview")
+    photoDiv.appendChild(photo)
+    return photoDiv
+}
+/*
+sets new photo to be previewed
+*/
+function setPhotoToPreview(source){
+    document.getElementById("photo").src = source
+}
+
+
 export{
     generateTopLine,
     generateRootElement,
-    generateSideButtons
+    generateSideButtons,
+    generatePhotoView,
+    setPhotoToPreview
 }

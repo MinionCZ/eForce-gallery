@@ -16,18 +16,23 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var PhotoPreview =
 /*#__PURE__*/
 function () {
-  function PhotoPreview(filename, lastCallback, nextCallback, indexOnPage) {
+  function PhotoPreview(photo, lastCallback, nextCallback, indexOnPage) {
     _classCallCheck(this, PhotoPreview);
 
     this.indexOnPage = indexOnPage;
-    this.filename = filename;
+    this.photo = photo;
     this.rootElement = (0, _photoPreviewGenerator.generateRootElement)();
     this.sideButtons = (0, _photoPreviewGenerator.generateSideButtons)(lastCallback, nextCallback);
     this.rootElement.appendChild(this.sideButtons.leftButton);
     this.rootElement.appendChild(this.sideButtons.rightButton);
-    this.rootElement.appendChild((0, _photoPreviewGenerator.generateTopLine)(filename, this.downloadPhoto, this.deletePhoto, this.rootElement));
+    this.rootElement.appendChild((0, _photoPreviewGenerator.generateTopLine)(photo.fileName, this.downloadPhoto, this.deletePhoto, this.rootElement));
+    this.rootElement.appendChild((0, _photoPreviewGenerator.generatePhotoView)(photo.getImageLink(false)));
     document.body.appendChild(this.rootElement);
   }
+  /*
+  downloads current photo
+  */
+
 
   _createClass(PhotoPreview, [{
     key: "downloadPhoto",
@@ -36,7 +41,7 @@ function () {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              console.log(this.filename, version);
+              console.log(this.photo, version);
 
             case 1:
             case "end":
@@ -45,6 +50,10 @@ function () {
         }
       }, null, this);
     }
+    /*
+    deletes photo which is currently selected
+    */
+
   }, {
     key: "deletePhoto",
     value: function deletePhoto() {
@@ -52,7 +61,7 @@ function () {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
-              console.log(this.filename);
+              console.log(this.photo);
 
             case 1:
             case "end":
@@ -61,11 +70,19 @@ function () {
         }
       }, null, this);
     }
+    /*
+    returns index
+    */
+
   }, {
     key: "getIndex",
     value: function getIndex() {
       return this.indexOnPage;
     }
+    /*
+    increments index of photo on page
+    */
+
   }, {
     key: "incrementIndex",
     value: function incrementIndex(increment) {

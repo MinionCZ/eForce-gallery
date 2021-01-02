@@ -78,7 +78,7 @@ class PhotosStore {
         for (let i = 0; i < this.photos.length; i++) {
             const div = this.photos[i].getDivForRender()
             div.onclick = () => {
-                PhotosStore.photoPreview = new PhotoPreview(this.photos[i].fileName, null, this.getNextPhoto, i)
+                PhotosStore.photoPreview = new PhotoPreview(this.photos[i], null, this.getNextPhoto, i)
                 console.log(this.photoPreview)
             }
             this.divs[Math.floor(i / this.photosPerLine)].appendChild(div)

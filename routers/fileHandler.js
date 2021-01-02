@@ -92,7 +92,7 @@ router.get("/photos/fetch-photo-by-id", async function (request, response){
     if (thumbnail === "true"){
         response.sendFile(path.resolve(__dirname  + "/../photos/thumbnails/" + databaseHelpers.getThumbnailFromFileName(fileName)))
     }else{
-        response.sendFile(path.resolve(__dirname + "/../photos/lite-photos/" + fileName))
+        response.sendFile(path.resolve(__dirname + "/../photos/big-thumbnails/" + databaseHelpers.getThumbnailFromFileName(fileName)))
     }
 })
 
