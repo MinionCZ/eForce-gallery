@@ -19,6 +19,7 @@ function deletePhoto(photoName) {
     fs.unlinkSync("./photos/uploads/" + photoName)
     fs.unlinkSync("./photos/thumbnails/" + getThumbnailFromFileName(photoName))
     fs.unlinkSync("./photos/lite-photos/" + photoName)
+    fs.unlinkSync("./photos/big-thumbnails/" + getThumbnailFromFileName(photoName))
 }
 
 async function deleteManyPhotos(photos) {
