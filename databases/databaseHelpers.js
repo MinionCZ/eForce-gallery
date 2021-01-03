@@ -27,6 +27,11 @@ async function deleteManyPhotos(photos) {
         deletePhoto(photo)
     }
 }
+function addStringToFileName(filename, string){
+    const splittedFilename = filename.split(".")
+    splittedFilename[0] += string
+    return splittedFilename[0] + "." + splittedFilename[1]
+}
 
 
 
@@ -35,5 +40,6 @@ module.exports = {
     convertDateFromHTML,
     deletePhoto,
     getThumbnailFromFileName,
-    deleteManyPhotos
+    deleteManyPhotos,
+    addStringToFileName
 }

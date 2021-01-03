@@ -9,9 +9,9 @@ generates download buttons
 function generateDownloadButton(text, version, size, selectedPhotos, root) {
     const downloadButton = document.createElement("button")
     if (version === "lite") {
-        downloadButton.setAttribute("class", "download-selection-button right")
+        downloadButton.setAttribute("class", "download-selection-button download-right")
     } else {
-        downloadButton.setAttribute("class", "download-selection-button left")
+        downloadButton.setAttribute("class", "download-selection-button download-left")
     }
     downloadButton.innerHTML = text + size
     downloadButton.onclick = () => {
@@ -131,9 +131,6 @@ async function createPopupWindow(text, time = 3000){
         document.body.removeChild(popup)
     }, time)
 }
-
-
-
 
 export {
     buildDownloadLayout,

@@ -32,6 +32,9 @@ const upload = multer({
     storage: storage
 }).single("photo")
 
+/*
+takes care of uploading photos to server and saves them on disk and creates their thumbanils
+*/
 router.post("/gallery/photos/upload", async function (request, response) {
     let token = request.cookies.token
     if (!tokenVerifier.isTokenValid(token, response)) {
@@ -57,6 +60,9 @@ router.post("/gallery/photos/upload", async function (request, response) {
 
 })
 
+/*
+gets preview photo on gallery, if gallery is empty sends no photo image
+*/
 router.get("/photo-gallery/get-photo", async function (request, response) {
     let token = request.cookies.token
     if (!tokenVerifier.isTokenValid(token, response)) {
@@ -73,6 +79,9 @@ router.get("/photo-gallery/get-photo", async function (request, response) {
     }
 })
 
+/*
+sends config with color for coloring tags on
+*/
 router.get("/photo-gallery/get-all-tags-colors", async function (request, response) {
     let token = request.cookies.token
     if (!tokenVerifier.isTokenValid(token, response)) {
@@ -82,6 +91,9 @@ router.get("/photo-gallery/get-all-tags-colors", async function (request, respon
     response.json(colors.toString())
 })
 
+/*
+fetches photo by id - filename for front end to show it
+*/
 router.get("/photos/fetch-photo-by-id", async function (request, response){
     let token = request.cookies.token
     if (!tokenVerifier.isTokenValid(token, response)) {
@@ -93,6 +105,22 @@ router.get("/photos/fetch-photo-by-id", async function (request, response){
         response.sendFile(path.resolve(__dirname  + "/../photos/thumbnails/" + databaseHelpers.getThumbnailFromFileName(fileName)))
     }else{
         response.sendFile(path.resolve(__dirname + "/../photos/big-thumbnails/" + databaseHelpers.getThumbnailFromFileName(fileName)))
+    }
+})
+
+/*
+downloads one photo after sending request to download it with fetch
+*/
+router.get("/photos/download-one", async function(request, response){
+    let token = request.cookies.token
+    if (!tokenVerifier.isTokenValid(token, response)) {
+        return
+    }
+    const data = request.query
+    if (data.version === "full"){
+        response.download(path.resolve(__dirname + "/../photos/uploads/" + data.filename), databaseHelpers.addStringToFileName(data.filename, "-full"))
+    }else{
+        response.download(path.resolve(__dirname + "/../photos/lite-photos/" + data.filename), databaseHelpers.addStringToFileName(data.filename, "-lite"))
     }
 })
 

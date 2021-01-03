@@ -32,10 +32,10 @@ button.download-selection-button{
     display: inline-block;
     font-size: 15px;
 }
-button.left{
+button.download-left{
     left: 2.5%;
 }
-button.right{
+button.download-right{
     left: 52.5%;
 }
 button.cancel-button{

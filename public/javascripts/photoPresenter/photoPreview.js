@@ -23,14 +23,16 @@ class PhotoPreview {
     downloads current photo
     */
     async downloadPhoto(filename, version) {
-        console.log(filename, version)
+        const a = document.createElement("a")
+        a.href = window.location.origin + "/photos/download-one?version=" + version + "&" + "filename=" + filename
+        a.click()
     }
 
     /*
     deletes photo which is currently selected
     */
-    async deletePhoto(filename) {
-        console.log(filename)
+    deletePhoto(filename) {
+        console.log(this.indexOnPage)
     }
     /*
     returns index

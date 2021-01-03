@@ -67,5 +67,5 @@ div.buttonRowBottom{
 div.imageDiv{
     height: 290px;
     min-height: 290px;
-    width: 420px;
+    width: 100%;
 }

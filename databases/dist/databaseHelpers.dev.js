@@ -82,10 +82,17 @@ function deleteManyPhotos(photos) {
   }, null, null, [[3, 7, 11, 19], [12,, 14, 18]]);
 }
 
+function addStringToFileName(filename, string) {
+  var splittedFilename = filename.split(".");
+  splittedFilename[0] += string;
+  return splittedFilename[0] + "." + splittedFilename[1];
+}
+
 module.exports = {
   convertDateToHTML: convertDateToHTML,
   convertDateFromHTML: convertDateFromHTML,
   deletePhoto: deletePhoto,
   getThumbnailFromFileName: getThumbnailFromFileName,
-  deleteManyPhotos: deleteManyPhotos
+  deleteManyPhotos: deleteManyPhotos,
+  addStringToFileName: addStringToFileName
 };
