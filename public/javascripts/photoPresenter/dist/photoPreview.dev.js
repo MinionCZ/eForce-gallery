@@ -26,6 +26,7 @@ function () {
     this.rootElement.appendChild(this.sideButtons.leftButton);
     this.rootElement.appendChild(this.sideButtons.rightButton);
     this.rootElement.appendChild((0, _photoPreviewGenerator.generateTopLine)(photo.fileName, this.downloadPhoto, this.deletePhoto, this.rootElement));
+    this.rootElement.appendChild((0, _photoPreviewGenerator.generateCheckBox)(photo));
     this.rootElement.appendChild((0, _photoPreviewGenerator.generatePhotoView)(photo.getImageLink(false)));
     document.body.appendChild(this.rootElement);
   }
@@ -36,19 +37,19 @@ function () {
 
   _createClass(PhotoPreview, [{
     key: "downloadPhoto",
-    value: function downloadPhoto(version) {
+    value: function downloadPhoto(filename, version) {
       return regeneratorRuntime.async(function downloadPhoto$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              console.log(this.photo, version);
+              console.log(filename, version);
 
             case 1:
             case "end":
               return _context.stop();
           }
         }
-      }, null, this);
+      });
     }
     /*
     deletes photo which is currently selected
@@ -56,19 +57,19 @@ function () {
 
   }, {
     key: "deletePhoto",
-    value: function deletePhoto() {
+    value: function deletePhoto(filename) {
       return regeneratorRuntime.async(function deletePhoto$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
-              console.log(this.photo);
+              console.log(filename);
 
             case 1:
             case "end":
               return _context2.stop();
           }
         }
-      }, null, this);
+      });
     }
     /*
     returns index
@@ -96,7 +97,7 @@ function () {
     key: "setPhotoToPreview",
     value: function setPhotoToPreview(photo) {
       this.photo = photo;
-      (0, _photoPreviewGenerator.setPhotoToPreview)(photo.getImageLink());
+      (0, _photoPreviewGenerator.setPhotoToPreview)(photo);
     }
   }]);
 

@@ -45,6 +45,17 @@ class Photo{
             CheckStore.removeCheckedPhoto(this.value)
         }
     }
+    getCroppedSize(version){
+        let size = 0
+        if(version === "full"){
+            size = this.fullSize
+        }else{
+            size = this.liteSize
+        }
+        size *= 100
+        size = Math.floor(size)/100
+        return size
+    }
 }
 export{
     Photo

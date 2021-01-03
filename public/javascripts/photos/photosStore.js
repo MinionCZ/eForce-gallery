@@ -77,9 +77,11 @@ class PhotosStore {
         this.createPhotoDivs()
         for (let i = 0; i < this.photos.length; i++) {
             const div = this.photos[i].getDivForRender()
-            div.onclick = () => {
-                PhotosStore.photoPreview = new PhotoPreview(this.photos[i], this.getPreviousPhoto, this.getNextPhoto, i)
-                console.log(this.photoPreview)
+            div.onclick = (event) => {
+                console.log(event.target.type)
+                if (event.target.type !== "checkbox"){
+                    PhotosStore.photoPreview = new PhotoPreview(this.photos[i], this.getPreviousPhoto, this.getNextPhoto, i)
+                }
             }
             this.divs[Math.floor(i / this.photosPerLine)].appendChild(div)
         }

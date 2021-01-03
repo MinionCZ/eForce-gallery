@@ -105,3 +105,9 @@ button.right:active{
 button.delete{
     width: auto;
 }
+input.preview-checkbox{
+    position: fixed;
+    top: 15px;
+    left: calc(80% + 200px);
+    margin: 0;
+}

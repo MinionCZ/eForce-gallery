@@ -8,10 +8,14 @@ exports.generateRootElement = generateRootElement;
 exports.generateSideButtons = generateSideButtons;
 exports.generatePhotoView = generatePhotoView;
 exports.setPhotoToPreview = setPhotoToPreview;
+exports.generateCheckBox = generateCheckBox;
 
-/*
-generates root element for photo preview
-*/
+var _pageHandler = require("../photos/pageHandler.js");
+
+var _checkStore = require("../photos/checkStore.js");
+
+var _photosStore = require("../photos/photosStore.js");
+
 function generateRootElement() {
   var root = document.createElement("div");
   root.setAttribute("id", "root");
@@ -75,6 +79,8 @@ function generateExitButton(root) {
 /*
 generates button for communication with backend 
 here it will generate delete button and download button, which will communicate with server
+for downloading is trough callback set version which will be downloaded
+for deleting there is no version, all will be deleted
 */
 
 
@@ -87,7 +93,11 @@ function generateBackendButton(filename, callback, cssClass, text, title) {
   button.value = version;
 
   button.onclick = function () {
-    console.log(filename);
+    if (version === "") {
+      callback(filename);
+    } else {
+      callback(filename, version);
+    }
   };
 
   return button;
@@ -137,6 +147,44 @@ sets new photo to be previewed
 */
 
 
-function setPhotoToPreview(source) {
-  document.getElementById("photo").src = source;
+function setPhotoToPreview(photo) {
+  document.getElementById("photo").src = photo.getImageLink();
+  var checkbox = document.getElementById("previewCheckbox");
+  checkbox.checked = photo.checkBox.checked;
+
+  checkbox.onclick = function () {
+    photo.checkBox.checked = checkbox.checked;
+
+    if (checkbox.checked) {
+      _checkStore.CheckStore.addCheckedPhoto(photo.fileName);
+    } else {
+      _checkStore.CheckStore.removeCheckedPhoto(photo.fileName);
+    }
+  };
 }
+
+function generateCheckBox(photo) {
+  var checkbox = document.createElement("input");
+  checkbox.setAttribute("type", "checkbox");
+  checkbox.setAttribute("class", "preview-checkbox photo-checkbox");
+  checkbox.setAttribute("id", "previewCheckbox");
+  checkbox.checked = photo.checkBox.checked;
+
+  checkbox.onclick = function () {
+    photo.checkBox.checked = checkbox.checked;
+
+    if (checkbox.checked) {
+      _checkStore.CheckStore.addCheckedPhoto(photo.fileName);
+    } else {
+      _checkStore.CheckStore.removeCheckedPhoto(photo.fileName);
+    }
+  };
+
+  return checkbox;
+}
+/*
+generates status bar with useful information such as:
+    photo on page
+    page
+    lite and full size
+*/

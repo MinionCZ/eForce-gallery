@@ -44,4 +44,5 @@ input.photo-checkbox{
     margin-top: 7px;
     margin-left: -40px;
     z-index: 1;
+    cursor: pointer;
 }

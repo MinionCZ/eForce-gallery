@@ -34,7 +34,6 @@ function cropPhotos(photos){
         croppedPhotos.push(photo.fileName)
     }
     return croppedPhotos
-
 }
 
 

@@ -3,7 +3,8 @@ import {
     generateSideButtons,
     generateTopLine,
     generatePhotoView,
-    setPhotoToPreview
+    setPhotoToPreview,
+    generateCheckBox
 } from "./photoPreviewGenerator.js"
 class PhotoPreview {
     constructor(photo, lastCallback, nextCallback, indexOnPage) {
@@ -14,21 +15,22 @@ class PhotoPreview {
         this.rootElement.appendChild(this.sideButtons.leftButton)
         this.rootElement.appendChild(this.sideButtons.rightButton)
         this.rootElement.appendChild(generateTopLine(photo.fileName, this.downloadPhoto, this.deletePhoto, this.rootElement))
+        this.rootElement.appendChild(generateCheckBox(photo))
         this.rootElement.appendChild(generatePhotoView(photo.getImageLink(false)))
         document.body.appendChild(this.rootElement)
     }
     /*
     downloads current photo
     */
-    async downloadPhoto(version) {
-        console.log(this.photo, version)
+    async downloadPhoto(filename, version) {
+        console.log(filename, version)
     }
 
     /*
     deletes photo which is currently selected
     */
-    async deletePhoto() {
-        console.log(this.photo)
+    async deletePhoto(filename) {
+        console.log(filename)
     }
     /*
     returns index
@@ -48,7 +50,7 @@ class PhotoPreview {
     }
     setPhotoToPreview(photo){
         this.photo = photo
-        setPhotoToPreview(photo.getImageLink())
+        setPhotoToPreview(photo)
     }
 }
 export {

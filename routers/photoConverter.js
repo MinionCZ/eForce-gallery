@@ -26,7 +26,7 @@ async function handleNewPhoto(fileName, galleryId, username) {
             if (width > 1920 || height > 1080) {
                 gm(pathToPhoto).thumbnail(1920, 1080).define("jpeg:extent=100kb").write(bigThumbnails + thumbnailName, () => {})
             }else{
-                fs.writeFileSync(bigThumbnails + thumbnailName, fs.readFileSync(pathToPhoto))
+                gm(pathToPhoto).define("jpeg:extent=100kb").write(bigThumbnails + thumbnailName, () => {})
             }
         }
     })
