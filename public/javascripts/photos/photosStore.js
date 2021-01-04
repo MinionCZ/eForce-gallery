@@ -84,7 +84,7 @@ class PhotosStore {
             div.onclick = (event) => {
                 console.log(event.target.type)
                 if (event.target.type !== "checkbox") {
-                    PhotosStore.photoPreview = new PhotoPreview(this.photos[i], this.getPreviousPhoto, this.getNextPhoto, i)
+                    PhotosStore.photoPreview = new PhotoPreview(this.photos[i], this.getPreviousPhoto, this.getNextPhoto, i, this.refreshPageCallback)
                 }
             }
             this.divs[Math.floor(i / this.photosPerLine)].appendChild(div)
@@ -286,6 +286,40 @@ class PhotosStore {
 
 
     }
+
+    /*
+    serves as callback for deleting photo to refresh actual page, or returns to the previous
+    first part solves problems when there is only one photo on the page
+    second part solves problems when is it on last page and there will be problem with index, because it will not exists and when the index exists
+     */
+    static refreshPageCallback() {
+        let page = getPage()
+        let index = PhotosStore.photoPreview.getIndex()
+        if (page > 1 && PhotosStore.photos.length === 1) {
+            page--
+            PhotosStore.fetchPage(page)
+            index = PhotosStore.photos.length - 1
+            const surroundings = PhotosStore.hasSurroundingPhotos(index)
+            const newPhoto = PhotosStore.getPhotoAtIndex(index)
+            PhotosStore.photoPreview.setPhotoToPreview(newPhoto, surroundings.previous, surroundings.next)
+            return
+        } else if (page === 1 && PhotosStore.photos.length === 1) {
+            PhotosStore.fetchPage(page)
+            PhotosStore.photoPreview.deletePreview()
+            PhotosStore.photoPreview = null
+            return
+        }
+
+        if (page === getMaxPage() && index === (PhotosStore.photos.length - 1)) {
+            index--
+        }
+        PhotosStore.fetchPage(page)
+        const surroundings = PhotosStore.hasSurroundingPhotos(index)
+        const newPhoto = PhotosStore.getPhotoAtIndex(index)
+        PhotosStore.photoPreview.setPhotoToPreview(newPhoto, surroundings.previous, surroundings.next)
+    }
+
+
 }
 export {
     PhotosStore

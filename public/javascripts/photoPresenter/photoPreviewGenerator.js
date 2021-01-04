@@ -60,7 +60,6 @@ function generateExitButton(root) {
     exitButton.onclick = () => {
         if (document.body.contains(root)) {
             document.body.removeChild(root)
-            console.log(root)
         }
     }
     return exitButton
@@ -72,7 +71,7 @@ here it will generate delete button and download button, which will communicate 
 for downloading is trough callback set version which will be downloaded
 for deleting there is no version, all will be deleted
 */
-function generateBackendButton(filename, callback, cssClass, text, title, version = "") {
+function generateBackendButton(filename, callback, cssClass, text, title, version = "", refreshCallback) {
     const button = document.createElement("button")
     button.setAttribute("class", cssClass)
     button.textContent = text
@@ -80,7 +79,7 @@ function generateBackendButton(filename, callback, cssClass, text, title, versio
     button.value = version
     button.onclick = () => {
         if (version === "") {
-            callback(filename)
+            callback(filename, refreshCallback)
         } else {
             callback(filename, version)
         }
@@ -91,12 +90,12 @@ function generateBackendButton(filename, callback, cssClass, text, title, versio
 /*
 generates top line of buttons
 */
-function generateTopLine(filename, callbackDownload, callbackDelete, root) {
+function generateTopLine(filename, callbackDownload, callbackDelete, root, refreshCallback) {
     const div = document.createElement("div")
     div.setAttribute("class", "top-line-div")
-    div.appendChild(generateBackendButton(filename, callbackDownload, "top-button download-full", "⟱", "download full version of photo", "full"))
-    div.appendChild(generateBackendButton(filename, callbackDownload, "top-button download-lite", "⇓", "download lite version of photo", "lite"))
-    div.appendChild(generateBackendButton(filename, callbackDelete, "top-button delete", "🗑", "delete photo", ""))
+    div.appendChild(generateBackendButton(filename, callbackDownload, "top-button download-full", "⟱", "download full version of photo", "full", null))
+    div.appendChild(generateBackendButton(filename, callbackDownload, "top-button download-lite", "⇓", "download lite version of photo", "lite", null))
+    div.appendChild(generateBackendButton(filename, callbackDelete, "top-button delete", "🗑", "delete photo", "", refreshCallback))
     div.appendChild(generateExitButton(root))
     return div
 }

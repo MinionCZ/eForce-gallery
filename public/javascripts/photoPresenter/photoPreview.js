@@ -7,15 +7,18 @@ import {
     generateCheckBox
 } from "./photoPreviewGenerator.js"
 
+import{
+    createPopupWindow
+} from "../photos/layoutGenerator.js"
 class PhotoPreview {
-    constructor(photo, lastCallback, nextCallback, indexOnPage) {
+    constructor(photo, lastCallback, nextCallback, indexOnPage, refreshCallback) {
         this.indexOnPage = indexOnPage
         this.photo = photo
         this.rootElement = generateRootElement()
         this.sideButtons = generateSideButtons(lastCallback, nextCallback)
         this.rootElement.appendChild(this.sideButtons.leftButton)
         this.rootElement.appendChild(this.sideButtons.rightButton)
-        this.rootElement.appendChild(generateTopLine(photo.fileName, this.downloadPhoto, this.deletePhoto, this.rootElement))
+        this.rootElement.appendChild(generateTopLine(photo.fileName, this.downloadPhoto, this.deletePhoto, this.rootElement, refreshCallback))
         this.rootElement.appendChild(generateCheckBox(photo))
         this.rootElement.appendChild(generatePhotoView(photo.getImageLink(false)))
         document.body.appendChild(this.rootElement)
@@ -30,10 +33,24 @@ class PhotoPreview {
     }
 
     /*
-    deletes photo which is currently selected
+    deletes photo which is currently selected, sends it to the back end and refresh page
     */
-    deletePhoto(filename) {
-        console.log(this.indexOnPage)
+    async deletePhoto(filename, refreshCallback) {
+        console.log([filename])
+        const data = {
+            photos: [filename],
+            allPhotos: false
+        }
+        const response = await fetch("/photos/delete", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        refreshCallback()
+        console.log(response)
+        createPopupWindow((await response.json()).deleted)
     }
     /*
     returns index
@@ -56,6 +73,14 @@ class PhotoPreview {
     */
     setIndex(index){
         this.indexOnPage = index
+    }
+    /*
+    deletes preview
+    */
+    deletePreview(){
+        if(document.body.contains(this.root)){
+            document.body.removeChild(this.root)
+        }
     }
 }
 export {
