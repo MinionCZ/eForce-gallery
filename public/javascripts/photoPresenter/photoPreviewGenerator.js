@@ -32,8 +32,10 @@ function generateSideButtons(leftCallback, rightCallback) {
     const leftButton = document.createElement("button")
     const rightButton = document.createElement("button")
     leftButton.setAttribute("class", "left photo-button")
+    leftButton.setAttribute("id", "leftSideButton")
     leftButton.textContent = "<"
     rightButton.setAttribute("class", "right photo-button")
+    rightButton.setAttribute("id", "rightSideButton")
     rightButton.textContent = ">"
     leftButton.onclick = () => {
         leftCallback()
@@ -153,12 +155,7 @@ function generateCheckBox(photo) {
     }
     return checkbox
 }
-/*
-generates status bar with useful information such as:
-    photo on page
-    page
-    lite and full size
-*/
+
 
 
 

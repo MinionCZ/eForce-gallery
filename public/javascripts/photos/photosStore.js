@@ -6,7 +6,11 @@ import {
     CheckStore
 } from "./checkStore.js"
 import {
-    setMaxPage
+    getMaxPage,
+    setMaxPage,
+    getPage,
+    incrementHandler,
+    decrementHandler
 } from "./pageHandler.js"
 import {
     PhotoPreview
@@ -25,7 +29,7 @@ class PhotosStore {
     static photoPreview = null
     static fetchPage(page) {
         let request = new XMLHttpRequest()
-        request.open("GET", "/get-all-photos?page=" + page + "&photosPerPage=" + 60)
+        request.open("GET", "/get-all-photos?page=" + page + "&photosPerPage=" + 60, false)
         request.onload = () => {
             this.fillPhotosArray(request.responseText)
         }
@@ -79,7 +83,7 @@ class PhotosStore {
             const div = this.photos[i].getDivForRender()
             div.onclick = (event) => {
                 console.log(event.target.type)
-                if (event.target.type !== "checkbox"){
+                if (event.target.type !== "checkbox") {
                     PhotosStore.photoPreview = new PhotoPreview(this.photos[i], this.getPreviousPhoto, this.getNextPhoto, i)
                 }
             }
@@ -223,40 +227,65 @@ class PhotosStore {
     /*
     returns photo if it is in range, else returns null
     */
-    static getPhotoAtIndex(index){
-        if (index >= 0 && index < this.photos.length){
+    static getPhotoAtIndex(index) {
+        if (index >= 0 && index < this.photos.length) {
             return this.photos[index]
         }
         return null
 
     }
     /*
-    gets next photo to show as preview
+    gets next photo to show as preview, also checks if next photo is possible and automatically changes page
     */
-    static getNextPhoto() {
-        PhotosStore.photoPreview.incrementIndex(true)
-        const index = PhotosStore.photoPreview.getIndex()
-        const nextPhoto = PhotosStore.getPhotoAtIndex(index)
-        if (nextPhoto !== null){
-            PhotosStore.photoPreview.setPhotoToPreview(nextPhoto)
-        }else{
-            /* TBD - needs to go to another page*/
+    static async getNextPhoto() {
+        let index = PhotosStore.photoPreview.getIndex()
+        if (index + 1 < PhotosStore.photos.length) {
+            index++
+            const nextPhoto = PhotosStore.getPhotoAtIndex(index)
+            const surroundings = PhotosStore.hasSurroundingPhotos(index)
+            PhotosStore.photoPreview.setIndex(index)
+            PhotosStore.photoPreview.setPhotoToPreview(nextPhoto, surroundings.previous, surroundings.next)
+        } else {
+            incrementHandler()
+            PhotosStore.photoPreview.setIndex(0)
+            const newPhoto = PhotosStore.getPhotoAtIndex(0)
+            const surroundings = PhotosStore.hasSurroundingPhotos(0)
+            PhotosStore.photoPreview.setPhotoToPreview(newPhoto, surroundings.previous, surroundings.next)
+        }
+
+    }
+    /*
+    sets previous photo to be seen on 
+    */
+    static getPreviousPhoto() {
+        let index = PhotosStore.photoPreview.getIndex()
+        if (index > 0) {
+            index--
+            const nextPhoto = PhotosStore.getPhotoAtIndex(index)
+            const surroundings = PhotosStore.hasSurroundingPhotos(index)
+            PhotosStore.photoPreview.setIndex(index)
+            console.log(surroundings)
+            PhotosStore.photoPreview.setPhotoToPreview(nextPhoto, surroundings.previous, surroundings.next)
+        } else {
+            decrementHandler()
+            const index = PhotosStore.photos.length - 1
+            PhotosStore.photoPreview.setIndex(index)
+            const newPhoto = PhotosStore.getPhotoAtIndex(index)
+            const surroundings = PhotosStore.hasSurroundingPhotos(index)
+            PhotosStore.photoPreview.setPhotoToPreview(newPhoto, surroundings.previous, surroundings.next)
         }
     }
-    static getPreviousPhoto(){
-        PhotosStore.photoPreview.incrementIndex(false)
-        const index = PhotosStore.photoPreview.getIndex()
-        const nextPhoto = PhotosStore.getPhotoAtIndex(index)
-        if (nextPhoto !== null){
-            PhotosStore.photoPreview.setPhotoToPreview(nextPhoto)
-        }else{
-            /* TBD - needs to go to another page*/
+    /*
+    returns if current photo has surrounding, and on which side they are
+    */
+    static hasSurroundingPhotos(index) {
+        return {
+            previous: !(index === 0 && getPage() === 1),
+            next: !((this.photos.length - 1) === index && (getPage() === getMaxPage()))
         }
+
+
     }
-
-
-
-
 }
 export {
     PhotosStore

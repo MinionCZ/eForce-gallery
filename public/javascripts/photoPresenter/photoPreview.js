@@ -6,6 +6,7 @@ import {
     setPhotoToPreview,
     generateCheckBox
 } from "./photoPreviewGenerator.js"
+
 class PhotoPreview {
     constructor(photo, lastCallback, nextCallback, indexOnPage) {
         this.indexOnPage = indexOnPage
@@ -40,19 +41,21 @@ class PhotoPreview {
     getIndex() {
         return this.indexOnPage
     }
+
     /*
-    increments index of photo on page
+    sets photo to preview
     */
-    incrementIndex(increment) {
-        if (increment) {
-            this.indexOnPage++
-        } else {
-            this.indexOnPage--
-        }
-    }
-    setPhotoToPreview(photo){
+    setPhotoToPreview(photo, isPreviousPhoto, isNextPhoto){
         this.photo = photo
         setPhotoToPreview(photo)
+        document.getElementById("leftSideButton").disabled = !isPreviousPhoto
+        document.getElementById("rightSideButton").disabled = !isNextPhoto
+    }
+    /*
+    sets index
+    */
+    setIndex(index){
+        this.indexOnPage = index
     }
 }
 export {
