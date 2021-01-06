@@ -17,7 +17,7 @@ router.post("/eforce-gallery/login", async function (request, response) {
     if (token === undefined) {
         token = await tokenVerifier.generateNewAccessToken(request.body.username)
         response.cookie("token", token)
-        response.redirect("/dashboard")
+        response.redirect("/eforce-gallery/dashboard")
     } else {
         tokenVerifier.isTokenValid(token, response, true)
     }
