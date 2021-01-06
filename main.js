@@ -22,7 +22,7 @@ app.use(express.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
-app.use("/",express.static("public"))
+app.use("/eforce-gallery",express.static("public"))
 app.use(cookieParser())
 app.use(loginRouter)
 app.use(newGalleryRouter)
