@@ -9,5 +9,4 @@ window.onload = () =>{
     initTopSelector()
     topButtonsDisable()
     PhotosStore.fetchPage(1)
-
 }

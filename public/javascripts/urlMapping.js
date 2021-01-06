@@ -2,23 +2,21 @@
 changes current mapping + sets cookie which button is pressed now
 */
 function changeMapping(mapping) {
-    document.cookie = "mapping=" + mapping + "; path=/;"
+    let date = new Date()
+    date.setTime(date.getTime() + 10000)
+    document.cookie = "mapping=" + mapping + "; path=/; expires=" + date.toGMTString()
     switch (mapping) {
         case "dashboard":
-            window.location = "/dashboard"
-          
+            window.location = "/eforce-gallery/dashboard"
             break
         case "newGallery":
-            window.location = "/gallery/add"
-
+            window.location = "/eforce-gallery/gallery/add"
             break
         case "galleries":
-            window.location = "/galleries"
-
+            window.location = "/eforce-gallery/galleries"
             break
         case "photos":
-            window.location = "/photos"
-
+            window.location = "/eforce-gallery/photos"
             break
     }
 }

@@ -16,7 +16,7 @@ function harvestTags(request) {
     return tagArray
 }
 
-router.get("/gallery/add", async function (request, response) {
+router.get("/eforce-gallery/gallery/add", async function (request, response) {
     let token = request.cookies.token
     if (!await tokenVerifier.isTokenValid(token, response)) {
         return
@@ -24,7 +24,7 @@ router.get("/gallery/add", async function (request, response) {
     token = tokenVerifier.refreshToken(token, response)
     response.render("newGallery.ejs")
 })
-router.post("/gallery/add", async function (request, response) {
+router.post("/eforce-gallery/gallery/add", async function (request, response) {
     let token = request.cookies.token
     const tempGalleryId = request.cookies.galleryId
     if (!await tokenVerifier.isTokenValid(token, response)) {

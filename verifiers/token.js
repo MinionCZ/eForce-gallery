@@ -39,7 +39,7 @@ async function isTokenValid(token, response, isLogin = false) {
         handleBadToken(response)
     }
     if (isLogin && valid) {
-        response.redirect("/dashboard")
+        response.redirect("/eforce-gallery/dashboard")
     }
     return valid
 }
@@ -52,9 +52,9 @@ function getUsernameFromToken(token) {
     return user
 }
 
-function handleBadToken(response, redirection) {
+function handleBadToken(response) {
     response.clearCookie("token")
-    response.redirect("/unauthorized")
+    response.redirect("/eforce-gallery/unauthorized")
 }
 
 function refreshToken(token, response) {

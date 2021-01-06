@@ -1,12 +1,11 @@
 const express = require('express');
 const app = express();
-const port = 5000;
+const port = 10088;
 var bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser');
 const loginRouter = require('./routers/login.js')
 const mongoInitializer = require("./databases/mongoInitializer.js")
 const dashboardRouter = require("./routers/dashboard")
-const crypto = require("crypto")
 const tokenVerifier = require("./verifiers/token")
 const newGalleryRouter = require("./routers/newGallery")
 const photosRouter = require("./routers/photos")
@@ -36,6 +35,7 @@ app.use(downloadHandler)
 app.use(fileUpload({
     createParentPath: true
 }))
+app.use(redirectUnmatched)
 app.set('view-engine', 'ejs')
 const server = app.listen(port, function () {
     var host = server.address().address
@@ -47,3 +47,6 @@ const server = app.listen(port, function () {
 app.get("/", function (request, response) {
     response.redirect("/login")
 })
+function redirectUnmatched(request, response){
+    response.redirect("/eforce-gallery/login")
+}

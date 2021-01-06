@@ -4,7 +4,7 @@ const tokenVerifier = require("../verifiers/token")
 const photoDatabase = require("../databases/photoDatabase")
 
 
-router.get("/photos", async function (request, response) {
+router.get("/eforce-gallery/photos", async function (request, response) {
     let token = request.cookies.token
     if (!await tokenVerifier.isTokenValid(token, response)) {
         return

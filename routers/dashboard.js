@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const tokenVerifier = require("../verifiers/token")
 const photoDatabase = require("../databases/photoDatabase")
-router.get("/dashboard", async function (request, response) {
+router.get("/eforce-gallery/dashboard", async function (request, response) {
     let token = request.cookies.token
     if (!await tokenVerifier.isTokenValid(token, response)) {
         return
@@ -25,6 +25,4 @@ router.get("/galleries/get-all", async function (request, response) {
     response.json(allGalleries)
 
 })
-
-
 module.exports = router
