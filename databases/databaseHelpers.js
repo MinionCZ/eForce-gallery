@@ -1,5 +1,5 @@
 const fs = require("fs")
-
+const charMap = new Map()
 function convertDateFromHTML(date) {
     let datePieces = date.split("-")
     return datePieces[2] + "." + datePieces[1] + "." + datePieces[0]
@@ -36,6 +36,33 @@ function addStringToFileName(filename, string){
     splittedFilename[0] += string
     return splittedFilename[0] + "." + splittedFilename[1]
 }
+/*
+returns string with only english chars
+*/
+function stringToEnglish(string){
+    fillCharMap()
+    let newString = ""
+    for (const char of string){
+        if (charMap.has(char)){
+            newString += charMap.get(char)
+        }else{
+            newString += char
+        }
+    }
+    return newString
+}
+/*
+fills char map with czech and english chars if it is empty, else just ends
+*/
+function fillCharMap(){
+    if (charMap.size === 0){
+        const czechChars = "ÁáČčĎďĚěÉéÍíŇňÓóŘřŠšŤťÚúůÝýŽž"
+        const enChars = "AaCcDdEeEeIiNnOoRrSsTtUuYyZz"
+        for (let i = 0; i<enChars.length; i++){
+            charMap.set(czechChars[i], enChars[i])
+        }
+    }
+}
 
 
 
@@ -45,5 +72,6 @@ module.exports = {
     deletePhoto,
     getThumbnailFromFileName,
     deleteManyPhotos,
-    addStringToFileName
+    addStringToFileName,
+    stringToEnglish
 }

@@ -4,6 +4,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
 var fs = require("fs");
 
+var charMap = new Map();
+
 function convertDateFromHTML(date) {
   var datePieces = date.split("-");
   return datePieces[2] + "." + datePieces[1] + "." + datePieces[0];
@@ -94,6 +96,60 @@ function addStringToFileName(filename, string) {
   splittedFilename[0] += string;
   return splittedFilename[0] + "." + splittedFilename[1];
 }
+/*
+returns string with only english chars
+*/
+
+
+function stringToEnglish(string) {
+  fillCharMap();
+  var newString = "";
+  var _iteratorNormalCompletion2 = true;
+  var _didIteratorError2 = false;
+  var _iteratorError2 = undefined;
+
+  try {
+    for (var _iterator2 = string[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+      var _char = _step2.value;
+
+      if (charMap.has(_char)) {
+        newString += charMap.get(_char);
+      } else {
+        newString += _char;
+      }
+    }
+  } catch (err) {
+    _didIteratorError2 = true;
+    _iteratorError2 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+        _iterator2["return"]();
+      }
+    } finally {
+      if (_didIteratorError2) {
+        throw _iteratorError2;
+      }
+    }
+  }
+
+  return newString;
+}
+/*
+fills char map with czech and english chars if it is empty, else just ends
+*/
+
+
+function fillCharMap() {
+  if (charMap.size === 0) {
+    var czechChars = "ÁáČčĎďĚěÉéÍíŇňÓóŘřŠšŤťÚúůÝýŽž";
+    var enChars = "AaCcDdEeEeIiNnOoRrSsTtUuYyZz";
+
+    for (var i = 0; i < enChars.length; i++) {
+      charMap.set(czechChars[i], enChars[i]);
+    }
+  }
+}
 
 module.exports = {
   convertDateToHTML: convertDateToHTML,
@@ -101,5 +157,6 @@ module.exports = {
   deletePhoto: deletePhoto,
   getThumbnailFromFileName: getThumbnailFromFileName,
   deleteManyPhotos: deleteManyPhotos,
-  addStringToFileName: addStringToFileName
+  addStringToFileName: addStringToFileName,
+  stringToEnglish: stringToEnglish
 };

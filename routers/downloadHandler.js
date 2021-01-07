@@ -8,6 +8,7 @@ const photoDatabase = require("../databases/photoDatabase")
 const AdmZip = require('adm-zip')
 const archiver = require("archiver")
 const downloadTokenMap = new Map()
+const databaseHelper = require("../databases/databaseHelpers")
 
 /*
 manages download of whole gallery
@@ -22,7 +23,7 @@ router.post("/eforce-gallery/photo-gallery/download-whole-gallery", async functi
     tokenVerifier.refreshToken(token, response)
     const gallery = await photoDatabase.findGalleryByID(galleryID)
 
-    response.setHeader('Content-Disposition', 'attachment; filename=' + gallery.galleryTitle + "-" + version + ".zip");
+    response.setHeader('Content-Disposition', 'attachment; filename=' + databaseHelper.stringToEnglish(gallery.galleryTitle) + "-" + version + ".zip");
     createZipFromArray(gallery.photos, version, response)
 
 })
