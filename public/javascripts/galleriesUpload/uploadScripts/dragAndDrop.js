@@ -72,9 +72,9 @@ window.onload = () => {
             day = "0" + date.getDate()
         }
         if (date.getMonth() + 1 < 10){
-            month += "0" + (date.getMonth() + 1)
+            month = "0" + (date.getMonth() + 1)
         }
-        return date.getFullYear() + "-" + month + "-" +day
+        return date.getFullYear() + "-" + month + "-" + day
     }
     document.getElementById("date").value = getToday()
 
