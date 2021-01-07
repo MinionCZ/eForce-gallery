@@ -48,6 +48,7 @@ class GalleryRender {
             document.body.appendChild(lineDiv)
             this.renderedDivs.push(lineDiv)
         }
+        this.renderedDivs[this.renderedDivs.length - 1].setAttribute("class", "last-line-div")
     }
     static clearPage(){
         for(let i = 0; i<this.renderedDivs.length; i++){

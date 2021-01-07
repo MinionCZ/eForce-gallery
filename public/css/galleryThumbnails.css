@@ -1,8 +1,8 @@
 
 div.galleryDiv {
-    margin: 2%;
-    display: table-cell;
+    display: inline-block;
     text-align: center;
+    width: 25%;
 }
 div.searchDiv{
     width: 100%;
@@ -58,10 +58,10 @@ div.statsDiv{
 
 }
 div.lineDiv {
-    display: table-row;
+    display: flex;
     height: auto;
-    text-align: center;
     width: 100%;
+    justify-content: center;
 }
 
 div.galleryDiv:hover{
