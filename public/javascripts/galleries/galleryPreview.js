@@ -128,7 +128,7 @@ class GalleryPreview {
     static deleteGallery(){
         const form = document.createElement("form")
         form.setAttribute("method", "post")
-        form.setAttribute("action", "/delete/gallery")
+        form.setAttribute("action", "/eforce-gallery/delete/gallery")
 
         const idInput = document.createElement("input")
         idInput.setAttribute("name", "galleryID")
@@ -144,7 +144,7 @@ class GalleryPreview {
 
 
     static async sendRequestToDownloadGallery(galleryID, version) {
-        let url = "/photo-gallery/download-whole-gallery"
+        let url = "/eforce-gallery/photo-gallery/download-whole-gallery"
         const form = this.createFormForGalleryDownload(url, galleryID, version)
         document.body.appendChild(form)
         form.submit()

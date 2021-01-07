@@ -36,7 +36,7 @@ class Photo{
         return root
     }
     getImageLink(thumbnail = false){
-        return "/photos/fetch-photo-by-id?fileName=" + this.fileName + "&thumbnail=" + thumbnail
+        return "/eforce-gallery/photos/fetch-photo-by-id?fileName=" + this.fileName + "&thumbnail=" + thumbnail
     }
     changeClickState(){
         if(this.checked){

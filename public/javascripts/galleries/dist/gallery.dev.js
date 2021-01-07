@@ -31,7 +31,7 @@ function () {
     this.contributor = gallery.contributor;
     this.lastChanges = gallery.lastChanges;
     this.label = gallery.label;
-    this.photoURL = "/photo-gallery/get-photo?galleryID=" + this.id;
+    this.photoURL = "/eforce-gallery/photo-gallery/get-photo?galleryID=" + this.id;
     this.searchWords = this.generateSearchWords();
     this.isRendered = true;
     this.tagButtons = new Map();

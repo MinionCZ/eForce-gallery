@@ -12,7 +12,7 @@ async function downloadSelectedPhotos(selectedPhotos, allPhotos, version, tags) 
         tags: tags
     }
 
-    const response = await fetch("/download/generate-token-for-download", {
+    const response = await fetch("/eforce-gallery/download/generate-token-for-download", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
@@ -21,7 +21,7 @@ async function downloadSelectedPhotos(selectedPhotos, allPhotos, version, tags) 
     })
     const respondedData = await response.json()
     const a = document.createElement("a")
-    a.href = window.location.origin + "/download/photos?downloadToken=" + respondedData.downloadToken
+    a.href = window.location.origin + "/eforce-gallery/download/photos?downloadToken=" + respondedData.downloadToken
     a.click()
 }
 
@@ -45,7 +45,7 @@ async function deleteSelected(selectedPhotos, allPhotos){
         photos: cropPhotos(selectedPhotos),
         allPhotos: allPhotos
     }
-    const response = await fetch("/photos/delete", {
+    const response = await fetch("/eforce-gallery/photos/delete", {
         method:"POST",
         headers: {
             'Content-Type': 'application/json'

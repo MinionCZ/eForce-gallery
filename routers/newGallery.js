@@ -39,7 +39,7 @@ router.post("/eforce-gallery/gallery/add", async function (request, response) {
     response.render("newGallery.ejs")
 })
 
-router.get("/galleries/fetch-titles-and-tags", async function (request, response) {
+router.get("/eforce-gallery/galleries/fetch-titles-and-tags", async function (request, response) {
     let token = request.cookies.token
     if (!await tokenVerifier.isTokenValid(token, response)) {
         return

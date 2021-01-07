@@ -17,7 +17,7 @@ router.get("/eforce-gallery/photos", async function (request, response) {
 /*
 
 */
-router.get("/get-all-photos", async function (request, response){
+router.get("/eforce-gallery/get-all-photos", async function (request, response){
     let token = request.cookies.token
     if (!await tokenVerifier.isTokenValid(token, response)) {
         return
@@ -26,7 +26,7 @@ router.get("/get-all-photos", async function (request, response){
     response.json(await photoDatabase.filterPhotosByTags([], request.query.page, request.query.photosPerPage))
 })
 
-router.post("/photos/delete", async function(request, response){
+router.post("/eforce-gallery/photos/delete", async function(request, response){
     let token = request.cookies.token
     if (!await tokenVerifier.isTokenValid(token, response)) {
         return

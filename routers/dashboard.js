@@ -15,7 +15,7 @@ router.get("/eforce-gallery/dashboard", async function (request, response) {
     });
 })
 
-router.get("/galleries/get-all", async function (request, response) {
+router.get("/eforce-gallery/galleries/get-all", async function (request, response) {
     let token = request.cookies.token
     if (!await tokenVerifier.isTokenValid(token, response)) {
         return

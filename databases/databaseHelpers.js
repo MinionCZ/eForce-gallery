@@ -16,6 +16,10 @@ function getThumbnailFromFileName(fileName) {
 }
 
 function deletePhoto(photoName) {
+    if (typeof(photoName) === Object){
+        photoName = photoName.fileName
+    }
+    console.log(photoName)
     fs.unlinkSync("./photos/uploads/" + photoName)
     fs.unlinkSync("./photos/thumbnails/" + getThumbnailFromFileName(photoName))
     fs.unlinkSync("./photos/lite-photos/" + photoName)

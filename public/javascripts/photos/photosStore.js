@@ -29,7 +29,7 @@ class PhotosStore {
     static photoPreview = null
     static fetchPage(page) {
         let request = new XMLHttpRequest()
-        request.open("GET", "/get-all-photos?page=" + page + "&photosPerPage=" + 60, false)
+        request.open("GET", "/eforce-gallery/get-all-photos?page=" + page + "&photosPerPage=" + 60, false)
         request.onload = () => {
             this.fillPhotosArray(request.responseText)
         }

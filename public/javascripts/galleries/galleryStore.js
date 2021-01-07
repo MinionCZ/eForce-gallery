@@ -12,7 +12,7 @@ class GalleryStore {
     static colorTagMap = new Map()
     static fetchTagColors(){
         const request = new XMLHttpRequest()
-        request.open("GET", "/photo-gallery/get-all-tags-colors")
+        request.open("GET", "/eforce-gallery/photo-gallery/get-all-tags-colors")
         request.onload = () =>{
             this.colors = JSON.parse(request.responseText)
             this.colors = JSON.parse(this.colors)

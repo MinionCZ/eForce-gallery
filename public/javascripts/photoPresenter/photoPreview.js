@@ -28,7 +28,7 @@ class PhotoPreview {
     */
     async downloadPhoto(filename, version) {
         const a = document.createElement("a")
-        a.href = window.location.origin + "/photos/download-one?version=" + version + "&" + "filename=" + filename
+        a.href = window.location.origin + "/eforce-gallery/photos/download-one?version=" + version + "&" + "filename=" + filename
         a.click()
     }
 
@@ -41,7 +41,7 @@ class PhotoPreview {
             photos: [filename],
             allPhotos: false
         }
-        const response = await fetch("/photos/delete", {
+        const response = await fetch("/eforce-gallery/photos/delete", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'

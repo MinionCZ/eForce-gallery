@@ -9,7 +9,7 @@ fetcher synchronous data from backend -> tags and gallery titles
 */
 async function fetchGalleryInformation(){
     let req = new XMLHttpRequest()
-    req.open("GET", "/galleries/fetch-titles-and-tags", false)
+    req.open("GET", "/eforce-gallery/galleries/fetch-titles-and-tags", false)
     req.onload = () =>{
         const data = JSON.parse(req.response)
         titles = new Set(data.titles)

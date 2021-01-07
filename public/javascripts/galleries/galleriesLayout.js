@@ -20,7 +20,7 @@ function fetchGalleriesInfo() {
     GalleryStore.fetchTagColors()
     var request = new XMLHttpRequest()
     request.addEventListener("load", handleGalleryInformation)
-    request.open("GET", "/galleries/get-all")
+    request.open("GET", "/eforce-gallery/galleries/get-all")
     request.send()
 
 }

@@ -72,7 +72,7 @@ function sendFileToGallery(galleryId) {
             }
         }
     }
-    xhr.open("POST", "/gallery/photos/upload")
+    xhr.open("POST", "/eforce-gallery/gallery/photos/upload")
     xhr.send(formData)
 }
 

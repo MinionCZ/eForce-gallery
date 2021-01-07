@@ -35,7 +35,7 @@ const upload = multer({
 /*
 takes care of uploading photos to server and saves them on disk and creates their thumbanils
 */
-router.post("/gallery/photos/upload", async function (request, response) {
+router.post("/eforce-gallery/gallery/photos/upload", async function (request, response) {
     let token = request.cookies.token
     if (!tokenVerifier.isTokenValid(token, response)) {
         return
@@ -63,7 +63,7 @@ router.post("/gallery/photos/upload", async function (request, response) {
 /*
 gets preview photo on gallery, if gallery is empty sends no photo image
 */
-router.get("/photo-gallery/get-photo", async function (request, response) {
+router.get("/eforce-gallery/photo-gallery/get-photo", async function (request, response) {
     let token = request.cookies.token
     if (!tokenVerifier.isTokenValid(token, response)) {
         return
@@ -82,7 +82,7 @@ router.get("/photo-gallery/get-photo", async function (request, response) {
 /*
 sends config with color for coloring tags on
 */
-router.get("/photo-gallery/get-all-tags-colors", async function (request, response) {
+router.get("/eforce-gallery/photo-gallery/get-all-tags-colors", async function (request, response) {
     let token = request.cookies.token
     if (!tokenVerifier.isTokenValid(token, response)) {
         return
@@ -94,7 +94,7 @@ router.get("/photo-gallery/get-all-tags-colors", async function (request, respon
 /*
 fetches photo by id - filename for front end to show it
 */
-router.get("/photos/fetch-photo-by-id", async function (request, response){
+router.get("/eforce-gallery/photos/fetch-photo-by-id", async function (request, response){
     let token = request.cookies.token
     if (!tokenVerifier.isTokenValid(token, response)) {
         return
@@ -111,7 +111,7 @@ router.get("/photos/fetch-photo-by-id", async function (request, response){
 /*
 downloads one photo after sending request to download it with fetch
 */
-router.get("/photos/download-one", async function(request, response){
+router.get("/eforce-gallery/photos/download-one", async function(request, response){
     let token = request.cookies.token
     if (!tokenVerifier.isTokenValid(token, response)) {
         return
