@@ -1,8 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const tokenVerifier = require("../verifiers/token")
 const photoDatabase = require("../databases/photoDatabase")
-
+const headerParser = require("./headersParser")
 
 function harvestTags(request) {
 
@@ -17,34 +16,20 @@ function harvestTags(request) {
 }
 
 router.get("/eforce-gallery/gallery/add", async function (request, response) {
-    let token = request.cookies.token
-    if (!await tokenVerifier.isTokenValid(token, response)) {
-        return
-    }
-    token = tokenVerifier.refreshToken(token, response)
     response.render("newGallery.ejs")
 })
 router.post("/eforce-gallery/gallery/add", async function (request, response) {
-    let token = request.cookies.token
     const tempGalleryId = request.cookies.galleryId
-    if (!await tokenVerifier.isTokenValid(token, response)) {
-        return
-    }
-    token = tokenVerifier.refreshToken(token, response)
+    const parsedHeaders = headerParser.getHeaders(request)
     if (parseInt(request.body.photoCounter) > 0) {
-        photoDatabase.pushGalleryWithPhotos(tempGalleryId, request.body.title, request.body.label, harvestTags(request), request.body.date, tokenVerifier.getUsernameFromToken(token))
+        photoDatabase.pushGalleryWithPhotos(tempGalleryId, request.body.title, request.body.label, harvestTags(request), request.body.date, parsedHeaders.username)
     } else {
-        photoDatabase.pushGalleryWithoutPhotos(request.body.title, request.body.label, harvestTags(request), request.body.date, tokenVerifier.getUsernameFromToken(token))
+        photoDatabase.pushGalleryWithoutPhotos(request.body.title, request.body.label, harvestTags(request), request.body.date, parsedHeaders.username)
     }
     response.render("newGallery.ejs")
 })
 
 router.get("/eforce-gallery/galleries/fetch-titles-and-tags", async function (request, response) {
-    let token = request.cookies.token
-    if (!await tokenVerifier.isTokenValid(token, response)) {
-        return
-    }
-    token = tokenVerifier.refreshToken(token, response)
     const galleries = await photoDatabase.getAllGalleries()
     const titles = []
     const tags = new Set()

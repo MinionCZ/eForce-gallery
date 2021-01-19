@@ -9,8 +9,6 @@ var bodyParser = require('body-parser');
 
 var cookieParser = require('cookie-parser');
 
-var loginRouter = require('./routers/login.js');
-
 var mongoInitializer = require("./databases/mongoInitializer.js");
 
 var dashboardRouter = require("./routers/dashboard");
@@ -24,8 +22,6 @@ var photosRouter = require("./routers/photos");
 var fileUpload = require('express-fileupload');
 
 var fileRouter = require("./routers/fileHandler");
-
-var errorRouter = require("./routers/unauthorized");
 
 var photoDatabase = require("./databases/photoDatabase");
 
@@ -41,12 +37,10 @@ app.use(express.urlencoded({
 app.use(bodyParser.json());
 app.use("/eforce-gallery", express["static"]("public"));
 app.use(cookieParser());
-app.use(loginRouter);
 app.use(newGalleryRouter);
 app.use(galleryManager.router);
 app.use(dashboardRouter);
 app.use(photosRouter);
-app.use(errorRouter);
 app.use(fileRouter.router);
 app.use(downloadHandler);
 app.use(fileUpload({
@@ -62,9 +56,9 @@ var server = app.listen(port, function () {
   photoDatabase.clearTempGallery();
 });
 app.get("/", function (request, response) {
-  response.redirect("/login");
+  response.redirect("/eforce-gallery/dashboard");
 });
 
 function redirectUnmatched(request, response) {
-  response.redirect("/eforce-gallery/login");
+  response.redirect("/eforce-gallery/dashboard");
 }

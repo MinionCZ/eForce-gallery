@@ -125,10 +125,16 @@ async function createPopupWindow(text, time = 3000){
 
     popup.style.width = (text.length + 10) + "ch"
     popup.style.right = "calc(50% - " + (text.length+10)/2   + "ch)"
-
+    const previousPopup = document.getElementById("popup")
+    if(previousPopup !== null){
+        document.body.removeChild(previousPopup)
+    }
     document.body.appendChild(popup)
+
     setTimeout(() => {
-        document.body.removeChild(popup)
+        if(document.body.contains(popup)){
+            document.body.removeChild(popup)
+        }
     }, time)
 }
 

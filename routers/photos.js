@@ -1,15 +1,9 @@
 const express = require('express')
 const router = express.Router()
-const tokenVerifier = require("../verifiers/token")
 const photoDatabase = require("../databases/photoDatabase")
 
 
 router.get("/eforce-gallery/photos", async function (request, response) {
-    let token = request.cookies.token
-    if (!await tokenVerifier.isTokenValid(token, response)) {
-        return
-    }
-    token = tokenVerifier.refreshToken(token, response)
     response.render("allPhotos.ejs")
 })
 
@@ -18,20 +12,10 @@ router.get("/eforce-gallery/photos", async function (request, response) {
 
 */
 router.get("/eforce-gallery/get-all-photos", async function (request, response){
-    let token = request.cookies.token
-    if (!await tokenVerifier.isTokenValid(token, response)) {
-        return
-    }
-    token = tokenVerifier.refreshToken(token, response)
     response.json(await photoDatabase.filterPhotosByTags([], request.query.page, request.query.photosPerPage))
 })
 
 router.post("/eforce-gallery/photos/delete", async function(request, response){
-    let token = request.cookies.token
-    if (!await tokenVerifier.isTokenValid(token, response)) {
-        return
-    }
-    token = tokenVerifier.refreshToken(token, response)
     let photosToDelete = request.body.photos
     if(request.body.allPhotos){
         photosToDelete = await photoDatabase.getAllPhotos(request.body.photos)

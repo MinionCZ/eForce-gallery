@@ -3,7 +3,6 @@ const app = express();
 const port = 10088;
 var bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser');
-const loginRouter = require('./routers/login.js')
 const mongoInitializer = require("./databases/mongoInitializer.js")
 const dashboardRouter = require("./routers/dashboard")
 const tokenVerifier = require("./verifiers/token")
@@ -11,7 +10,6 @@ const newGalleryRouter = require("./routers/newGallery")
 const photosRouter = require("./routers/photos")
 const fileUpload = require('express-fileupload');
 const fileRouter = require("./routers/fileHandler")
-const errorRouter = require("./routers/unauthorized")
 const photoDatabase = require("./databases/photoDatabase")
 const downloadHandler = require("./routers/downloadHandler")
 const galleryManager = require("./routers/galleryManager")
@@ -24,12 +22,10 @@ app.use(express.urlencoded({
 app.use(bodyParser.json());
 app.use("/eforce-gallery",express.static("public"))
 app.use(cookieParser())
-app.use(loginRouter)
 app.use(newGalleryRouter)
 app.use(galleryManager.router)
 app.use(dashboardRouter)
 app.use(photosRouter)
-app.use(errorRouter)
 app.use(fileRouter.router)
 app.use(downloadHandler)
 app.use(fileUpload({
@@ -45,8 +41,8 @@ const server = app.listen(port, function () {
     photoDatabase.clearTempGallery()
 })
 app.get("/", function (request, response) {
-    response.redirect("/login")
+    response.redirect("/eforce-gallery/dashboard")
 })
 function redirectUnmatched(request, response){
-    response.redirect("/eforce-gallery/login")
+    response.redirect("/eforce-gallery/dashboard")
 }
