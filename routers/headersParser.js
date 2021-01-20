@@ -1,5 +1,4 @@
 function getHeaders(request){
-    console.log(request.headers)
     let username = request.header("X-Auth-Username")
     let userID = request.header("X-Auth-Userid")
     let userEmail = request.header("X-Auth-Email")
@@ -12,7 +11,6 @@ function getHeaders(request){
     if (userEmail === undefined){
         userEmail = "Randolf's email"
     }
-    console.log(username, userID, userEmail)
     return {
         username: username,
         userID: userID,

@@ -22,9 +22,20 @@ function parseGalleryTitles(jsonTitles){
     return titles
 }
 
-async function fetchGalleryByTitle(){
-    
+async function fetchGalleryByTitle(title){
+    const response = await fetch("/eforce-gallery/fetch-gallery-by-title", {
+        headers:{
+            'Content-Type': 'application/json'
+        },
+        method: "POST",
+        body: JSON.stringify({
+            title:title
+        })
+    })
+    return await response.json()
 }
+
 export {
-    fetchAllGalleries
+    fetchAllGalleries,
+    fetchGalleryByTitle
 }

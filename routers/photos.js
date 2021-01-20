@@ -9,12 +9,15 @@ router.get("/eforce-gallery/photos", async function (request, response) {
 
 
 /*
-
+gets all photos on page
 */
 router.get("/eforce-gallery/get-all-photos", async function (request, response){
     response.json(await photoDatabase.filterPhotosByTags([], request.query.page, request.query.photosPerPage))
 })
 
+/*
+deletes photos in request
+*/
 router.post("/eforce-gallery/photos/delete", async function(request, response){
     let photosToDelete = request.body.photos
     if(request.body.allPhotos){

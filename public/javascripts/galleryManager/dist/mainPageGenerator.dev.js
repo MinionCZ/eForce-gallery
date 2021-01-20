@@ -4,8 +4,10 @@ var _galleryFetcher = require("./galleryFetcher.js");
 
 var _layoutGenerator = require("../photos/layoutGenerator.js");
 
+var _galleryStore = require("./galleryStore.js");
+
 function buildMainLayout(isGallerySelected) {
-  var root, galTitles;
+  var root, galTitles, galleryTitle;
   return regeneratorRuntime.async(function buildMainLayout$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
@@ -18,11 +20,29 @@ function buildMainLayout(isGallerySelected) {
         case 4:
           galTitles = _context.sent;
 
-          if (isGalleryInURL(galTitles)) {} else {
-            root.appendChild(buildGalleryChooser(galTitles));
+          if (!isGalleryInURL(galTitles)) {
+            _context.next = 15;
+            break;
           }
 
-        case 6:
+          galleryTitle = getGalleryFromURL();
+          _context.t0 = _galleryStore.GalleryStore;
+          _context.next = 10;
+          return regeneratorRuntime.awrap((0, _galleryFetcher.fetchGalleryByTitle)(galleryTitle));
+
+        case 10:
+          _context.t1 = _context.sent;
+
+          _context.t0.buildNewGallery.call(_context.t0, _context.t1);
+
+          root.appendChild(buildGalleryChooser(galTitles, true, galleryTitle));
+          _context.next = 16;
+          break;
+
+        case 15:
+          root.appendChild(buildGalleryChooser(galTitles, false));
+
+        case 16:
         case "end":
           return _context.stop();
       }
@@ -34,7 +54,8 @@ creates selector for galleries if gallery is not choosen
 */
 
 
-function buildGalleryChooser(galTitles) {
+function buildGalleryChooser(galTitles, isSelected) {
+  var selectedGallery = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
   var div = document.createElement("div");
   var selector = document.createElement("input");
   selector.setAttribute("class", "text");
@@ -67,12 +88,15 @@ function buildGalleryChooser(galTitles) {
   }
 
   dataList.innerHTML = buffer;
+  var submitBtn = document.createElement("button");
+  submitBtn.textContent = "Submit";
   div.appendChild(selector);
   div.appendChild(dataList);
+  div.appendChild(submitBtn);
   selector.addEventListener("keyup", function (event) {
-    if (event.key === "Enter" || event.key === undefined) {
+    if (event.key === "Enter") {
       if (isStringInArray(selector.value, galTitles)) {
-        console.log("fire");
+        setNewGallery(selector.value);
       } else {
         if (selector.value.length > 0) {
           (0, _layoutGenerator.createPopupWindow)("Gallery with title \"" + selector.value + "\" does not exists");
@@ -82,6 +106,30 @@ function buildGalleryChooser(galTitles) {
       }
     }
   });
+
+  submitBtn.onclick = function () {
+    if (isStringInArray(selector.value, galTitles)) {
+      setNewGallery(selector.value);
+    } else {
+      if (selector.value.length > 0) {
+        (0, _layoutGenerator.createPopupWindow)("Gallery with title \"" + selector.value + "\" does not exists");
+      } else {
+        (0, _layoutGenerator.createPopupWindow)("Please fill in gallery title or choose from list");
+      }
+    }
+  };
+
+  if (isSelected) {
+    selector.setAttribute("class", "selected gallery-fetcher-roll");
+    submitBtn.setAttribute("class", "selected submit-button");
+    div.setAttribute("class", "selected gallery-fetcher-div");
+    selector.value = selectedGallery;
+  } else {
+    selector.setAttribute("class", "gallery-fetcher-roll");
+    submitBtn.setAttribute("class", "submit-button");
+    div.setAttribute("class", "gallery-fetcher-div");
+  }
+
   return div;
 }
 /*
@@ -90,7 +138,6 @@ checks if gallery is in array and if url is not corrupted or empty
 
 
 function isGalleryInURL(galTitles) {
-  console.log(galTitles);
   var url = new URL(window.location.href);
   var param = url.searchParams.get("gallery-title");
 
@@ -134,6 +181,29 @@ function isStringInArray(string, array) {
   }
 
   return false;
+}
+
+function setNewGallery(title) {
+  var url;
+  return regeneratorRuntime.async(function setNewGallery$(_context2) {
+    while (1) {
+      switch (_context2.prev = _context2.next) {
+        case 0:
+          url = new URL(window.location.href);
+          url.searchParams.set("gallery-title", title);
+          window.location.href = url;
+
+        case 3:
+        case "end":
+          return _context2.stop();
+      }
+    }
+  });
+}
+
+function getGalleryFromURL() {
+  var url = new URL(window.location.href);
+  return url.searchParams.get("gallery-title");
 }
 
 window.onload = function () {

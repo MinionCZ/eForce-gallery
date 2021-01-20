@@ -170,7 +170,6 @@ function calculateSizeOfGallery(gallery) {
     let liteSize = 0
     const fullPath = __dirname + "/../photos/uploads/"
     const litePath = __dirname + "/../photos/lite-photos/"
-    console.log(gallery.photos)
     for (const photo of gallery.photos) {
         if (fs.existsSync(fullPath + photo)) {
             fullSize += fs.statSync(fullPath + photo).size / 1000 / 1000
@@ -186,6 +185,9 @@ function calculateSizeOfGallery(gallery) {
 }
 setInterval(syncGallerySizes, 24 * 60 * 60 * 1000)
 
+async function getGalleryByTitle(title){
+    return await galleries.findOne({galleryTitle: title})
+}
 
 
 
@@ -196,5 +198,6 @@ module.exports = {
     galleryModifierInit,
     updatePhoto,
     syncGallerySizes,
-    deletePhotos
+    deletePhotos,
+    getGalleryByTitle
 }
