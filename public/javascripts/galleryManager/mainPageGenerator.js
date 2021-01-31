@@ -9,19 +9,22 @@ import {
 import {
     GalleryStore
 }from "./galleryStore.js"
+import {
+    generateTopSwitchLayout
+} from "./topSwitchLayout.js"
+
 /*
 builds main page of gallery manager, one without photos
 */
-async function buildMainLayout(isGallerySelected) {
-    const root = document.createElement("div")
-    document.body.appendChild(root)
+async function buildMainLayout() {
     const galTitles = await fetchAllGalleries()
     if (isGalleryInURL(galTitles)) {
         const galleryTitle = getGalleryFromURL()
         GalleryStore.buildNewGallery(await fetchGalleryByTitle(galleryTitle))
-        root.appendChild(buildGalleryChooser(galTitles, true, galleryTitle))
+        GalleryStore.setGalTitles(galTitles)
+        buildMainPage()
     } else {
-        root.appendChild(buildGalleryChooser(galTitles, false))
+        document.body.appendChild(buildGalleryChooser(galTitles, false))
     }
 }
 
@@ -118,6 +121,85 @@ function getGalleryFromURL(){
     return url.searchParams.get("gallery-title")
 }
 
+function buildMainPage(){
+    GalleryStore.clearRoot()
+    const root = GalleryStore.getRoot()
+    root.appendChild(generateTopSwitchLayout())
+    root.appendChild(buildGalleryChooser(GalleryStore.getGalTitles(), true, GalleryStore.getGallery().title))
+    root.appendChild(buildBasicInformationTable())
+    root.appendChild(buildLabelLayout())
+}
+
+
+function buildBasicInformationTable(){
+    const gallery = GalleryStore.getGallery()
+    const infoTableDiv = document.createElement("div")
+    infoTableDiv.setAttribute("class", "info-table-div")
+    const title = document.createElement("h1")
+    title.innerText = "Gallery overview"
+    title.setAttribute("class", "table-title")
+    infoTableDiv.appendChild(title)
+
+
+    const firstRow = document.createElement("div")
+    firstRow.setAttribute("class", "input-row")
+    firstRow.appendChild(buildTableRow("Title: ", gallery.title, true))
+    firstRow.appendChild(buildTableRow("Event date: ", gallery.eventDate, true, "date"))
+    firstRow.appendChild(buildTableRow("Contributor: ", gallery.contributor, false))
+
+    const secondRow = document.createElement("div")
+    secondRow.setAttribute("class", "input-row")
+
+    
+    secondRow.appendChild(buildTableRow("Number of photos: ", gallery.photos.length, false))
+    secondRow.appendChild(buildTableRow("Contribution date: ", gallery.contributionDate ,false, "date"))
+    secondRow.appendChild(buildTableRow("Gallery size: ", gallery.fullSize, false))
+    infoTableDiv.appendChild(firstRow)
+    infoTableDiv.appendChild(secondRow)
+    return infoTableDiv
+}
+
+function buildTableRow(title, value, changable, type = "text"){
+    const div = document.createElement("div")
+    div.setAttribute("class", "stats-div")
+    const label = document.createElement("label")
+    label.setAttribute("for", title)
+    label.innerText = title
+    const input = document.createElement("input")
+    input.setAttribute("id", title)
+    input.type = type
+    if(changable){
+        input.setAttribute("class", "gallery-input changable")
+    }else{
+        input.setAttribute("class", "gallery-input")
+    }
+
+    input.readOnly = !changable
+    input.value = value
+    div.appendChild(label)
+    div.appendChild(document.createElement("br"))
+    div.appendChild(input)
+    return div
+}
+
+function buildLabelLayout(){
+    const gallery = GalleryStore.getGallery()
+    const div = document.createElement("div")
+    div.setAttribute("class","gallery-label-div")
+    const title = document.createElement("h4")
+    title.setAttribute("class", "gallery-label-title")
+    title.innerText = "Gallery label:"
+    const label = document.createElement("textarea")
+    label.innerText = gallery.label
+    label.setAttribute("class", "gallery-label")
+    div.appendChild(title)
+    div.appendChild(label)
+    return div
+}
+
 window.onload = () => {
-    buildMainLayout(false)
+    buildMainLayout()
+}
+export{
+    buildMainPage
 }

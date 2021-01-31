@@ -186,7 +186,10 @@ function calculateSizeOfGallery(gallery) {
 setInterval(syncGallerySizes, 24 * 60 * 60 * 1000)
 
 async function getGalleryByTitle(title){
-    return await galleries.findOne({galleryTitle: title})
+    const gallery = await galleries.findOne({galleryTitle: title})
+    gallery.contributionDate = databaseHelper.convertDateToHTML(gallery.contributionDate)
+    gallery.dateOfEvent = databaseHelper.convertDateToHTML(gallery.dateOfEvent)
+    return gallery
 }
 
 

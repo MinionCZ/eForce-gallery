@@ -4,17 +4,33 @@ function convertDateFromHTML(date) {
     let datePieces = date.split("-")
     return datePieces[2] + "." + datePieces[1] + "." + datePieces[0]
 }
-
+/*
+converts normal date to html form
+*/
 function convertDateToHTML(date) {
     let datePieces = date.split(".")
+
+    if (datePieces[1].length === 1){
+        datePieces[1] = "0" + datePieces[1]
+    }
+    if(datePieces[0].length === 1){
+        datePieces[0] = "0" + datePieces[0]
+    }
+
     return datePieces[2] + "-" + datePieces[1] + "-" + datePieces[0]
 }
 
+/*
+creates thumbnail from file name
+*/
 function getThumbnailFromFileName(fileName) {
     let filenames = fileName.split(".")
     return filenames[0] + "-th." + filenames[1]
 }
 
+/*
+deletes photo by name from disk
+*/
 function deletePhoto(photoName) {
     if (typeof(photoName) === Object){
         photoName = photoName.fileName
@@ -26,11 +42,17 @@ function deletePhoto(photoName) {
     fs.unlinkSync("./photos/big-thumbnails/" + getThumbnailFromFileName(photoName))
 }
 
+/*
+deletes multiple photos
+*/
 async function deleteManyPhotos(photos) {
     for (const photo of photos) {
         deletePhoto(photo)
     }
 }
+/*
+adds string to file name
+*/
 function addStringToFileName(filename, string){
     const splittedFilename = filename.split(".")
     splittedFilename[0] += string

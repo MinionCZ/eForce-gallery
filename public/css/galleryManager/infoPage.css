@@ -1,0 +1,70 @@
+div.top-switch-div {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  width: 110%;
+  text-align: center;
+  height: 50px;
+  background-color: darkgray;
+  line-height: 50px;
+}
+button.top-switch-button {
+  width: 15%;
+  height: 100%;
+  background-color: darkgray;
+  font-size: 20px;
+  outline: none;
+  border: none;
+  transition-duration: 0.2s;
+}
+button.selected {
+  background-color: white;
+  color: black;
+}
+button.top-switch-button:hover {
+  background-color: lightgray;
+}
+
+button.top-switch-button:active {
+  background-color: white;
+}
+div.info-table-div {
+  margin-top: 100px;
+  width: 100;
+  text-align: center;
+}
+div.stats-div {
+  text-align: center;
+  margin-top: 20px;
+  width: 20%;
+  display: inline-block;
+}
+label {
+    font-size: 20px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+input.gallery-input{
+    margin-top: 10px;
+    font-size: 15px;
+    height: 3ch;
+    width: auto;
+    text-align: center;
+    border: none;
+    border: 1px black solid;
+    outline: none;
+    border-radius: 5px;
+}
+
+input.gallery-input:hover{
+    background-color: lightblue;
+    cursor: not-allowed;
+}
+input.changable:hover{
+    background-color: lightblue;
+    cursor: text;
+}
+div.input-row{
+    display: inline-block;
+    width: 60%;
+}

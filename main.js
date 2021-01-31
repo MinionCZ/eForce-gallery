@@ -34,8 +34,6 @@ app.use(fileUpload({
 app.use(redirectUnmatched)
 app.set('view-engine', 'ejs')
 const server = app.listen(port, function () {
-    var host = server.address().address
-    var port = server.address().port
     mongoInitializer.initMongo()
     tokenVerifier.initJWT();
     photoDatabase.clearTempGallery()
