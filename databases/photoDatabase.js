@@ -18,24 +18,6 @@ function clientInitializer(clientInit) {
 }
 
 /*
-returns time
-*/
-
-
-function getTime() {
-    let now = new Date()
-    return now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds()
-}
-/*
-get today date
-*/
-
-function getToday() {
-    let now = new Date()
-    let month = parseInt(now.getMonth()) + 1
-    return now.getDate() + "." + month + "." + now.getFullYear()
-}
-/*
 inserts temp photo into the database after receiving it from user
 */
 
@@ -92,8 +74,8 @@ async function pushGalleryWithPhotos(tempGalleryId, galleryTitle, galleryLabel, 
     let galleryPhotos = await getTempPhotosByGalleryId(tempGalleryId)
     let photoNames = []
     let newPhotos = []
-    let today = getToday()
-    let time = getTime()
+    let today = databaseHelper.getToday()
+    let time = databaseHelper.getTime()
     let galleryID = await generateUniqueGalleryID()
     const eventDate = databaseHelper.convertDateFromHTML(dateOfEvent)
 
@@ -184,8 +166,8 @@ pushes new gallery without photos to database
 */
 
 async function pushGalleryWithoutPhotos(galleryTitle, galleryLabel, tags, eventDate, username) {
-    let today = getToday()
-    let time = getTime()
+    let today = databaseHelper.getToday()
+    let time = databaseHelper.getTime()
     let galleryID = await generateUniqueGalleryID()
     const gallery = {
         galleryID: galleryID,

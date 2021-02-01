@@ -47,23 +47,26 @@ function generateTagDiv(tag, id) {
 	tagInput.value = tag;
 	tagInput.setAttribute("type", "text")
 	tagInput.setAttribute("class", "tag-input");
+	tagInput.setAttribute("id", "tagInput=" + id)
 	const button = document.createElement("button");
 	button.innerText = "\u2715";
 	button.setAttribute("class", "delete-tag-button")
 	button.onclick = () => {
 		deleteTag(id);
-		generateTagsLayout()
+		
 	}
-
+	tagInput.addEventListener("keydown", handleChangeToNextTag)
+	tagInput.addEventListener("keyup", tagUpdate)
 	div.appendChild(tagInput)
 	div.appendChild(button)
 	return div
 }
 
+
 function deleteTag(id) {
 	tags.splice(id, 1)
-
-	GalleryStore.getGallery().tags = tags;
+	GalleryStore.getGallery().tags = tags
+	generateTagsLayout()
 }
 
 function generateAddingButton() {
@@ -82,6 +85,41 @@ function generateAddingButton() {
 	return div
 }
 
+function handleChangeToNextTag(event){
+	const id = parseInt(event.srcElement.id.split("=")[1])
+
+	if (event.key === "Tab" || event.key === "Enter"){
+		event.preventDefault()
+		if (id + 1 < tags.length){
+			event.srcElement.blur()
+			document.getElementById("tagInput=" + (id + 1)).focus()
+		}else{
+			tags.push("")
+			GalleryStore.getGallery().tags = tags
+			generateTagsLayout()
+			document.getElementById("tagInput=" + (tags.length - 1)).focus()
+		}
+	}
+	if ((event.key === "Backspace" || event.key === "Delete") && tags[id].length === 0){
+		deleteTag(id)
+		if(id > 0){
+			document.getElementById("tagInput=" + (id - 1)).focus()
+		}else if(id === 0 && tags.length > 0){
+			document.getElementById("tagInput=" + 0).focus()
+		}
+	}
+
+}
+
+
+function tagUpdate(event){
+	const id = parseInt(event.srcElement.id.split("=")[1])
+	tags[id] = event.srcElement.value
+}
+
+
+
+
 function fillLastLineDiv(counter, lineDiv){
 	for(;counter % 3 !== 0; counter++){
 		const div = document.createElement("div")
@@ -90,6 +128,7 @@ function fillLastLineDiv(counter, lineDiv){
 	}
 	return lineDiv
 }
+
 
 export {
 	generateTagsLayout

@@ -17,6 +17,11 @@ import{
     generateTagsLayout
 }from "./tagsGenerator.js"
 
+import{
+    submitNewGalleryData
+}from "./galleryUpdater.js"
+
+
 /*
 builds main page of gallery manager, one without photos
 */
@@ -132,6 +137,7 @@ function buildMainPage(){
     root.appendChild(buildGalleryChooser(GalleryStore.getGalTitles(), true, GalleryStore.getGallery().title))
     root.appendChild(buildBasicInformationTable())
     generateTagsLayout()
+    document.body.appendChild(buildSubmitButton())
 }
 
 
@@ -147,8 +153,8 @@ function buildBasicInformationTable(){
 
     const firstRow = document.createElement("div")
     firstRow.setAttribute("class", "input-row")
-    firstRow.appendChild(buildTableRow("Title: ", gallery.title, true))
-    firstRow.appendChild(buildTableRow("Event date: ", gallery.eventDate, true, "date"))
+    firstRow.appendChild(buildTableRow("Title: ", gallery.title, true, "text",saveTitleToGallery))
+    firstRow.appendChild(buildTableRow("Event date: ", gallery.eventDate, true, "date", saveDateToGallery))
     firstRow.appendChild(buildTableRow("Contributor: ", gallery.contributor, false))
 
     const secondRow = document.createElement("div")
@@ -164,7 +170,9 @@ function buildBasicInformationTable(){
     return infoTableDiv
 }
 
-function buildTableRow(title, value, changable, type = "text"){
+
+
+function buildTableRow(title, value, changable, type = "text", callback = null){
     const div = document.createElement("div")
     div.setAttribute("class", "stats-div")
     const label = document.createElement("label")
@@ -175,6 +183,7 @@ function buildTableRow(title, value, changable, type = "text"){
     input.type = type
     if(changable){
         input.setAttribute("class", "gallery-input changable")
+        input.addEventListener("keyup", callback)
     }else{
         input.setAttribute("class", "gallery-input")
     }
@@ -202,6 +211,24 @@ function buildLabelLayout(){
     return div
 }
 
+function buildSubmitButton(){
+    const submitButton = document.createElement("button")
+    submitButton.setAttribute("class", "update-button")
+    submitButton.setAttribute("id", "submitButton")
+    submitButton.innerText = "Submit"
+    submitButton.onclick = () =>{
+        submitNewGalleryData()
+    }
+    return submitButton
+}
+
+function saveTitleToGallery(event){
+    GalleryStore.getGallery().title = event.srcElement.value
+}
+
+function saveDateToGallery(event){
+    GalleryStore.getGallery().eventDate = event.srcElement.value
+}
 window.onload = () => {
     buildMainLayout()
 }

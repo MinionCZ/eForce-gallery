@@ -11,8 +11,7 @@ class Gallery{
         this.lastChanges = dataInJson.lastChanges
         this.lastChangesTime = dataInJson.lastChangesTime
         this.photos = dataInJson.photos
-        this.tags = dataInJson.tags
-        console.log(dataInJson)
+        this.tags = this.cropEmptyTags(dataInJson.tags)
     }
 
     /*
@@ -29,6 +28,16 @@ class Gallery{
         newSize = Math.floor(newSize)
         newSize /= 100
         return newSize + units
+    }
+
+    cropEmptyTags(tags){
+        const croppedTags = []
+        for(const tag of tags){
+            if(tag.length > 0){
+                croppedTags.push(tag)
+            }
+        }
+        return croppedTags
     }
 
 }

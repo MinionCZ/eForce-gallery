@@ -1,4 +1,7 @@
-/**
+
+
+
+/*
  * fetches info of all galleries
  * @returns returns array of strings with names of galleries
  */
@@ -34,6 +37,9 @@ async function fetchGalleryByTitle(title){
     })
     return await response.json()
 }
+
+
+
 
 export {
     fetchAllGalleries,

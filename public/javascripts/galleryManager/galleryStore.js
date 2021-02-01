@@ -3,6 +3,7 @@ import{
 } from "./gallery.js"
 class GalleryStore{
     static gallery = null
+    static oldGallery = null
     static galTitles = null
     static root = document.createElement("div")
 
@@ -19,7 +20,7 @@ class GalleryStore{
     static setGalTitles(galTitles){
         this.galTitles = galTitles
     }
-    static getGalTitles(galTitles){
+    static getGalTitles(){
         return this.galTitles
     }
     
@@ -28,7 +29,11 @@ class GalleryStore{
     }
     static buildNewGallery(dataInJson){
         this.gallery = new Gallery(dataInJson)
+        this.oldGallery = new Gallery(dataInJson)
         return this.gallery
+    }
+    static getOldGallery(){
+        return this.oldGallery
     }
 
 }

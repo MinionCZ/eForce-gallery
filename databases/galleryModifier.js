@@ -4,6 +4,9 @@ let client = null
 let photos = null
 let galleries = null
 
+
+
+
 /*
 init function
 */
@@ -192,7 +195,18 @@ async function getGalleryByTitle(title){
     return gallery
 }
 
+async function updateGallery(galleryToUpdate){
+    await galleries.updateOne({galleryID:galleryToUpdate.galleryID},{ $set:{
+        galleryTitle: galleryToUpdate.title,
+        galleryLabel: galleryToUpdate.label,
+        dateOfEvent: databaseHelper.convertDateFromHTML(galleryToUpdate.eventDate),
+        lastChanges: databaseHelper.getToday(),
+        lastChangesTime: databaseHelper.getTime(),
+        photos: galleryToUpdate.photos,
+        tags: galleryToUpdate.tags
+    }})
 
+}
 
 
 
@@ -202,5 +216,6 @@ module.exports = {
     updatePhoto,
     syncGallerySizes,
     deletePhotos,
-    getGalleryByTitle
+    getGalleryByTitle,
+    updateGallery
 }

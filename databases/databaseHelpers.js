@@ -86,7 +86,27 @@ function fillCharMap(){
     }
 }
 
+function getTime() {
+    let now = new Date()
+    return now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds()
+}
+/*
+get today date
+*/
 
+function getToday() {
+    let now = new Date()
+    let month = parseInt(now.getMonth()) + 1
+    let monthString = "" + month
+    if(month < 10){
+        monthString = "0" + month
+    }
+    let date = "" + now.getDate()
+    if(now.getDate() < 10){
+        date = "0" + now.getDate()
+    }
+    return date + "." + monthString + "." + now.getFullYear()
+}
 
 module.exports = {
     convertDateToHTML,
@@ -95,5 +115,7 @@ module.exports = {
     getThumbnailFromFileName,
     deleteManyPhotos,
     addStringToFileName,
-    stringToEnglish
+    stringToEnglish,
+    getTime,
+    getToday
 }

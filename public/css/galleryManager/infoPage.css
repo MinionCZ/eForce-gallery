@@ -1,3 +1,7 @@
+body{
+  text-align: center;
+}
+
 div.top-switch-div {
   position: absolute;
   top: 50px;
@@ -141,4 +145,25 @@ button.adding-button:hover{
     background-color: white;
     color: #00BC1B;
     border: 1px solid #00BC1B;
+}
+button.update-button{
+  background-color: lightblue;
+  height: 50px;
+  width: 200px;
+  font-size: 25px;
+  outline: none;
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 9px #999;
+  text-align: center;
+  margin-top: 50px;
+  transition: 200ms;
+}
+button.update-button:hover{
+  background-color: #8CBED6;
+}
+button.update-button:active{
+  background-color: #8CBED6;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
 }

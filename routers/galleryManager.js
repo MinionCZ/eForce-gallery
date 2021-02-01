@@ -22,11 +22,14 @@ sends json with information about gallery
 */
 router.post("/eforce-gallery/fetch-gallery-by-title", async (request, response) =>{
     const data = await photoDatabase.getGalleryByTitle(request.body.title)
-    console.log(data)
     response.json(data)
 
 })
 
+router.post("/eforce-gallery/gallery-manager/update-gallery", async (request, response) =>{
+    console.log(request.body)
+    photoDatabase.updateGallery(request.body)
+})
 
 module.exports = {
     router
