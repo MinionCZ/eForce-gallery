@@ -6,6 +6,10 @@ import {
     createPopupWindow
 } from "../photos/layoutGenerator.js"
 
+import{
+    setNewGallery,
+    buildMainLayout
+}from "./mainPageGenerator.js"
 async function submitGallery() {
     const response = await fetch("/eforce-gallery/gallery-manager/update-gallery", {
         method: "POST",
@@ -14,7 +18,11 @@ async function submitGallery() {
         },
         body: JSON.stringify(GalleryStore.getGallery())
     })
-    console.log(response)
+    changeUrl(GalleryStore.getGallery().title)
+    await buildMainLayout()
+
+    createPopupWindow((await response.json()).message)
+
 }
 
 
@@ -82,6 +90,12 @@ function checkIfSomethingChanged() {
         createPopupWindow("There is nothing to submit")
     }
     return changed
+}
+
+function changeUrl(title){
+    const url = new URL(window.location.href)
+    url.searchParams.set("gallery-title", title)
+    window.history.replaceState({}, null, url);
 }
 
 export {

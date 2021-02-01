@@ -8,18 +8,18 @@ import {
 
 import {
     GalleryStore
-}from "./galleryStore.js"
+} from "./galleryStore.js"
 import {
     generateTopSwitchLayout
 } from "./topSwitchLayout.js"
 
-import{
+import {
     generateTagsLayout
-}from "./tagsGenerator.js"
+} from "./tagsGenerator.js"
 
-import{
+import {
     submitNewGalleryData
-}from "./galleryUpdater.js"
+} from "./galleryUpdater.js"
 
 
 /*
@@ -71,10 +71,10 @@ function buildGalleryChooser(galTitles, isSelected, selectedGallery = "") {
         }
     })
 
-    submitBtn.onclick = () =>{
-        if(isStringInArray(selector.value, galTitles)){
+    submitBtn.onclick = () => {
+        if (isStringInArray(selector.value, galTitles)) {
             setNewGallery(selector.value)
-        }else{
+        } else {
             if (selector.value.length > 0) {
                 createPopupWindow("Gallery with title \"" + selector.value + "\" does not exists")
             } else {
@@ -125,23 +125,26 @@ async function setNewGallery(title) {
     window.location.href = url
 }
 
-function getGalleryFromURL(){
+function getGalleryFromURL() {
     const url = new URL(window.location.href)
     return url.searchParams.get("gallery-title")
 }
 
-function buildMainPage(){
+function buildMainPage() {
     GalleryStore.clearRoot()
     const root = GalleryStore.getRoot()
     root.appendChild(generateTopSwitchLayout())
     root.appendChild(buildGalleryChooser(GalleryStore.getGalTitles(), true, GalleryStore.getGallery().title))
     root.appendChild(buildBasicInformationTable())
     generateTagsLayout()
-    document.body.appendChild(buildSubmitButton())
+    if (!document.body.contains(document.getElementById("submitButton"))) {
+        document.body.appendChild(buildSubmitButton())
+    }
+
 }
 
 
-function buildBasicInformationTable(){
+function buildBasicInformationTable() {
     const gallery = GalleryStore.getGallery()
     const infoTableDiv = document.createElement("div")
     infoTableDiv.setAttribute("class", "info-table-div")
@@ -153,16 +156,16 @@ function buildBasicInformationTable(){
 
     const firstRow = document.createElement("div")
     firstRow.setAttribute("class", "input-row")
-    firstRow.appendChild(buildTableRow("Title: ", gallery.title, true, "text",saveTitleToGallery))
+    firstRow.appendChild(buildTableRow("Title: ", gallery.title, true, "text", saveTitleToGallery))
     firstRow.appendChild(buildTableRow("Event date: ", gallery.eventDate, true, "date", saveDateToGallery))
     firstRow.appendChild(buildTableRow("Contributor: ", gallery.contributor, false))
 
     const secondRow = document.createElement("div")
     secondRow.setAttribute("class", "input-row")
 
-    
+
     secondRow.appendChild(buildTableRow("Number of photos: ", gallery.photos.length, false))
-    secondRow.appendChild(buildTableRow("Contribution date: ", gallery.contributionDate ,false, "date"))
+    secondRow.appendChild(buildTableRow("Contribution date: ", gallery.contributionDate, false, "date"))
     secondRow.appendChild(buildTableRow("Gallery size: ", gallery.fullSize, false))
     infoTableDiv.appendChild(firstRow)
     infoTableDiv.appendChild(secondRow)
@@ -172,7 +175,7 @@ function buildBasicInformationTable(){
 
 
 
-function buildTableRow(title, value, changable, type = "text", callback = null){
+function buildTableRow(title, value, changable, type = "text", callback = null) {
     const div = document.createElement("div")
     div.setAttribute("class", "stats-div")
     const label = document.createElement("label")
@@ -181,10 +184,10 @@ function buildTableRow(title, value, changable, type = "text", callback = null){
     const input = document.createElement("input")
     input.setAttribute("id", title)
     input.type = type
-    if(changable){
+    if (changable) {
         input.setAttribute("class", "gallery-input changable")
-        input.addEventListener("keyup", callback)
-    }else{
+        input.addEventListener("input", callback)
+    } else {
         input.setAttribute("class", "gallery-input")
     }
 
@@ -196,42 +199,48 @@ function buildTableRow(title, value, changable, type = "text", callback = null){
     return div
 }
 
-function buildLabelLayout(){
+function buildLabelLayout() {
     const gallery = GalleryStore.getGallery()
     const div = document.createElement("div")
-    div.setAttribute("class","gallery-label-div")
-    const title = document.createElement("h4")
+    div.setAttribute("class", "gallery-label-div")
+    const title = document.createElement("h2")
     title.setAttribute("class", "gallery-label-title")
     title.innerText = "Gallery label:"
     const label = document.createElement("textarea")
     label.innerText = gallery.label
+    label.addEventListener("input", () =>{
+        GalleryStore.getGallery().label = label.value
+    })
     label.setAttribute("class", "gallery-label")
     div.appendChild(title)
     div.appendChild(label)
     return div
 }
 
-function buildSubmitButton(){
+function buildSubmitButton() {
     const submitButton = document.createElement("button")
     submitButton.setAttribute("class", "update-button")
     submitButton.setAttribute("id", "submitButton")
     submitButton.innerText = "Submit"
-    submitButton.onclick = () =>{
+    submitButton.onclick = () => {
         submitNewGalleryData()
     }
     return submitButton
 }
 
-function saveTitleToGallery(event){
+function saveTitleToGallery(event) {
     GalleryStore.getGallery().title = event.srcElement.value
 }
 
-function saveDateToGallery(event){
+function saveDateToGallery(event) {
+    console.log(event.srcElement.value)
     GalleryStore.getGallery().eventDate = event.srcElement.value
 }
 window.onload = () => {
     buildMainLayout()
 }
-export{
-    buildMainPage
+export {
+    buildMainPage,
+    setNewGallery,
+    buildMainLayout
 }

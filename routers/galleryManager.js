@@ -27,8 +27,11 @@ router.post("/eforce-gallery/fetch-gallery-by-title", async (request, response) 
 })
 
 router.post("/eforce-gallery/gallery-manager/update-gallery", async (request, response) =>{
-    console.log(request.body)
-    photoDatabase.updateGallery(request.body)
+    await photoDatabase.updateGallery(request.body)
+    const data = {
+        message: "Gallery has been changed succesfully"
+    }
+    response.json(data)
 })
 
 module.exports = {
