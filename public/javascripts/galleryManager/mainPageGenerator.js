@@ -13,6 +13,10 @@ import {
     generateTopSwitchLayout
 } from "./topSwitchLayout.js"
 
+import{
+    generateTagsLayout
+}from "./tagsGenerator.js"
+
 /*
 builds main page of gallery manager, one without photos
 */
@@ -127,7 +131,7 @@ function buildMainPage(){
     root.appendChild(generateTopSwitchLayout())
     root.appendChild(buildGalleryChooser(GalleryStore.getGalTitles(), true, GalleryStore.getGallery().title))
     root.appendChild(buildBasicInformationTable())
-    root.appendChild(buildLabelLayout())
+    generateTagsLayout()
 }
 
 
@@ -156,6 +160,7 @@ function buildBasicInformationTable(){
     secondRow.appendChild(buildTableRow("Gallery size: ", gallery.fullSize, false))
     infoTableDiv.appendChild(firstRow)
     infoTableDiv.appendChild(secondRow)
+    infoTableDiv.appendChild(buildLabelLayout())
     return infoTableDiv
 }
 

@@ -40,31 +40,105 @@ div.stats-div {
   display: inline-block;
 }
 label {
-    font-size: 20px;
-    margin-bottom: 10px;
-    font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 10px;
+  font-weight: bold;
 }
-input.gallery-input{
-    margin-top: 10px;
-    font-size: 15px;
-    height: 3ch;
-    width: auto;
-    text-align: center;
-    border: none;
-    border: 1px black solid;
-    outline: none;
-    border-radius: 5px;
+input.gallery-input {
+  margin-top: 10px;
+  font-size: 15px;
+  height: 3ch;
+  width: auto;
+  text-align: center;
+  border: none;
+  border: 1px black solid;
+  outline: none;
+  border-radius: 5px;
 }
 
-input.gallery-input:hover{
-    background-color: lightblue;
-    cursor: not-allowed;
+input.gallery-input:hover {
+  background-color: lightblue;
+  cursor: not-allowed;
 }
-input.changable:hover{
-    background-color: lightblue;
-    cursor: text;
+input.changable:hover {
+  background-color: lightblue;
+  cursor: text;
 }
-div.input-row{
-    display: inline-block;
-    width: 60%;
+div.input-row {
+  display: inline-block;
+  width: 60%;
+}
+textarea {
+  max-width: calc(35% - 5px);
+  min-width: calc(35% - 5px);
+  height: auto;
+}
+
+div.tag-div {
+  width: 100%;
+  text-align: center;
+}
+div.line-tag-holder {
+  margin-top: 20px;
+  width: 60%;
+  display: inline-block;
+  vertical-align: center;
+}
+div.tag-div-layout {
+  width: 20%;
+  display: inline-block;
+  line-height: 30px;
+}
+div.add-tag-button {
+  margin-top: 20px;
+}
+input.tag-input {
+  font-size: 15px;
+  height: 3ch;
+  width: 75%;
+  text-align: center;
+  border: none;
+  border: 1px black solid;
+  outline: none;
+  border-radius: 5px;
+  margin-right: 5px;
+}
+
+button.delete-tag-button {
+  width: 35px;
+  height: 35px;
+  font-size: 20px;
+  background-color: red;
+  outline: none;
+  border: 1px white solid;
+  border-radius: 10px;
+  color: white;
+  text-align: center;
+  vertical-align: center;
+  transition: 200ms;
+}
+button.delete-tag-button:hover {
+  background-color: white;
+  color: red;
+  border: red 1px dashed;
+}
+button.delete-tag-button:active {
+  width: 40px;
+  height: 40px;
+}
+button.adding-button{
+    width: 5em;
+    height: 2em;
+    background-color: #00BC1B;
+    color: white;
+    font-size: 20px;
+    border: 1px solid white;
+    border-radius: 10px;
+    outline: none;
+    transition: 200ms;
+}
+button.adding-button:hover{
+    background-color: white;
+    color: #00BC1B;
+    border: 1px solid #00BC1B;
 }

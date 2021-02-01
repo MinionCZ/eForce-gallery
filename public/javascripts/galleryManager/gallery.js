@@ -11,6 +11,8 @@ class Gallery{
         this.lastChanges = dataInJson.lastChanges
         this.lastChangesTime = dataInJson.lastChangesTime
         this.photos = dataInJson.photos
+        this.tags = dataInJson.tags
+        console.log(dataInJson)
     }
 
     /*
