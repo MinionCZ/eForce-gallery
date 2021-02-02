@@ -7,7 +7,9 @@ const fs = require('fs')
 const photoDatabase = require("../databases/photoDatabase")
 const PhotoConverter = require("./photoConverter")
 const databaseHelpers = require("../databases/databaseHelpers")
-const headerParser = require("./headersParser")
+const headerParser = require("./headersParser");
+const { request } = require('http');
+const { response } = require('express');
 
 const storage = multer.diskStorage({
     destination: function (request, file, callback) {
@@ -103,6 +105,21 @@ router.get("/eforce-gallery/photos/download-one", async function(request, respon
         response.download(path.resolve(__dirname + "/../photos/lite-photos/" + data.filename), databaseHelpers.addStringToFileName(data.filename, "-lite"))
     }
 })
+
+/*
+uploads photo to existing gallery by its id
+*/
+router.post("/eforce-gallery/gallery-manager/photos/upload", async (request, response) =>{
+    const parsedHeaders = headerParser.getHeaders(request)
+    upload(request, response, async (error) =>{
+        if(error){
+
+        }else{
+            console.log(request.body.photoId)
+        }
+    })
+})
+
 
 
 

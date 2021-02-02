@@ -25,6 +25,9 @@ import{
     createConfirmWindow
 }from "../../confirmWindow/confirmWindow.js"
 
+import{
+    createUploadWindow
+}from "../../galleriesUpload/singlePhotosUpload/uploadWindow.js"
 function generateMainPageButtons() {
     const holderDiv = document.createElement("div")
     holderDiv.setAttribute("class", "side-bar-action-div")
@@ -32,7 +35,7 @@ function generateMainPageButtons() {
     holderDiv.appendChild(generateActionButton("Download lite version ~ " + GalleryStore.getGallery().liteSize, downloadLite))
     holderDiv.appendChild(generateActionButton("Delete all photos", deleteAllPhotos))
     holderDiv.appendChild(generateActionButton("Delete gallery", deleteGallery))
-    holderDiv.appendChild(generateActionButton("Upload photos", null))
+    holderDiv.appendChild(generateActionButton("Upload photos", handleUpload))
     return holderDiv
 }
 
@@ -102,9 +105,10 @@ async function executeDeletionOfGallery(){
     }else{
         reatePopupWindow("Something went wrong")
     }
-    
 }
-
+function handleUpload(){
+    createUploadWindow()
+}
 
 export {
     generateMainPageButtons
