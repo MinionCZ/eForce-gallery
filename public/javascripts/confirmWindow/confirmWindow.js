@@ -8,13 +8,19 @@ function createConfirmWindow(text, callback){
     const div = document.createElement("div")
     div.setAttribute("class", "confirm-window-div")
 
+    root.onclick = (event) =>{
+        console.log(event.target.id)
+        if(event.target.id === "confirmWindowRoot"){
+            closeConfirmWindow()
+        }
+    }
+
     const title = document.createElement("h2")
     title.innerText = text
     root.appendChild(div)
     div.appendChild(title)
     div.appendChild(createButton("Confirm", "confirm-window-button confirm", callback))
     div.appendChild(createButton("Cancel", "confirm-window-button cancel", closeConfirmWindow))
-    div.appendChild(createButton("\u2715", "confirm-window-exit", closeConfirmWindow))
     document.body.appendChild(root)
 }
 /*
@@ -26,6 +32,7 @@ function createButton(text, cssClass, callback){
     button.innerText = text
     button.onclick = () =>{
         callback()
+        closeConfirmWindow()
     }
     return button
 
@@ -38,6 +45,9 @@ function closeConfirmWindow(){
         document.body.removeChild(document.getElementById("confirmWindowRoot"))
     }
 }
+
+
+
 export{
     createConfirmWindow
 }

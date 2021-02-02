@@ -62,9 +62,18 @@ function generateActionButton(text, callback){
     return button
 }
 
+function clearSideLayout(){
+    if(document.body.contains(sideBar)){
+        document.body.removeChild(sideBar)
+    }
+    if(document.body.contains(document.getElementById("sideButton"))){
+        document.body.removeChild(document.getElementById("sideButton"))
+    }
+}
 
 export{
     generateSideToggleButton,
     generateSideLayout,
-    generateActionButton
+    generateActionButton,
+    clearSideLayout
 }

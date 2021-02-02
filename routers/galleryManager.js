@@ -48,6 +48,16 @@ router.post("/eforce-gallery/gallery-manager/delete-photos-from-gallery", async 
         "message" : photosToDelete.length +  " photos deleted"
     })
 })
+router.post("/eforce-gallery/gallery-manager/delete-gallery", async (request, response) => {
+    await photoDatabase.deleteGalleryByID(request.body.galleryID)
+    response.json({
+        "message": "success"
+    })
+
+})
+
+
+
 module.exports = {
     router
 }

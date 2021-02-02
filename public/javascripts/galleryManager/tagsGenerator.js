@@ -162,7 +162,13 @@ function fillLastLineDiv(counter, lineDiv){
 	return lineDiv
 }
 
+function clearTags(){
+	if(document.body.contains(tagDiv)){
+		document.body.removeChild(tagDiv)
+	}
+}
 
 export {
-	generateTagsLayout
+	generateTagsLayout,
+	clearTags
 }

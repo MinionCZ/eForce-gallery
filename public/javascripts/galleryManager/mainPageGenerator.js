@@ -15,7 +15,8 @@ import {
 } from "./topSwitchLayout.js"
 
 import {
-    generateTagsLayout
+    generateTagsLayout,
+    clearTags
 } from "./tagsGenerator.js"
 
 import {
@@ -24,7 +25,8 @@ import {
 
 import{
     generateSideToggleButton,
-    generateSideLayout
+    generateSideLayout,
+    clearSideLayout
 }from "./sideBar/sideBarGenerator.js"
 
 /*
@@ -39,6 +41,7 @@ async function buildMainLayout() {
         GalleryStore.setGalTitles(galTitles)
         buildMainPage()
     } else {
+        clearMainPage()
         document.body.appendChild(buildGalleryChooser(galTitles, false))
     }
 }
@@ -269,11 +272,26 @@ function saveDateToGallery(event) {
     console.log(event.srcElement.value)
     GalleryStore.getGallery().eventDate = event.srcElement.value
 }
+
+function clearSubmitButton(){
+    if(document.body.contains(document.getElementById("submitButton"))){
+        document.body.removeChild(document.getElementById("submitButton"))
+    }
+}
+
+function clearMainPage(){
+    GalleryStore.clearRoot()
+    clearSideLayout()
+    clearTags()
+    clearSubmitButton()
+}
+
 window.onload = () => {
     buildMainLayout()
 }
 export {
     buildMainPage,
     setNewGallery,
-    buildMainLayout
+    buildMainLayout,
+    clearMainPage
 }
