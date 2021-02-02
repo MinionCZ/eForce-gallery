@@ -7,9 +7,12 @@ import {
 } from "../photos/layoutGenerator.js"
 
 import{
-    setNewGallery,
     buildMainLayout
 }from "./mainPageGenerator.js"
+
+/*
+submits gallery to backend to update information
+*/
 async function submitGallery() {
     const response = await fetch("/eforce-gallery/gallery-manager/update-gallery", {
         method: "POST",
@@ -25,6 +28,9 @@ async function submitGallery() {
 
 }
 
+/*
+checks if data are correct, and then submits
+*/
 
 function submitNewGalleryData() {
     if (checkDataCorrection()) {
@@ -32,6 +38,9 @@ function submitNewGalleryData() {
     }
 }
 
+/*
+checks if something changed and data are correct
+*/
 function checkDataCorrection() {
     if (checkTitleCorrection() && checkDateCorrection()) {
         filterTags()
@@ -41,6 +50,9 @@ function checkDataCorrection() {
 
 }
 
+/*
+checks if title is not used and it is not empty
+*/
 function checkTitleCorrection() {
     const title = GalleryStore.getGallery().title
     if (title.length === 0) {
@@ -58,6 +70,9 @@ function checkTitleCorrection() {
     }
     return true
 }
+/*
+checks date correction
+*/
 function checkDateCorrection() {
     const date = GalleryStore.getGallery().eventDate
     const numbers = new Set("0123456789-".split(""))
@@ -69,7 +84,9 @@ function checkDateCorrection() {
     }
     return true
 }
-
+/*
+filter tags, removing incidents and empty tags
+*/
 function filterTags() {
     const filteredTags = []
     const usedTags = new Set()
@@ -81,6 +98,9 @@ function filterTags() {
     }
     GalleryStore.getGallery().tags = filteredTags
 }
+/*
+checks if something changed 
+*/
 function checkIfSomethingChanged() {
     const oldGal = GalleryStore.getOldGallery()
     const newGal = GalleryStore.getGallery()
@@ -92,6 +112,9 @@ function checkIfSomethingChanged() {
     return changed
 }
 
+/*
+changes url to new title of gallery
+*/
 function changeUrl(title){
     const url = new URL(window.location.href)
     url.searchParams.set("gallery-title", title)

@@ -207,7 +207,16 @@ async function updateGallery(galleryToUpdate){
     }})
 
 }
-
+async function getAllTags(){
+    const tagSet = new Set()
+    const allGalleries = await galleries.find({}).toArray()
+    for(const gallery of allGalleries){
+        for (const tag of gallery.tags){
+            tagSet.add(tag)
+        }
+    }
+    return Array.from(tagSet)
+}
 
 
 module.exports = {
@@ -217,5 +226,6 @@ module.exports = {
     syncGallerySizes,
     deletePhotos,
     getGalleryByTitle,
-    updateGallery
+    updateGallery,
+    getAllTags
 }

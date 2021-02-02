@@ -1,4 +1,7 @@
 class Gallery{
+    /*
+    constructor...
+    */
     constructor(dataInJson){
         this.title = dataInJson.galleryTitle
         this.galleryID = dataInJson.galleryID
@@ -30,6 +33,9 @@ class Gallery{
         return newSize + units
     }
 
+    /*
+    crops empty tags from gallery
+    */
     cropEmptyTags(tags){
         const croppedTags = []
         for(const tag of tags){

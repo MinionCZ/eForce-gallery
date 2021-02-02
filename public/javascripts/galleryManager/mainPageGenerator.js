@@ -1,6 +1,7 @@
 import {
     fetchAllGalleries,
-    fetchGalleryByTitle
+    fetchGalleryByTitle,
+    fetchAllTags
 } from "./galleryFetcher.js"
 import {
     createPopupWindow
@@ -30,6 +31,7 @@ async function buildMainLayout() {
     if (isGalleryInURL(galTitles)) {
         const galleryTitle = getGalleryFromURL()
         GalleryStore.buildNewGallery(await fetchGalleryByTitle(galleryTitle))
+        GalleryStore.setTags(await fetchAllTags())
         GalleryStore.setGalTitles(galTitles)
         buildMainPage()
     } else {
@@ -119,17 +121,26 @@ function isStringInArray(string, array) {
     return false
 }
 
+/*
+sets new gallery in the query
+*/
 async function setNewGallery(title) {
     const url = new URL(window.location.href)
     url.searchParams.set("gallery-title", title)
     window.location.href = url
 }
+/*
+gets gallery name from query
+ */
 
 function getGalleryFromURL() {
     const url = new URL(window.location.href)
     return url.searchParams.get("gallery-title")
 }
 
+/*
+builds main page of gallery
+*/
 function buildMainPage() {
     GalleryStore.clearRoot()
     const root = GalleryStore.getRoot()
@@ -142,6 +153,9 @@ function buildMainPage() {
     }
 
 }
+/*
+builds table with information
+*/
 
 
 function buildBasicInformationTable() {
@@ -174,7 +188,9 @@ function buildBasicInformationTable() {
 }
 
 
-
+/*
+builds row of the table
+*/
 function buildTableRow(title, value, changable, type = "text", callback = null) {
     const div = document.createElement("div")
     div.setAttribute("class", "stats-div")
@@ -198,7 +214,9 @@ function buildTableRow(title, value, changable, type = "text", callback = null) 
     div.appendChild(input)
     return div
 }
-
+/*
+builds label area
+*/
 function buildLabelLayout() {
     const gallery = GalleryStore.getGallery()
     const div = document.createElement("div")
@@ -217,6 +235,9 @@ function buildLabelLayout() {
     return div
 }
 
+/*
+builds submit button 
+*/
 function buildSubmitButton() {
     const submitButton = document.createElement("button")
     submitButton.setAttribute("class", "update-button")
@@ -227,11 +248,17 @@ function buildSubmitButton() {
     }
     return submitButton
 }
+/*
+saves new title to database on frontend
+*/
 
 function saveTitleToGallery(event) {
     GalleryStore.getGallery().title = event.srcElement.value
 }
 
+/*
+saves date to local database
+*/
 function saveDateToGallery(event) {
     console.log(event.srcElement.value)
     GalleryStore.getGallery().eventDate = event.srcElement.value

@@ -6,7 +6,7 @@ class GalleryStore{
     static oldGallery = null
     static galTitles = null
     static root = document.createElement("div")
-
+    static tags = []
     static getRoot(){
         if(!document.body.contains(this.root)){
             document.body.appendChild(this.root)
@@ -34,6 +34,12 @@ class GalleryStore{
     }
     static getOldGallery(){
         return this.oldGallery
+    }
+    static setTags(tags){
+        this.tags = tags
+    }
+    static getTags(){
+        return this.tags
     }
 
 }

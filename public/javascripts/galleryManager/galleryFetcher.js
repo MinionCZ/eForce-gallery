@@ -24,7 +24,9 @@ function parseGalleryTitles(jsonTitles){
     }
     return titles
 }
-
+/*
+fetches gallery by its title
+*/
 async function fetchGalleryByTitle(title){
     const response = await fetch("/eforce-gallery/fetch-gallery-by-title", {
         headers:{
@@ -37,11 +39,20 @@ async function fetchGalleryByTitle(title){
     })
     return await response.json()
 }
-
+/*
+fetches all tags used in galleries
+*/
+async function fetchAllTags(){
+	const response = await fetch("/eforce-gallery/gallery-manager/get-all-tags", {
+		method: "GET"
+    })
+    return (await response.json()).tags
+}
 
 
 
 export {
     fetchAllGalleries,
-    fetchGalleryByTitle
+    fetchGalleryByTitle,
+    fetchAllTags
 }

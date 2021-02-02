@@ -1,6 +1,23 @@
 import { GalleryStore } from "./galleryStore.js";
 let tags = []
 const tagDiv = document.createElement("div");
+
+
+/*
+creates tag list for tag inputs
+*/
+function getTagList(listID){
+	const taglist = document.createElement("datalist")
+	taglist.setAttribute("id", listID)
+	for(const tag of GalleryStore.getTags()){
+		taglist.innerHTML += "<option>" + tag + "</option>"
+	}
+	return taglist
+}
+
+/*
+generates tag layout and divides tags into lines 
+*/
 function generateTagsLayout() {
 	tags = GalleryStore.getGallery().tags;
 	if (!document.body.contains(tagDiv)) {
@@ -8,7 +25,6 @@ function generateTagsLayout() {
 	}
 	tagDiv.innerHTML = "";
 	tagDiv.setAttribute("class", "tag-div")
-	
 	const tagsTitle = document.createElement("h2")
 	tagsTitle.setAttribute("class", "tags-title")
 	tagsTitle.innerText = "Tags:"
@@ -39,6 +55,9 @@ function generateTagsLayout() {
 	tagDiv.appendChild(generateAddingButton())
 }
 
+/*
+generates div with input and button for tag
+*/
 function generateTagDiv(tag, id) {
 	const div = document.createElement("div");
 	div.setAttribute("class", "tag-div-layout");
@@ -48,27 +67,34 @@ function generateTagDiv(tag, id) {
 	tagInput.setAttribute("type", "text")
 	tagInput.setAttribute("class", "tag-input");
 	tagInput.setAttribute("id", "tagInput=" + id)
+	tagInput.setAttribute("list", "list=" + id)
 	const button = document.createElement("button");
 	button.innerText = "\u2715";
 	button.setAttribute("class", "delete-tag-button")
 	button.onclick = () => {
 		deleteTag(id);
-		
 	}
 	tagInput.addEventListener("keydown", handleChangeToNextTag)
 	tagInput.addEventListener("keyup", tagUpdate)
 	div.appendChild(tagInput)
 	div.appendChild(button)
+	div.appendChild(getTagList("list=" + id))
 	return div
 }
 
 
+/*
+deletes tag
+*/
 function deleteTag(id) {
 	tags.splice(id, 1)
 	GalleryStore.getGallery().tags = tags
 	generateTagsLayout()
 }
 
+/*
+generates adding tag button
+*/
 function generateAddingButton() {
 	const div = document.createElement("div")
 	div.setAttribute("class", "add-tag-button")
@@ -84,7 +110,9 @@ function generateAddingButton() {
 	div.appendChild(addingButton)
 	return div
 }
-
+/*
+handles change to next or previous tag by clicking on tab/enter or backspace/delete
+*/
 function handleChangeToNextTag(event){
 	const id = parseInt(event.srcElement.id.split("=")[1])
 
@@ -111,6 +139,9 @@ function handleChangeToNextTag(event){
 
 }
 
+/*
+updates tag in database on front end
+ */
 
 function tagUpdate(event){
 	const id = parseInt(event.srcElement.id.split("=")[1])
@@ -118,7 +149,9 @@ function tagUpdate(event){
 }
 
 
-
+/*
+fills last line div with empty divs
+*/
 
 function fillLastLineDiv(counter, lineDiv){
 	for(;counter % 3 !== 0; counter++){

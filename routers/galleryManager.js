@@ -1,3 +1,5 @@
+const { json } = require('body-parser')
+const { request, response } = require('express')
 const express = require('express')
 const router = express.Router()
 const photoDatabase = require("../databases/photoDatabase")
@@ -34,6 +36,9 @@ router.post("/eforce-gallery/gallery-manager/update-gallery", async (request, re
     response.json(data)
 })
 
+router.get("/eforce-gallery/gallery-manager/get-all-tags", async (request, response) =>{
+    response.json({tags: await photoDatabase.getAllTags()})
+})
 module.exports = {
     router
 }
