@@ -22,6 +22,10 @@ import {
     submitNewGalleryData
 } from "./galleryUpdater.js"
 
+import{
+    generateSideToggleButton,
+    generateSideLayout
+}from "./sideBar/sideBarGenerator.js"
 
 /*
 builds main page of gallery manager, one without photos
@@ -148,6 +152,8 @@ function buildMainPage() {
     root.appendChild(buildGalleryChooser(GalleryStore.getGalTitles(), true, GalleryStore.getGallery().title))
     root.appendChild(buildBasicInformationTable())
     generateTagsLayout()
+    generateSideToggleButton()
+    generateSideLayout(true)
     if (!document.body.contains(document.getElementById("submitButton"))) {
         document.body.appendChild(buildSubmitButton())
     }

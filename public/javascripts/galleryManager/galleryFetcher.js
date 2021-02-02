@@ -1,6 +1,3 @@
-
-
-
 /*
  * fetches info of all galleries
  * @returns returns array of strings with names of galleries
