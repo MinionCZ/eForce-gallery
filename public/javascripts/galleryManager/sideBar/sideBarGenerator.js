@@ -3,6 +3,7 @@ import{
 }from "./mainPageButtons.js"
 let isOpen = false
 const sideBar = document.createElement("div")
+sideBar.setAttribute("class", "side-bar hidden")
 function generateSideToggleButton(){
     const sideButton = document.createElement("button")
     sideButton.setAttribute("class", "side-button")
@@ -16,7 +17,7 @@ function generateSideToggleButton(){
     }
 }
 function generateSideLayout(infoPage){
-    sideBar.setAttribute("class", "side-bar hidden")
+    sideBar.innerHTML = ""
     sideBar.appendChild(getExitSideBarButton())
     sideBar.appendChild(gerateTopTitle("Actions:"))
     if(infoPage){

@@ -1,0 +1,81 @@
+div.root-confirm-window{
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    position: fixed;
+    top: 0px;
+    left: 0px;
+}
+
+div.confirm-window-div{
+    background-color: white;
+    border: 5px solid skyblue;
+    width: 25%;
+    height: 15%;
+    position: fixed;
+    top: 42.5%;
+    right: 40%;
+}
+
+button.confirm-window-button{
+    width: 30%;
+    height: 30%;
+    border: 2px solid white;
+    border-radius: 10px;
+    font-size: 20px;
+    position: absolute;
+    outline: none;
+}
+
+button.confirm{
+    top: 60%;
+    left: 15%;
+    border: 2px solid blue;
+    background-color: white;
+    color: blue;
+}
+button.cancel{
+    top: 60%;
+    right: 15%;
+    border: 2px solid red;
+    background-color: white;
+    color: red;
+}
+button.confirm-window-exit{
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background-color: white;
+    border-radius: 15px;
+    border: 1px solid white;
+    outline: none;
+    font-size: 20px;
+}
+
+button.confirm:hover{
+    border: 2px solid blue;
+    background-color: blue;
+    color: white;
+}
+button.cancel:hover{
+    border: 2px solid red;
+    background-color: red;
+    color: white;
+}
+
+button.confirm:active{
+    border: 2px solid white;
+    background-color: blue;
+    color: white;
+}
+button.cancel:active{
+    border: 2px solid white;
+    background-color: red;
+    color: white;
+}
+button.confirm-window-exit:hover{
+    color: red;
+}

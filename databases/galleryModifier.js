@@ -188,6 +188,9 @@ function calculateSizeOfGallery(gallery) {
 }
 setInterval(syncGallerySizes, 24 * 60 * 60 * 1000)
 
+/*
+gets gallery by title
+*/
 async function getGalleryByTitle(title){
     const gallery = await galleries.findOne({galleryTitle: title})
     gallery.contributionDate = databaseHelper.convertDateToHTML(gallery.contributionDate)
@@ -195,6 +198,9 @@ async function getGalleryByTitle(title){
     return gallery
 }
 
+/*
+updates gallery with information from frontend
+*/
 async function updateGallery(galleryToUpdate){
     await galleries.updateOne({galleryID:galleryToUpdate.galleryID},{ $set:{
         galleryTitle: galleryToUpdate.title,
@@ -206,7 +212,12 @@ async function updateGallery(galleryToUpdate){
         tags: galleryToUpdate.tags
     }})
 
+
 }
+/*
+returns all tags
+*/
+
 async function getAllTags(){
     const tagSet = new Set()
     const allGalleries = await galleries.find({}).toArray()
@@ -227,5 +238,6 @@ module.exports = {
     deletePhotos,
     getGalleryByTitle,
     updateGallery,
-    getAllTags
+    getAllTags,
+    deletePhotosFromGallery
 }

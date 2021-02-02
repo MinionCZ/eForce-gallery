@@ -17,7 +17,6 @@ router.post("/eforce-gallery/photo-gallery/download-whole-gallery", async functi
     const galleryID = request.body.galleryID
     const version = request.body.version
     const gallery = await photoDatabase.findGalleryByID(galleryID)
-
     response.setHeader('Content-Disposition', 'attachment; filename=' + databaseHelper.stringToEnglish(gallery.galleryTitle) + "-" + version + ".zip");
     createZipFromArray(gallery.photos, version, response)
 

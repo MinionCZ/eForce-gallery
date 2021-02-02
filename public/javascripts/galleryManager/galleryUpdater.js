@@ -122,5 +122,6 @@ function changeUrl(title){
 }
 
 export {
-    submitNewGalleryData
+    submitNewGalleryData,
+    changeUrl
 }
