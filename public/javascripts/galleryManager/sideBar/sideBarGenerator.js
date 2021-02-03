@@ -4,21 +4,22 @@ import{
 let isOpen = false
 const sideBar = document.createElement("div")
 sideBar.setAttribute("class", "side-bar hidden")
-function generateSideToggleButton(){
+function generateSideToggleButton(callback = null){
     const sideButton = document.createElement("button")
     sideButton.setAttribute("class", "side-button")
     sideButton.setAttribute("id", "sideButton")
     sideButton.innerHTML = "*" + "</br>" + "*" + "</br>" + "*"
     if(!document.body.contains(document.getElementById("sideButton"))){
         document.body.appendChild(sideButton)
+
     }
     sideButton.onclick = () =>{
-       toggleBar()
+       toggleBar(callback)
     }
 }
-function generateSideLayout(infoPage){
+function generateSideLayout(infoPage, callback = null){
     sideBar.innerHTML = ""
-    sideBar.appendChild(getExitSideBarButton())
+    sideBar.appendChild(getExitSideBarButton(callback))
     sideBar.appendChild(gerateTopTitle("Actions:"))
     if(infoPage){
         sideBar.appendChild(generateMainPageButtons())
@@ -26,23 +27,27 @@ function generateSideLayout(infoPage){
     document.body.appendChild(sideBar)
 }
 
-function getExitSideBarButton(){
+function getExitSideBarButton(callback){
     const button = document.createElement("button")
     button.setAttribute("class", "exit-side-bar-button")
     button.innerText = "\u2715"
     button.onclick = () =>{
-        toggleBar()
+        toggleBar(callback)
     }
     return button
 }
 
-function toggleBar(){
+function toggleBar(callback){
     if(!isOpen){
         sideBar.setAttribute("class", "side-bar visible")
     }else{
         sideBar.setAttribute("class", "side-bar hidden")
     }
     isOpen = !isOpen
+    if(callback !== null){
+        callback()
+    }
+
 }
 
 function gerateTopTitle(sideBarTitle){
@@ -70,10 +75,14 @@ function clearSideLayout(){
         document.body.removeChild(document.getElementById("sideButton"))
     }
 }
+function isSideBarToggled(){
+    return isOpen
+}
 
 export{
     generateSideToggleButton,
     generateSideLayout,
     generateActionButton,
-    clearSideLayout
+    clearSideLayout,
+    isSideBarToggled
 }

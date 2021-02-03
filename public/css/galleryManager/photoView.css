@@ -1,0 +1,41 @@
+div.gallery-manager-photos-line{
+    display: flex;
+    justify-content: left;
+    width: 100%;
+    transition: 0.2s;
+
+}
+div.gallery-manager-thumbnail-div{
+    display: inline-block;
+    min-width: calc(99% / 6);
+    max-width: calc(99% / 6);
+    text-align: center;
+    transition: 50ms;
+}
+div.gallery-manager-thumbnail-div:hover{
+    box-shadow:  0 0 5px;
+    cursor: pointer;
+}
+
+img.gallery-manager-thumbnail{
+    object-fit:scale-down;
+    width:95%;
+    max-height: 192px;
+    margin:2%;
+}
+div.blank-div{
+    min-width: calc(99% / 6);
+    max-width: calc(99% / 6);
+}
+div.first-line{
+margin-top: 105px;
+}
+input.photo-checkbox{
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    margin-top: 7px;
+    margin-left: -40px;
+    z-index: 1;
+    cursor: pointer;
+}

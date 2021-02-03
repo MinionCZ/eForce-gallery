@@ -10,14 +10,20 @@ class PhotoLayout{
     generateLayout(){
         const div = document.createElement("div")
         div.setAttribute("class", "gallery-manager-thumbnail-div")
+        
         div.appendChild(this.generatePhotoLayout())
         div.appendChild(this.generateCheckBox())
         return div
     }
-    async generatePhotoLayout(){
+    generatePhotoLayout(){
+        const div = document.createElement("div")
+        div.setAttribute("class", "vertical-div")
         const image = document.createElement("img")
-        image.src = "/eforce-gallery/photos/fetch-photo-by-id?fileName=" + this.filename + "&thumbnail=false"
+        image.src = "/eforce-gallery/photos/fetch-photo-by-id?fileName=" + this.filename + "&thumbnail=true"
         image.setAttribute("class", "gallery-manager-thumbnail")
+        image.height = 280
+        image.width = 420
+        div.appendChild(image)
         return image
     }
 
@@ -25,7 +31,7 @@ class PhotoLayout{
         const checkBox = document.createElement("input")
         checkBox.setAttribute("type", "checkbox")
         checkBox.checked = PhotoStore.isPhotoTagged(this.filename)
-        checkBox.setAttribute("class", "gallery-manager-checkbox")
+        checkBox.setAttribute("class", "photo-checkbox")
         return checkBox
     }
 }
