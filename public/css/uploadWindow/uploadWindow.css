@@ -1,0 +1,90 @@
+div.uploading-window-root{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    right: 0px;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+div.upload-window-drag-and-drop-area{
+    width: 50%;
+    height: 40%;
+    background-color: white;
+    border: 5px dashed black;
+    position: absolute;
+    top: 30%;
+    right: 25%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 100;
+}
+div.active{
+    background-color: lightblue;
+    border-color: green;
+}
+input.upload-window-file-selector{
+    visibility: hidden;
+}
+label.upload-window-file-selector-label{
+    background-color: white;
+    padding: 10px;
+    border: 2px solid #00BC1B;
+    height: 5%;
+    cursor: pointer;
+    color: #00BC1B;
+    border-radius: 15px;
+}
+label.upload-window-file-selector-label:hover{
+    background-color:#00BC1B;
+    color: white;
+}
+label.upload-window-file-selector-label:active{
+    background-color:#00BC1B;
+    color: white;
+    border: 2px solid white;
+}
+button.upload-window-exit-button{
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    width: 50px;
+    height: 50px;
+    font-size: 40px;
+    border-radius: 25px;
+    outline: none;
+    border: 2px solid white;
+}
+button.upload-window-exit-button:hover{
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    border: 2px solid rgba(0, 0, 0, 0.8);
+}
+button.upload-window-exit-button:active{
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    border: 2px solid white;
+}
+label.upload-window-status-label{
+    position: absolute;
+    background-color: white;
+    padding: 1%;
+    top: 80%;
+    right: 44%;
+    width: 12%;
+    border-radius: 15px;
+    border: none;
+}
+label.uploading{
+    background-color: orangered;
+    color: white;
+}
+label.done{
+    background-color: #00BC1B;
+    color: white;
+}
+label.error{
+    background-color: red;
+    color: white;
+}

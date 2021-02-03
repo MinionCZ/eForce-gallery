@@ -3,11 +3,9 @@ function createUploadWindow(galleryID = "") {
     root.setAttribute("class", "uploading-window-root")
     root.setAttribute("id", "uploadingWindowRoot")
     root.appendChild(createDragAndDropArea())
-    root.onclick = () =>{
-        console.log("click")
-    }
+    root.appendChild(createExitButton(root))
+    root.appendChild(generateStatusLayout())
     document.body.appendChild(root)
-
 }
 
 function createDragAndDropArea() {
@@ -28,6 +26,14 @@ function createDragAndDropArea() {
         event.preventDefault()
         dragAndDrop.setAttribute("class", "upload-window-drag-and-drop-area")
     })
+    dragAndDrop.addEventListener("dragover", (event) =>{
+        event.preventDefault()
+    })
+    dragAndDrop.addEventListener("drop", (event) =>{
+        event.preventDefault();
+        console.log("dropped")
+        dragAndDrop.setAttribute("class", "upload-window-drag-and-drop-area")
+    })
     dragAndDrop.appendChild(createTitle("Drag&Drop </br> or"))
     dragAndDrop.appendChild(createFileInput())
     return dragAndDrop
@@ -44,9 +50,47 @@ function createFileInput(){
     const fileInput = document.createElement("input")
     fileInput.setAttribute("class", "upload-window-file-selector")
     fileInput.setAttribute("type", "file")
+    fileInput.setAttribute("id", "uploadWindowFileInput")
     fileInput.multiple = true
-    return fileInput
+    const label = document.createElement("label")
+    label.setAttribute("for", "uploadWindowFileInput")
+    label.setAttribute("class", "upload-window-file-selector-label")
+    label.innerText = "Select files"
+
+    const div = document.createElement("div")
+    div.appendChild(label)
+    div.appendChild(document.createElement("br"))
+    div.appendChild(fileInput)
+    return div
 }
+function createExitButton(root){
+    const button = document.createElement("button")
+    button.setAttribute("class", "upload-window-exit-button")
+    button.innerText = "\u2715"
+    button.onclick = () =>{
+        if(document.body.contains(root)){
+            document.body.removeChild(root)
+        }
+    }
+    return button
+}
+function generateStatusLayout(){
+    const statusLayout = document.createElement("label")
+    statusLayout.setAttribute("class", "upload-window-status-label")
+    statusLayout.setAttribute("id", "uploadWindowStatusLabel")
+    statusLayout.innerText = "No files selected yet"
+    return statusLayout
+}
+function changeStatus(status, text){
+    const statusLayout = document.getElementById("uploadWindowStatusLabel")
+    statusLayout.setAttribute("class", "upload-window-status-label " + status)
+    statusLayout.innerText = text
+}
+
+
+
+
 export{
-    createUploadWindow
+    createUploadWindow,
+    changeStatus
 }
