@@ -1,4 +1,6 @@
-function createUploadWindow(galleryID = "") {
+let galleryID = ""
+function createUploadWindow(galID = "") {
+    galleryID = galID
     const root = document.createElement("div")
     root.setAttribute("class", "uploading-window-root")
     root.setAttribute("id", "uploadingWindowRoot")
@@ -31,8 +33,9 @@ function createDragAndDropArea() {
     })
     dragAndDrop.addEventListener("drop", (event) =>{
         event.preventDefault();
-        console.log("dropped")
         dragAndDrop.setAttribute("class", "upload-window-drag-and-drop-area")
+        handleDataUpload(event.dataTransfer.files)
+
     })
     dragAndDrop.appendChild(createTitle("Drag&Drop </br> or"))
     dragAndDrop.appendChild(createFileInput())
@@ -52,6 +55,11 @@ function createFileInput(){
     fileInput.setAttribute("type", "file")
     fileInput.setAttribute("id", "uploadWindowFileInput")
     fileInput.multiple = true
+    fileInput.onchange = () =>{
+        handleDataUpload(fileInput.files)
+    }
+
+
     const label = document.createElement("label")
     label.setAttribute("for", "uploadWindowFileInput")
     label.setAttribute("class", "upload-window-file-selector-label")
@@ -87,10 +95,28 @@ function changeStatus(status, text){
     statusLayout.innerText = text
 }
 
+async function handleDataUpload(files){
+    for (const file of files){
+        await sendFile(file)
+    }
 
+}
+
+async function sendFile(file){
+    const data = new FormData()
+    data.append("photo", file)
+    let url = "/eforce-gallery/gallery-manager/photos/upload"
+    if(galleryID !== ""){
+        url += "?galleryID=" + galleryID
+    }
+    const response = await fetch(url, {
+        method: "post",
+        body: data
+    })
+    console.log(response)
+}
 
 
 export{
-    createUploadWindow,
-    changeStatus
+    createUploadWindow
 }

@@ -228,6 +228,50 @@ async function getAllTags(){
     }
     return Array.from(tagSet)
 }
+async function addPhotoToPrimaryDatabase(filename, width, height, fullSizeInMB){
+    const photo = {
+        galleryIDs: [],
+        galleryTitles: [],
+        tags: [],
+        dateOfContribution: databaseHelper.getToday(),
+        dateOfEvent: "01.01.0000",
+        width: width,
+        height:height,
+        fileName:filename,
+        fullSizeInMB: fullSizeInMB,
+        liteSizeInMB: 0
+    }
+    await photos.insertOne(photo)
+}
+
+
+
+async function addPhotoToGallery(galleryID, photoName){
+    const gallery = await galleries.findOne({galleryID: galleryID})
+    gallery.photos.push(photoName)
+    await galleries.updateOne({galleryID:galleryID},  {
+        $set:{
+            photos: gallery.photos
+        }
+    })
+    const photo = await photos.findOne({fileName:photoName})
+    await photos.updateOne({fileName:photoName},{
+        $set:{
+            galleryIDs: photo.galleryIDs.push(galleryID),
+            galleryTitles: photo.galleryTitles.push(gallery.galleryTitle),
+            dateOfEvent: gallery.dateOfEvent,
+            tags:makeTagsUnique(photo.tags, gallery.tags)
+        }
+    })
+}
+function makeTagsUnique(oldTags, newTags){
+    const allTags = new Set(oldTags)
+    for(const tag of newTags){
+        allTags.add(tag)
+    }
+    return Array.from(allTags)
+}
+
 
 
 module.exports = {
@@ -239,5 +283,7 @@ module.exports = {
     getGalleryByTitle,
     updateGallery,
     getAllTags,
-    deletePhotosFromGallery
+    deletePhotosFromGallery, 
+    addPhotoToPrimaryDatabase,
+    addPhotoToGallery
 }

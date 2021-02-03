@@ -7,7 +7,7 @@ const gm = require("gm")
 const path = require("path")
 const photoDatabase = require("../databases/photoDatabase")
 
-async function handleNewPhoto(fileName, galleryId, username) {
+async function handleNewPhoto(fileName, galleryId, username, isTemp) {
     let pathToPhoto = loadingPath + fileName
     const getThumbnailName = () => {
         let thumbnail = path.basename(fileName, path.extname(fileName))
@@ -17,11 +17,17 @@ async function handleNewPhoto(fileName, galleryId, username) {
     const thumbnailName = getThumbnailName()
     gm(pathToPhoto).thumbnail(420, 280).write(savingPath + thumbnailName, function (err) {})
 
-    gm(pathToPhoto).size(function (err, size) {
+    gm(pathToPhoto).size(async function (err, size) {
         if (!err) {
             const height = size.height
             const width = size.width
-            photoDatabase.insertTempPhoto(fileName, galleryId, username, width, height, thumbnailName)
+            if(isTemp){
+                photoDatabase.insertTempPhoto(fileName, galleryId, username, width, height, thumbnailName)
+            }else{
+                await photoDatabase.addPhotoToPrimaryDatabase(fileName, width, height, fs.statSync(pathToPhoto).size)
+                await photoDatabase.addPhotoToGallery(galleryId, fileName)
+                photoDatabase.getLiteSizes([fileName])
+            }
             createLitePhoto(pathToPhoto, fileName)
             if (width > 1920 || height > 1080) {
                 gm(pathToPhoto).thumbnail(1920, 1080).define("jpeg:extent=100kb").write(bigThumbnails + thumbnailName, () => {})

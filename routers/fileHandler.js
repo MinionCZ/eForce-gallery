@@ -25,7 +25,7 @@ const storage = multer.diskStorage({
             return id
         }
         request.body.photoId = generateId() + "-" + Date.now() + "" + path.extname(file.originalname)
-
+        console.log("hello there")
         callback(null, request.body.photoId)
 
     }
@@ -47,7 +47,7 @@ router.post("/eforce-gallery/gallery/photos/upload", async function (request, re
                 status: "error"
             }))
         } else {
-            PhotoConverter.handleNewPhoto(request.body.photoId, galleryId, parsedHeaders.username)
+            PhotoConverter.handleNewPhoto(request.body.photoId, galleryId, parsedHeaders.username, true)
             response.status(202)
             response.json(JSON.stringify({
                 status: "success"
@@ -113,9 +113,12 @@ router.post("/eforce-gallery/gallery-manager/photos/upload", async (request, res
     const parsedHeaders = headerParser.getHeaders(request)
     upload(request, response, async (error) =>{
         if(error){
-
+            response.json({"message" : "Something went wrong"})
         }else{
-            console.log(request.body.photoId)
+            PhotoConverter.handleNewPhoto(request.body.photoId, request.query.galleryID, parsedHeaders.username, false)
+            response.json({
+                "message" : "ok"
+            })
         }
     })
 })

@@ -107,7 +107,7 @@ async function executeDeletionOfGallery(){
     }
 }
 function handleUpload(){
-    createUploadWindow()
+    createUploadWindow(GalleryStore.getGallery().galleryID)
 }
 
 export {
