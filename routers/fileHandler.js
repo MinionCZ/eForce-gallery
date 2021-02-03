@@ -25,7 +25,6 @@ const storage = multer.diskStorage({
             return id
         }
         request.body.photoId = generateId() + "-" + Date.now() + "" + path.extname(file.originalname)
-        console.log("hello there")
         callback(null, request.body.photoId)
 
     }
