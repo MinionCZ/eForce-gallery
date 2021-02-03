@@ -1,6 +1,10 @@
 import{
     generateMainPageButtons
 }from "./mainPageButtons.js"
+import{
+    generatePhotoSideBar
+}from "./photoPageButtons.js"
+
 let isOpen = false
 const sideBar = document.createElement("div")
 sideBar.setAttribute("class", "side-bar hidden")
@@ -11,7 +15,6 @@ function generateSideToggleButton(callback = null){
     sideButton.innerHTML = "*" + "</br>" + "*" + "</br>" + "*"
     if(!document.body.contains(document.getElementById("sideButton"))){
         document.body.appendChild(sideButton)
-
     }
     sideButton.onclick = () =>{
        toggleBar(callback)
@@ -23,6 +26,8 @@ function generateSideLayout(infoPage, callback = null){
     sideBar.appendChild(gerateTopTitle("Actions:"))
     if(infoPage){
         sideBar.appendChild(generateMainPageButtons())
+    }else{
+        sideBar.appendChild(generatePhotoSideBar())
     }
     document.body.appendChild(sideBar)
 }
@@ -79,10 +84,12 @@ function isSideBarToggled(){
     return isOpen
 }
 
+
 export{
     generateSideToggleButton,
     generateSideLayout,
     generateActionButton,
     clearSideLayout,
-    isSideBarToggled
+    isSideBarToggled,
+    toggleBar
 }

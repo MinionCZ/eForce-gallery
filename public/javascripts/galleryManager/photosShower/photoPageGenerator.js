@@ -11,7 +11,8 @@ import{
 import{
     generateSideLayout,
     generateSideToggleButton,
-    isSideBarToggled
+    isSideBarToggled,
+    toggleBar
 }from "../sideBar/sideBarGenerator.js"
 import { PhotoStore } from "./photoStore.js"
 const root = GalleryStore.getRoot()
@@ -20,7 +21,11 @@ function buildPhotosLayout(){
     root.appendChild(generateTopSwitchLayout())
     generateSideToggleButton(buildLayout)
     generateSideLayout(false, buildLayout)
+    if(!isSideBarToggled()){
+        toggleBar(null)
+    }
     root.appendChild(buildLayout())
+
 }
 function buildLayout(){
     console.log("called")
