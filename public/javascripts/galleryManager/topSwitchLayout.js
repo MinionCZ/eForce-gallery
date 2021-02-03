@@ -1,4 +1,7 @@
-import { buildMainPage } from "./mainPageGenerator.js";
+import { buildMainPage, clearMainPage } from "./mainPageGenerator.js";
+import{
+  buildPhotosLayout
+}from "./photosShower/photoPageGenerator.js"
 let infoSelected = true;
 /*
 generates top bar with switches
@@ -18,7 +21,8 @@ function generateTopSwitchLayout() {
   };
   photos.onclick = () => {
       infoSelected = false
-    //generates layout with photos
+      clearMainPage()
+      buildPhotosLayout()
   };
   div.appendChild(info);
   div.appendChild(photos);

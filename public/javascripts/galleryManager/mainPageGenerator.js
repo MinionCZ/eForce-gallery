@@ -63,9 +63,7 @@ function buildGalleryChooser(galTitles, isSelected, selectedGallery = "") {
     dataList.innerHTML = buffer
     const submitBtn = document.createElement("button")
     submitBtn.textContent = "Submit"
-    div.appendChild(selector)
-    div.appendChild(dataList)
-    div.appendChild(submitBtn)
+
     selector.addEventListener("keyup", (event) => {
         if (event.key === "Enter") {
             if (isStringInArray(selector.value, galTitles)) {
@@ -94,14 +92,20 @@ function buildGalleryChooser(galTitles, isSelected, selectedGallery = "") {
 
     if (isSelected) {
         selector.setAttribute("class", "selected gallery-fetcher-roll")
-        submitBtn.setAttribute("class", "selected submit-button")
+        submitBtn.setAttribute("class", "selected fetcher-submit-button")
         div.setAttribute("class", "selected gallery-fetcher-div")
         selector.value = selectedGallery
     } else {
+        const title = document.createElement("h2")
+        title.innerText = "Please choose gallery from list bellow"
         selector.setAttribute("class", "gallery-fetcher-roll")
-        submitBtn.setAttribute("class", "submit-button")
+        submitBtn.setAttribute("class", "fetcher-submit-button")
         div.setAttribute("class", "gallery-fetcher-div")
+        div.appendChild(title)
     }
+    div.appendChild(selector)
+    div.appendChild(dataList)
+    div.appendChild(submitBtn)
     return div
 }
 /*
@@ -152,7 +156,7 @@ function buildMainPage() {
     GalleryStore.clearRoot()
     const root = GalleryStore.getRoot()
     root.appendChild(generateTopSwitchLayout())
-    root.appendChild(buildGalleryChooser(GalleryStore.getGalTitles(), true, GalleryStore.getGallery().title))
+    //root.appendChild(buildGalleryChooser(GalleryStore.getGalTitles(), true, GalleryStore.getGallery().title))
     root.appendChild(buildBasicInformationTable())
     generateTagsLayout()
     generateSideToggleButton()

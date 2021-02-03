@@ -1,4 +1,4 @@
-body{
+body {
   text-align: center;
 }
 
@@ -33,7 +33,7 @@ button.top-switch-button:active {
   background-color: white;
 }
 div.info-table-div {
-  margin-top: 100px;
+  margin-top: 120px;
   width: 100;
   text-align: center;
 }
@@ -130,23 +130,23 @@ button.delete-tag-button:active {
   width: 40px;
   height: 40px;
 }
-button.adding-button{
-    width: 5em;
-    height: 2em;
-    background-color: #00BC1B;
-    color: white;
-    font-size: 20px;
-    border: 1px solid white;
-    border-radius: 10px;
-    outline: none;
-    transition: 200ms;
+button.adding-button {
+  width: 5em;
+  height: 2em;
+  background-color: #00bc1b;
+  color: white;
+  font-size: 20px;
+  border: 1px solid white;
+  border-radius: 10px;
+  outline: none;
+  transition: 200ms;
 }
-button.adding-button:hover{
-    background-color: white;
-    color: #00BC1B;
-    border: 1px solid #00BC1B;
+button.adding-button:hover {
+  background-color: white;
+  color: #00bc1b;
+  border: 1px solid #00bc1b;
 }
-button.update-button{
+button.update-button {
   background-color: lightblue;
   height: 50px;
   width: 200px;
@@ -158,23 +158,52 @@ button.update-button{
   text-align: center;
   margin-top: 50px;
 }
-button.update-button:hover{
-  background-color: #8CBED6;
+button.update-button:hover {
+  background-color: #8cbed6;
 }
-button.update-button:active{
-  background-color: #8CBED6;
+button.update-button:active {
+  background-color: #8cbed6;
   box-shadow: 0 5px #666;
   transform: translateY(4px);
 }
-input.tag-input:hover{
+input.tag-input:hover {
   background-color: lightblue;
 }
-input:focus{
+input:focus {
   background-color: lightblue;
 }
-textarea:focus{
+textarea:focus {
   background-color: lightblue;
 }
-textarea:hover{
+textarea:hover {
+  background-color: lightblue;
+}
+div.gallery-fetcher-div {
+  position: fixed;
+  width: 20%;
+  left: 40%;
+}
+div.selected{
+  left: 0px;
+  bottom: 20px;
+}
+input.gallery-fetcher-roll{
+  height: 25px;
+  width: 80%;
+  font-size: medium;
+  margin-right: 5px;
+
+}
+button.fetcher-submit-button{
+  height: 30px;
+  width: auto;
+  background-color: white;
+  outline: none;
+  border: 1px solid black;
+}
+button.fetcher-submit-button:hover{
+  background-color: lightgreen;
+}
+button.fetcher-submit-button:active{
   background-color: lightblue;
 }
