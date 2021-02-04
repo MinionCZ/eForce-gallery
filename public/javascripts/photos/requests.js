@@ -31,7 +31,11 @@ crops additional data from photo object, saves only file name which is mandatory
 function cropPhotos(photos){
     const croppedPhotos = []
     for (const photo of photos){
-        croppedPhotos.push(photo.fileName)
+        if(typeof(photo) === "string"){
+            croppedPhotos.push(photo)
+        }else{
+            croppedPhotos.push(photo.fileName)
+        }
     }
     return croppedPhotos
 }

@@ -86,7 +86,6 @@ class PhotoStore {
                 document.getElementById("selectAllPhotosOnPageButton").innerText = "Select all photos on page"
                 this.taggedPages.delete(this.actualPage)
             }
-
         }else{
             this.taggedPhotos.add(filename)
         }
@@ -129,6 +128,9 @@ class PhotoStore {
             }
         }
         return taggedPhoto
+    }
+    static calculateSizeOfSelectedPhotos(){
+        
     }
 
 

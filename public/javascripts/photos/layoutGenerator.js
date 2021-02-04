@@ -14,6 +14,7 @@ function generateDownloadButton(text, version, size, selectedPhotos, root) {
         downloadButton.setAttribute("class", "download-selection-button download-left")
     }
     downloadButton.innerHTML = text + size
+    console.log(selectedPhotos.photos)
     downloadButton.onclick = () => {
         downloadSelectedPhotos(selectedPhotos.photos, selectedPhotos.allSelected, version, [])
         document.body.removeChild(root)

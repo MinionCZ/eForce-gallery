@@ -9,13 +9,14 @@ import { buildMainLayout } from "../mainPageGenerator.js"
 import {
     buildLayout
 } from "../photosShower/photoPageGenerator.js"
+import { buildDownloadLayout } from "../../photos/layoutGenerator.js"
 function generatePhotoSideBar() {
     const holderDiv = document.createElement("div")
     holderDiv.setAttribute("class", "side-bar-action-div")
     holderDiv.appendChild(createPageDiv())
     holderDiv.appendChild(generateActionButton("Select all photos", selectAllPhotos, "selectAllPhotosButton"))
     holderDiv.appendChild(generateActionButton("Select all photos on page", selectAllPhotosOnThisPage, "selectAllPhotosOnPageButton"))
-    holderDiv.appendChild(generateActionButton("Download selected photos", null))
+    holderDiv.appendChild(generateActionButton("Download selected photos", handleDownload))
     holderDiv.appendChild(generateActionButton("Delete selected photos", null))
     return holderDiv
 }
@@ -129,6 +130,22 @@ function isThisPageTagged(){
         document.getElementById("selectAllPhotosOnPageButton").innerText = "Deselect all photos on page"
     }
 }
+
+function handleDownload(){
+    const selectedPhotos = {
+        photos: PhotoStore.getAllTaggedPhotos(),
+        allSelected: false
+    }
+    console.log(selectedPhotos)
+    const size = {lite: "Nan", full: "Nan"}
+
+
+    buildDownloadLayout(selectedPhotos, size)
+}
+
+
+
+
 
 
 export {
