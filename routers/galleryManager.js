@@ -44,16 +44,25 @@ router.post("/eforce-gallery/gallery-manager/delete-photos-from-gallery", async 
     const photosToDelete = request.body.photos
     const gallery = await photoDatabase.findGalleryByID(request.body.galleryID)
     await photoDatabase.deletePhotosFromGallery(gallery.galleryTitle, photosToDelete)
-    response.json({
-        "message" : photosToDelete.length +  " photos deleted"
-    })
+    if(photosToDelete.length > 1){
+        response.json({
+            "message" : photosToDelete.length +  " photos deleted"
+        })
+    }else{
+        response.json({
+            "message" : photosToDelete.length +  " photo deleted"
+        })
+    }
+
 })
 router.post("/eforce-gallery/gallery-manager/delete-gallery", async (request, response) => {
     await photoDatabase.deleteGalleryByID(request.body.galleryID)
     response.json({
         "message": "success"
     })
-
+})
+router.post("/eforce-gallery/gallery-manager/fetch-all-photos-sizes", async (request, response) =>{
+    response.json({"photos": await photoDatabase.getSizesForPhotos(request.body.photos)})
 })
 
 

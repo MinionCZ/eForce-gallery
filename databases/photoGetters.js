@@ -141,7 +141,19 @@ function getExcludedPhotos(photos, excludedFilenames, onlyFileNames = false) {
     return photosToReturn
 }
 
-
+async function getSizesForPhotos(photosToFind) {
+    const photosWithSizes = []
+    for(const filename of photosToFind){
+        const photo = await photos.findOne({fileName: filename})
+        const newPhoto = {
+            filename: filename,
+            liteSize: photo.liteSizeInMB,
+            fullSize: photo.fullSizeInMB
+        }
+        photosWithSizes.push(newPhoto)
+    }
+    return photosWithSizes
+}
 
 
 
@@ -150,5 +162,6 @@ function getExcludedPhotos(photos, excludedFilenames, onlyFileNames = false) {
 module.exports = {
     initPhotoGetters,
     filterPhotosByTags,
-    getAllPhotos
+    getAllPhotos,
+    getSizesForPhotos
 }

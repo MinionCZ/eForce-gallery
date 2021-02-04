@@ -141,7 +141,7 @@ async function getLiteSizes(photosToGetSize, galleryID = null){
         }
     }
     if (newPhotoList.length !== 0){
-        setTimeout(() =>{getLiteSizes(newPhotoList, galleryID)}, 2000)
+        setTimeout(() =>{getLiteSizes(newPhotoList, galleryID)}, 1000)
     }else{
         if(galleryID){
             galleryModifier.syncGallerySizes(galleryID)

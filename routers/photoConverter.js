@@ -24,9 +24,9 @@ async function handleNewPhoto(fileName, galleryId, username, isTemp) {
             if(isTemp){
                 photoDatabase.insertTempPhoto(fileName, galleryId, username, width, height, thumbnailName)
             }else{
-                await photoDatabase.addPhotoToPrimaryDatabase(fileName, width, height, fs.statSync(pathToPhoto).size)
+                await photoDatabase.addPhotoToPrimaryDatabase(fileName, width, height, fs.statSync(pathToPhoto).size / 10e5)
                 await photoDatabase.addPhotoToGallery(galleryId, fileName)
-                photoDatabase.getLiteSizes([fileName])
+                photoDatabase.getLiteSizes([{fileName:fileName}], galleryId)
             }
             createLitePhoto(pathToPhoto, fileName)
             if (width > 1920 || height > 1080) {

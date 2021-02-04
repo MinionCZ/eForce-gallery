@@ -87,6 +87,8 @@ function createExitButton(root, callback) {
                 callback()
             }
         }
+        maxPhotos = 0
+        uploadedPhotosCounter = 1
     }
     return button
 }

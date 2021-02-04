@@ -1,3 +1,4 @@
+import { Gallery } from "../gallery.js"
 import {
     GalleryStore
 } from "../galleryStore.js"
@@ -11,9 +12,14 @@ class PhotoStore {
     static actualPage = 1
     static allPhotosTagged = false
     static taggedPages = new Set()
-    static obtainAllPhotos() {
+    static sizeMap = new Map()
+    static async obtainAllPhotos() {
         this.allPhotos = GalleryStore.getGallery().photos
         this.pages = this.calculatePages()
+        if(this.actualPage > this.pages){
+            this.actualPage = this.pages
+        }
+        this.sizeMap = await this.fetchPhotoSizes()
     }
     static getAllPhotos() {
         return this.allPhotos
@@ -130,7 +136,42 @@ class PhotoStore {
         return taggedPhoto
     }
     static calculateSizeOfSelectedPhotos(){
-        
+        let liteSize = 0
+        let fullSize = 0
+        for(const photo of this.taggedPhotos){
+            const actualSizes = this.sizeMap.get(photo)
+            liteSize += actualSizes.liteSize
+            fullSize += actualSizes.fullSize
+        }
+        return{ liteSize : this.cropLengthOfSizes(liteSize),
+        fullSize: this.cropLengthOfSizes(fullSize)}
+    }
+    static cropLengthOfSizes(size){
+        let newSize = parseFloat(size)
+        let units = "MB"
+        if(newSize > 1000){
+            newSize /= 1000
+            units = "GB"
+        }
+        newSize *= 100
+        newSize = Math.floor(newSize)
+        newSize /= 100
+        return newSize + units
+    }
+    static async fetchPhotoSizes(){
+        const response = await fetch("/eforce-gallery/gallery-manager/fetch-all-photos-sizes",{
+            method:"POST",
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({photos: this.allPhotos})
+        })
+        const parsed = await response.json()
+        const sizeMap = new Map()
+        for(const photo of parsed.photos){
+            sizeMap.set(photo.filename, {liteSize: photo.liteSize, fullSize: photo.fullSize})
+        }
+        return sizeMap
     }
 
 

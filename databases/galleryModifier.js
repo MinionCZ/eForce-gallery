@@ -239,7 +239,7 @@ async function addPhotoToPrimaryDatabase(filename, width, height, fullSizeInMB){
         height:height,
         fileName:filename,
         fullSizeInMB: fullSizeInMB,
-        liteSizeInMB: 0
+        liteSizeInMB: -1000
     }
     await photos.insertOne(photo)
 }

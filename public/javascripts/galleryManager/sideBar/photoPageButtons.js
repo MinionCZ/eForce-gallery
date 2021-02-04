@@ -5,11 +5,17 @@ import {
 import {
     PhotoStore
 } from "../photosShower/photoStore.js"
-import { buildMainLayout } from "../mainPageGenerator.js"
 import {
     buildLayout
 } from "../photosShower/photoPageGenerator.js"
-import { buildDownloadLayout } from "../../photos/layoutGenerator.js"
+import { buildDownloadLayout, createPopupWindow } from "../../photos/layoutGenerator.js"
+import { createConfirmWindow } from "../../confirmWindow/confirmWindow.js"
+import {
+    GalleryStore
+} from "../galleryStore.js"
+import {
+    fetchGalleryByTitle
+}from"../galleryFetcher.js"
 function generatePhotoSideBar() {
     const holderDiv = document.createElement("div")
     holderDiv.setAttribute("class", "side-bar-action-div")
@@ -17,7 +23,7 @@ function generatePhotoSideBar() {
     holderDiv.appendChild(generateActionButton("Select all photos", selectAllPhotos, "selectAllPhotosButton"))
     holderDiv.appendChild(generateActionButton("Select all photos on page", selectAllPhotosOnThisPage, "selectAllPhotosOnPageButton"))
     holderDiv.appendChild(generateActionButton("Download selected photos", handleDownload))
-    holderDiv.appendChild(generateActionButton("Delete selected photos", null))
+    holderDiv.appendChild(generateActionButton("Delete selected photos", handleDelete))
     return holderDiv
 }
 function createPageDiv() {
@@ -66,7 +72,6 @@ function updateActualPageInput() {
     document.getElementById("incrementPageButton").disabled = PhotoStore.getActualPage() === PhotoStore.getMaxPage()
     document.getElementById("decrementPageButton").disabled = PhotoStore.getActualPage() === 1
     buildLayout()
-    console.log(PhotoStore.isPageTagged())
     isThisPageTagged()
 
 }
@@ -132,20 +137,54 @@ function isThisPageTagged(){
 }
 
 function handleDownload(){
+    const taggedPhotos = PhotoStore.getAllTaggedPhotos()
+    if(taggedPhotos.length === 0){
+        createPopupWindow("You have not selected any photos")
+        return
+    }
     const selectedPhotos = {
         photos: PhotoStore.getAllTaggedPhotos(),
         allSelected: false
     }
-    console.log(selectedPhotos)
-    const size = {lite: "Nan", full: "Nan"}
-
-
+    
+    const size = PhotoStore.calculateSizeOfSelectedPhotos()
     buildDownloadLayout(selectedPhotos, size)
 }
 
-
-
-
+function handleDelete() {
+    const selectedPhotos = PhotoStore.getAllTaggedPhotos()
+    if(selectedPhotos.length === 0){
+        createPopupWindow("You have not selected any photos to delete")
+        return
+    }
+    if(selectedPhotos.length === 1){
+        createConfirmWindow("Do you really wish to delete this photo?", executeDelete)
+    }else{
+        createConfirmWindow("Do you really wish to delete this " + selectedPhotos.length + " photos?", executeDelete)
+    }
+    
+}
+async function executeDelete() {
+    const data = {
+        galleryID: GalleryStore.getGallery().galleryID,
+        photos: PhotoStore.getAllTaggedPhotos()
+    }
+    const response = await fetch("/eforce-gallery/gallery-manager/delete-photos-from-gallery", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    refreshLayout()
+    createPopupWindow((await response.json()).message)
+}
+async function refreshLayout() {
+    GalleryStore.buildNewGallery(await fetchGalleryByTitle(GalleryStore.getGallery().title))
+    PhotoStore.obtainAllPhotos()
+    buildLayout()
+    
+}
 
 
 export {

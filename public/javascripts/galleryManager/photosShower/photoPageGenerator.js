@@ -90,6 +90,10 @@ function tagAllPhotosInLayout() {
     }
 }
 
+function clearPhotoLayout(params) {
+    
+}
+
 
 
 export {
