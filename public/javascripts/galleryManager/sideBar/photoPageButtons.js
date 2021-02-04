@@ -186,11 +186,11 @@ async function refreshLayout() {
     PhotoStore.obtainAllPhotos()
     buildLayout()
     updateActualPageInput()
-    
 }
 
 
 export {
     generatePhotoSideBar,
-    updateActualPageInput
+    updateActualPageInput,
+    refreshLayout
 }

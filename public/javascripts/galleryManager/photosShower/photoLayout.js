@@ -9,10 +9,15 @@ class PhotoLayout{
     }
     generateLayout(){
         const div = document.createElement("div")
+        div.addEventListener("click", this.handleDivClick)
         div.setAttribute("class", "gallery-manager-thumbnail-div")
         div.appendChild(this.generatePhotoLayout())
         this.checkBox = this.generateCheckBox()
         div.appendChild(this.checkBox)
+        const input = document.createElement("input")
+        input.type = "hidden"
+        input.value = this.filename
+        div.appendChild(input)
         return div
     }
     generatePhotoLayout(){
@@ -24,9 +29,9 @@ class PhotoLayout{
         image.height = 280
         image.width = 420
         div.appendChild(image)
+
         return image
     }
-
     generateCheckBox(){
         const checkBox = document.createElement("input")
         checkBox.setAttribute("type", "checkbox")
@@ -40,6 +45,16 @@ class PhotoLayout{
     updateCheckBox(){
         this.checkBox.checked = PhotoStore.isPhotoTagged(this.filename)
     }
+
+    handleDivClick(event){
+        if(event.target.type === "checkbox"){
+            return
+        }
+
+        const index = PhotoStore.getIndexOfPhoto(this.childNodes[2].value)
+        PhotoStore.createNewPreview(this.childNodes[2].value, this.childNodes[1], index)
+    }
+
 }
 export{
     PhotoLayout

@@ -139,6 +139,7 @@ function setPhotoToPreview(photo) {
 }
 
 function generateCheckBox(photo) {
+    console.log(photo)
     const checkbox = document.createElement("input")
     checkbox.setAttribute("type", "checkbox")
     checkbox.setAttribute("class", "preview-checkbox photo-checkbox")

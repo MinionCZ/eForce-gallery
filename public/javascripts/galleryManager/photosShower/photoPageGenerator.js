@@ -50,7 +50,6 @@ function buildLayout() {
 function buildPhotoLineDivs() {
     const photosForLine = isSideBarToggled() ? 5 : 6
     const photosToRender = PhotoStore.getPhotosForPage()
-    console.log(photosToRender, PhotoStore.getMaxPage())
     const lines = []
     let counter = 0
     let actualDiv = document.createElement("div")

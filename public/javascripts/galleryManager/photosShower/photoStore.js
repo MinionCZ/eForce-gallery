@@ -1,6 +1,8 @@
+import { PhotoPreview } from "../../photoPresenter/photoPreview.js"
 import {
     GalleryStore
 } from "../galleryStore.js"
+import { PhotoObject } from "./photoObject.js"
 import{
     tagAllPhotosInLayout
 }from "./photoPageGenerator.js"
@@ -12,6 +14,7 @@ class PhotoStore {
     static allPhotosTagged = false
     static taggedPages = new Set()
     static sizeMap = new Map()
+    static preview = null
     static async obtainAllPhotos() {
         this.allPhotos = GalleryStore.getGallery().photos
         this.pages = this.calculatePages()
@@ -173,6 +176,24 @@ class PhotoStore {
         return sizeMap
     }
 
+    static getIndexOfPhoto(filename){
+        return this.getPhotosForPage().indexOf(filename)
+    }
+    static getPhotoAtIndex(index){
+        const photosOnPage = this.getPhotosForPage()
+        if(index < photosOnPage.length){
+            return photosOnPage[index]
+        }
+        return null
+    }
+    static getPreview(){
+        return this.preview
+    }
+    static createNewPreview(photo, checkBox, index){
+        const photoObject = new PhotoObject(photo, checkBox)
+        this.preview = new PhotoPreview(photoObject, null, null, index, null)
+
+    }
 
 }
 export {
