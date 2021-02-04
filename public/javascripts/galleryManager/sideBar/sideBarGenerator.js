@@ -65,10 +65,11 @@ function gerateTopTitle(sideBarTitle){
     return title
 }
 
-function generateActionButton(text, callback){
+function generateActionButton(text, callback, id = ""){
     const button = document.createElement("button")
     button.innerHTML = text
     button.setAttribute("class", "side-bar-action-button")
+    button.setAttribute("id", id)
     button.onclick = () =>{
         callback()
     }

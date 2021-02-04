@@ -10,9 +10,9 @@ class PhotoLayout{
     generateLayout(){
         const div = document.createElement("div")
         div.setAttribute("class", "gallery-manager-thumbnail-div")
-        
         div.appendChild(this.generatePhotoLayout())
-        div.appendChild(this.generateCheckBox())
+        this.checkBox = this.generateCheckBox()
+        div.appendChild(this.checkBox)
         return div
     }
     generatePhotoLayout(){
@@ -31,8 +31,14 @@ class PhotoLayout{
         const checkBox = document.createElement("input")
         checkBox.setAttribute("type", "checkbox")
         checkBox.checked = PhotoStore.isPhotoTagged(this.filename)
+        checkBox.onclick =() =>{
+            PhotoStore.toggleTagOnPhoto(this.filename)
+        }
         checkBox.setAttribute("class", "photo-checkbox")
         return checkBox
+    }
+    updateCheckBox(){
+        this.checkBox.checked = PhotoStore.isPhotoTagged(this.filename)
     }
 }
 export{

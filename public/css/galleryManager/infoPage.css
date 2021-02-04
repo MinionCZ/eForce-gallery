@@ -11,6 +11,7 @@ div.top-switch-div {
   height: 50px;
   background-color: darkgray;
   line-height: 50px;
+  z-index: 2;
 }
 button.top-switch-button {
   width: 15%;

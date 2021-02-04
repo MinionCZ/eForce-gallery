@@ -5,6 +5,7 @@ div.uploading-window-root{
     top: 0px;
     right: 0px;
     background-color: rgba(0, 0, 0, 0.8);
+    z-index: 10;
 }
 div.upload-window-drag-and-drop-area{
     width: 50%;
