@@ -40,6 +40,7 @@ function createPageDiv() {
     textPageInput.addEventListener("focusout", setNewActualPage)
 
     maxPageLabel.setAttribute("class", "max-page-label")
+    maxPageLabel.setAttribute("id", "maxPageLabel")
     maxPageLabel.innerText = "/" + PhotoStore.getMaxPage()
     div.appendChild(createChangePageButtons("decrement", false))
     div.appendChild(textPageInput)
@@ -71,6 +72,7 @@ function updateActualPageInput() {
     document.getElementById("actualPageInput").value = PhotoStore.getActualPage()
     document.getElementById("incrementPageButton").disabled = PhotoStore.getActualPage() === PhotoStore.getMaxPage()
     document.getElementById("decrementPageButton").disabled = PhotoStore.getActualPage() === 1
+    document.getElementById("maxPageLabel").innerText = PhotoStore.getMaxPage()
     buildLayout()
     isThisPageTagged()
 
@@ -183,6 +185,7 @@ async function refreshLayout() {
     GalleryStore.buildNewGallery(await fetchGalleryByTitle(GalleryStore.getGallery().title))
     PhotoStore.obtainAllPhotos()
     buildLayout()
+    updateActualPageInput()
     
 }
 

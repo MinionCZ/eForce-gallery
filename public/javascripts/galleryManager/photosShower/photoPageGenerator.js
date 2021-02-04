@@ -12,7 +12,8 @@ import {
     generateSideLayout,
     generateSideToggleButton,
     isSideBarToggled,
-    toggleBar
+    toggleBar,
+    clearSideLayout
 } from "../sideBar/sideBarGenerator.js"
 import { PhotoStore } from "./photoStore.js"
 const root = GalleryStore.getRoot()
@@ -90,8 +91,10 @@ function tagAllPhotosInLayout() {
     }
 }
 
-function clearPhotoLayout(params) {
-    
+function clearPhotoLayout() {
+    GalleryStore.clearRoot()
+    clearSideLayout()
+
 }
 
 
@@ -99,5 +102,6 @@ function clearPhotoLayout(params) {
 export {
     buildPhotosLayout,
     buildLayout,
-    tagAllPhotosInLayout
+    tagAllPhotosInLayout,
+    clearPhotoLayout
 }

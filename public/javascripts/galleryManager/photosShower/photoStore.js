@@ -1,4 +1,3 @@
-import { Gallery } from "../gallery.js"
 import {
     GalleryStore
 } from "../galleryStore.js"
