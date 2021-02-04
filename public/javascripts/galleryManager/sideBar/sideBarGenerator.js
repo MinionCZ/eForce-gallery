@@ -2,7 +2,7 @@ import{
     generateMainPageButtons
 }from "./mainPageButtons.js"
 import{
-    generatePhotoSideBar
+    generatePhotoSideBar, updateActualPageInput
 }from "./photoPageButtons.js"
 
 let isOpen = false
@@ -26,10 +26,13 @@ function generateSideLayout(infoPage, callback = null){
     sideBar.appendChild(gerateTopTitle("Actions:"))
     if(infoPage){
         sideBar.appendChild(generateMainPageButtons())
+        document.body.appendChild(sideBar)
     }else{
         sideBar.appendChild(generatePhotoSideBar())
+        document.body.appendChild(sideBar)
+        updateActualPageInput()
     }
-    document.body.appendChild(sideBar)
+    
 }
 
 function getExitSideBarButton(callback){

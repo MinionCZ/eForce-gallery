@@ -1,79 +1,136 @@
-button.side-button{
-    position: fixed;
-    top: 100px;
-    right: 0px;
-    height: calc(100% - 100px);
-    outline: none;
+button.side-button {
+  position: fixed;
+  top: 100px;
+  right: 0px;
+  height: calc(100% - 100px);
+  outline: none;
+  border: none;
+  background-color: darkgray;
+  transition: 200ms;
+}
+
+button.side-button:hover {
+  background-color: lightgray;
+}
+button.side-button:active {
+  background-color: white;
+}
+
+div.side-bar {
+  position: fixed;
+  top: 100px;
+  right: 0px;
+  width: 20%;
+  background-color: darkgray;
+  height: calc(100% - 100px);
+  transition: 200ms;
+  overflow: hidden;
+}
+div.hidden {
+  width: 0;
+}
+div.visible {
+  width: 16.6667%;
+}
+
+button.exit-side-bar-button {
+  width: 40px;
+  height: 40px;
+  font-size: 25px;
+  outline: none;
+  border-radius: 25px;
+  border: 1px solid darkgray;
+  background-color: darkgray;
+  color: red;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  transition: 200ms;
+}
+button.exit-side-bar-button:hover {
+  background-color: white;
+}
+button.exit-side-bar-button:active {
+  background-color: red;
+  color: white;
+}
+
+button.side-bar-action-div {
+  height: calc(100% - 100px);
+}
+button.side-bar-action-button {
+  width: 95%;
+  margin-bottom: 10px;
+  font-size: 20px;
+  border-radius: 10px;
+  border: 1px solid darkgray;
+  outline: none;
+  height: 3em;
+  transition: 200ms;
+  cursor: pointer;
+  background-color: #f1f3f4;
+}
+button.side-bar-action-button:hover {
+  background-color: lightblue;
+}
+button.side-bar-action-button:active {
+  background-color: darkgray;
+  border: 1px white solid;
+  color: white;
+}
+div.page-holder-div {
+  width: 95%;
+  height: 3em;
+  background-color: #f1f3f4;
+  margin-left: 2.5%;
+  line-height: 3em;
+  border-radius: 10px;
+  font-size: 20px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+input.actual-page-input {
+  width: 2ch;
+  font-size: 20px;
+}
+button.change-page-button {
+  font-size: 20px;
+  width: 30px;
+  height: 30px;
+  margin-left: 10px;
+  margin-right: 10px;
+  display: inline-block;
+  position: relative;
+  background-color: transparent;
+}
+label.max-page-label {
+  margin-bottom: 0;
+  margin-left: 5px;
+}
+button.increment {
+  border: none;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-left: 1em solid;
+  outline: none;
+}
+button.decrement {
     border: none;
-    background-color: darkgray;
-    transition: 200ms;
-}
-
-button.side-button:hover{
-    background-color: lightgray;
-}
-button.side-button:active{
-    background-color: white;
-}
-
-div.side-bar{
-    position: fixed;
-    top: 100px;
-    right: 0px;
-    width: 20%;
-    background-color: darkgray;
-    height: calc(100% - 100px);
-    transition: 200ms;
-    overflow: hidden;
-}
-div.hidden{
-    width: 0;
-}
-div.visible{
-    width: 16.6667%;
-}
-
-button.exit-side-bar-button{
-    width: 40px;
-    height: 40px;
-    font-size: 25px;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-right: 1em solid;
     outline: none;
-    border-radius: 25px;
-    border: 1px solid darkgray;
-    background-color: darkgray;
-    color: red;
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    transition: 200ms;
-}
-button.exit-side-bar-button:hover{
-    background-color: white;
-}
-button.exit-side-bar-button:active{
-    background-color: red;
-    color: white;
-}
+  }
 
-button.side-bar-action-div{
-    height: calc(100% - 100px);
+
+button.decrement:hover{
+    border-right: 1em solid goldenrod;
 }
-button.side-bar-action-button{
-    width: 95%;
-    margin-bottom: 10px;
-    font-size: 20px;
-    border-radius: 10px;
-    border: 1px solid darkgray;
-    outline: none;
-    height: 3em;
-    transition: 200ms;
-    cursor: pointer;
+button.increment:hover{
+    border-left: 1em solid goldenrod;
 }
-button.side-bar-action-button:hover{
+div.page-holder-div:hover{
     background-color: lightblue;
-}
-button.side-bar-action-button:active{
-    background-color: darkgray;
-    border: 1px white solid;
-    color: white;
 }
