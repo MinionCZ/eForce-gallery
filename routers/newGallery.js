@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const photoDatabase = require("../databases/photoDatabase")
 const headerParser = require("./headersParser")
+const databaseHelper = require("../databases/databaseHelpers")
 
 function harvestTags(request) {
 
@@ -26,7 +27,7 @@ router.post("/eforce-gallery/gallery/add", async function (request, response) {
     } else {
         photoDatabase.pushGalleryWithoutPhotos(request.body.title, request.body.label, harvestTags(request), request.body.date, parsedHeaders.username)
     }
-    response.redirect("/eforce-gallery/gallery-manager?gallery-title=")
+    response.redirect("/eforce-gallery/gallery-manager?gallery-title=" +databaseHelper.stringToSearchParam(request.body.title))
 })
 
 router.get("/eforce-gallery/galleries/fetch-titles-and-tags", async function (request, response) {

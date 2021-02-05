@@ -106,6 +106,17 @@ function getToday() {
     }
     return date + "." + monthString + "." + now.getFullYear()
 }
+function stringToSearchParam(string) {
+    const pieces = string.split(" ")
+    let param = ""
+    for(let i = 0; i < pieces.length; i++){
+        param += pieces[i]
+        if(i + 1 < pieces.length){
+            param += "+"
+        }
+    }
+    return param
+}
 
 module.exports = {
     convertDateToHTML,
@@ -116,5 +127,6 @@ module.exports = {
     addStringToFileName,
     stringToEnglish,
     getTime,
-    getToday
+    getToday,
+    stringToSearchParam
 }
