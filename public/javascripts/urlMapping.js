@@ -35,11 +35,10 @@ sets clicked button after page is loaded
 */
 function setClickedButton(){
     let value = parseCookie("mapping")
-    console.log(document.cookie.split(";"))
     let div = document.getElementById("buttonDiv").children
     for(var button of div){
         if(button.value === value){
-            button.setAttribute("class", "navButton-selected")
+            //button.setAttribute("class", "navButton-selected")
         }
     }
 

@@ -26,7 +26,7 @@ router.post("/eforce-gallery/gallery/add", async function (request, response) {
     } else {
         photoDatabase.pushGalleryWithoutPhotos(request.body.title, request.body.label, harvestTags(request), request.body.date, parsedHeaders.username)
     }
-    response.render("newGallery.ejs")
+    response.redirect("/eforce-gallery/gallery-manager?gallery-title=")
 })
 
 router.get("/eforce-gallery/galleries/fetch-titles-and-tags", async function (request, response) {

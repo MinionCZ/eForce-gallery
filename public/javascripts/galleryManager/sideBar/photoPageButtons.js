@@ -225,7 +225,7 @@ refreshes layout after deleting or changes
 */
 async function refreshLayout() {
     GalleryStore.buildNewGallery(await fetchGalleryByTitle(GalleryStore.getGallery().title))
-    PhotoStore.obtainAllPhotos()
+    await PhotoStore.obtainAllPhotos()
     buildLayout()
     updateActualPageInput()
 }

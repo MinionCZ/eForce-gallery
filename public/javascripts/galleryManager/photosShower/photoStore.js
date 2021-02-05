@@ -67,6 +67,9 @@ class PhotoStore {
     }
     static getPhotosForPage() {
         const photosToPage = []
+        if(this.getAllPhotos().length === 0){
+            return []
+        }
         if (this.actualPage < this.pages) {
             for (let i = 60 * (this.actualPage - 1); i < 60 * this.actualPage; i++) {
                 photosToPage.push(this.allPhotos[i])
@@ -187,7 +190,7 @@ class PhotoStore {
     }
     static getPhotoAtIndex(index) {
         const photosOnPage = PhotoStore.getPhotosForPage()
-        if (index < photosOnPage.length) {
+        if (index < photosOnPage.length && index >= 0) {
             return photosOnPage[index]
         }
         return null
@@ -260,19 +263,20 @@ class PhotoStore {
     static setNewPhotoToPreviewAfterDelete(){
         let index = PhotoStore.preview.getIndex()
         if(PhotoStore.getPhotoAtIndex(index) !== null){
+            console.log(PhotoStore.getAllPhotos(), PhotoStore.getPhotoAtIndex(index))
             PhotoStore.setPreview(index, PhotoStore.isLast(index), PhotoStore.isNext(index))
         }else{
             index--
             if(PhotoStore.getPhotoAtIndex(index) !== null){
                 PhotoStore.setPreview(index, PhotoStore.isLast(index), PhotoStore.isNext(index))
             }else if(index < 0){
-                if(PhotoStore.actualPage !== 1){
+                if(PhotoStore.getActualPage() > 1){
                     PhotoStore.actualPage--
                     PhotoStore.setPreview(59, PhotoStore.isLast(59), PhotoStore.isNext(59))
                 }else{
-                    // drop
+                    PhotoStore.preview.deletePreview()
+                    document.getElementById("topSwitchInfoButton").click()
                 }
-               
             }
 
         }

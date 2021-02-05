@@ -84,7 +84,10 @@ class GalleryPreview {
         let manageButton = this.renderButton("Manage gallery", "manageButton")
         let deleteButton = this.renderButton("Delete gallery", "deleteButton")
         manageButton.onclick = () => {
-            alert("manage")
+            const newUrl = location.protocol + "//" + location.host + "/eforce-gallery/gallery-manager"
+            const url = new URL(newUrl)
+            url.searchParams.set("gallery-title", this.gallery.title)
+            window.location.href = url
         }
         deleteButton.onclick = () => {
             if (confirm("Are you sure you want to delete this gallery?")){

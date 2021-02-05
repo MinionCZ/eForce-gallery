@@ -78,8 +78,8 @@ class PhotoPreview {
     deletes preview
     */
     deletePreview(){
-        if(document.body.contains(this.root)){
-            document.body.removeChild(this.root)
+        if(document.body.contains(this.rootElement)){
+            document.body.removeChild(this.rootElement)
         }
     }
     /*

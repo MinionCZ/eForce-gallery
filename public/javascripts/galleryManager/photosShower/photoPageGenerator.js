@@ -16,6 +16,7 @@ import {
     clearSideLayout
 } from "../sideBar/sideBarGenerator.js"
 import { PhotoStore } from "./photoStore.js"
+import { PhotoObject } from "./photoObject.js"
 const root = GalleryStore.getRoot()
 let photoLayouts = []
 function buildPhotosLayout() {

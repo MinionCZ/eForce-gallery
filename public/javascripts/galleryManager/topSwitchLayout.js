@@ -1,7 +1,9 @@
+import { createPopupWindow } from "../photos/layoutGenerator.js";
+import { GalleryStore } from "./galleryStore.js";
 import { buildMainPage, clearMainPage } from "./mainPageGenerator.js";
-import{
+import {
   buildPhotosLayout, clearPhotoLayout
-}from "./photosShower/photoPageGenerator.js"
+} from "./photosShower/photoPageGenerator.js"
 let infoSelected = true;
 /*
 generates top bar with switches
@@ -24,10 +26,15 @@ function generateTopSwitchLayout() {
     changeSelection()
   };
   photos.onclick = () => {
+    if (GalleryStore.getGallery().photos.length > 0) {
       infoSelected = false
       clearMainPage()
       buildPhotosLayout()
       changeSelection()
+    } else {
+      createPopupWindow("This gallery is empty, please upload some photos first")
+    }
+
   };
   div.appendChild(info);
   div.appendChild(photos);
