@@ -96,11 +96,19 @@ function clearPhotoLayout() {
 
 }
 
+function getPhotoLayoutByFilename(filename){
+    for(const layout of photoLayouts){
+        if(layout.filename === filename){
+            return layout
+        }
+    }
+}
 
 
 export {
     buildPhotosLayout,
     buildLayout,
     tagAllPhotosInLayout,
-    clearPhotoLayout
+    clearPhotoLayout,
+    getPhotoLayoutByFilename
 }

@@ -11,7 +11,7 @@ import{
     createPopupWindow
 } from "../photos/layoutGenerator.js"
 class PhotoPreview {
-    constructor(photo, lastCallback, nextCallback, indexOnPage, refreshCallback) {
+    constructor(photo, lastCallback, nextCallback, indexOnPage, refreshCallback, isPreviousPhoto, isNextPhoto) {
         this.indexOnPage = indexOnPage
         this.photo = photo
         this.rootElement = generateRootElement()
@@ -22,6 +22,7 @@ class PhotoPreview {
         this.rootElement.appendChild(generateCheckBox(photo))
         this.rootElement.appendChild(generatePhotoView(photo.getImageLink(false)))
         document.body.appendChild(this.rootElement)
+        this.setButtonsState(isPreviousPhoto, isNextPhoto)
     }
     /*
     downloads current photo
@@ -81,6 +82,13 @@ class PhotoPreview {
         if(document.body.contains(this.root)){
             document.body.removeChild(this.root)
         }
+    }
+    /*
+    sets if buttons are clickable from the begging
+    */
+    setButtonsState(isPreviousPhoto, isNextPhoto){
+        document.getElementById("leftSideButton").disabled = !isPreviousPhoto
+        document.getElementById("rightSideButton").disabled = !isNextPhoto
     }
 }
 export {
