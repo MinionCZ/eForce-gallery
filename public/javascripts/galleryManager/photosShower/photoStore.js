@@ -1,3 +1,4 @@
+import { createConfirmWindow } from "../../confirmWindow/confirmWindow.js"
 import { PhotoPreview } from "../../photoPresenter/photoPreview.js"
 import {
     GalleryStore
@@ -196,7 +197,7 @@ class PhotoStore {
     }
     static createNewPreview(photo, checkBox, index) {
         const photoObject = new PhotoObject(photo, checkBox)
-        PhotoStore.preview = new PhotoPreview(photoObject, this.getLastPhoto, this.getNextPhoto, index, null, PhotoStore.isLast(index), PhotoStore.isNext(index))
+        PhotoStore.preview = new PhotoPreview(photoObject, this.getLastPhoto, this.getNextPhoto, index, this.deleteHandler, PhotoStore.isLast(index), PhotoStore.isNext(index), true)
     }
     static getLastPhoto() {
         let index = PhotoStore.preview.getIndex()
@@ -241,7 +242,7 @@ class PhotoStore {
     }
     static isNext(index){
         index++
-        return index < (this.getPhotosForPage().length - 1)
+        return index < this.getPhotosForPage().length
     }
 
     static isLast(index){
@@ -251,8 +252,30 @@ class PhotoStore {
         }else{
             return this.actualPage !== 1
         }
+    }
+    static async deleteHandler(){
+        await refreshLayout()
+        PhotoStore.setNewPhotoToPreviewAfterDelete()
+    }
+    static setNewPhotoToPreviewAfterDelete(){
+        let index = PhotoStore.preview.getIndex()
+        if(PhotoStore.getPhotoAtIndex(index) !== null){
+            PhotoStore.setPreview(index, PhotoStore.isLast(index), PhotoStore.isNext(index))
+        }else{
+            index--
+            if(PhotoStore.getPhotoAtIndex(index) !== null){
+                PhotoStore.setPreview(index, PhotoStore.isLast(index), PhotoStore.isNext(index))
+            }else if(index < 0){
+                if(PhotoStore.actualPage !== 1){
+                    PhotoStore.actualPage--
+                    PhotoStore.setPreview(59, PhotoStore.isLast(59), PhotoStore.isNext(59))
+                }else{
+                    // drop
+                }
+               
+            }
 
-
+        }
     }
 }
 

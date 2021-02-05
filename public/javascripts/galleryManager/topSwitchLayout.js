@@ -34,7 +34,9 @@ function generateTopSwitchLayout() {
   return div;
 }
 
-
+/*
+changes selection of gallery manager style
+*/
 function changeSelection() {
   const info = document.getElementById("topSwitchInfoButton")
   const photos = document.getElementById("topSwitchPhotosButton")

@@ -8,6 +8,9 @@ import{
 let isOpen = false
 const sideBar = document.createElement("div")
 sideBar.setAttribute("class", "side-bar hidden")
+/*
+generates button for toggle of side bar
+*/
 function generateSideToggleButton(callback = null){
     const sideButton = document.createElement("button")
     sideButton.setAttribute("class", "side-button")
@@ -20,6 +23,9 @@ function generateSideToggleButton(callback = null){
        toggleBar(callback)
     }
 }
+/*
+generates side layout
+*/
 function generateSideLayout(infoPage, callback = null){
     sideBar.innerHTML = ""
     sideBar.appendChild(getExitSideBarButton(callback))
@@ -34,6 +40,9 @@ function generateSideLayout(infoPage, callback = null){
     }
     
 }
+/*
+generates exit button for side bar
+*/
 
 function getExitSideBarButton(callback){
     const button = document.createElement("button")
@@ -45,6 +54,9 @@ function getExitSideBarButton(callback){
     return button
 }
 
+/*
+toggles side bar
+*/
 function toggleBar(callback){
     if(!isOpen){
         sideBar.setAttribute("class", "side-bar visible")
@@ -57,14 +69,18 @@ function toggleBar(callback){
     }
 
 }
-
+/*
+generates top tittle
+*/
 function gerateTopTitle(sideBarTitle){
     const title = document.createElement("h2")
     title.setAttribute("class", "side-bar-title")
     title.innerText = sideBarTitle
     return title
 }
-
+/*
+generates action button with callback after click
+*/
 function generateActionButton(text, callback, id = ""){
     const button = document.createElement("button")
     button.innerHTML = text
@@ -75,6 +91,9 @@ function generateActionButton(text, callback, id = ""){
     }
     return button
 }
+/*
+clears side layout
+*/
 
 function clearSideLayout(){
     if(document.body.contains(sideBar)){
@@ -84,6 +103,9 @@ function clearSideLayout(){
         document.body.removeChild(document.getElementById("sideButton"))
     }
 }
+/*
+returns if is side bar toggled
+*/
 function isSideBarToggled(){
     return isOpen
 }

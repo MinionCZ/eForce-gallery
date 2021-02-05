@@ -1,12 +1,11 @@
-import{
-    getPage
-} from "../photos/pageHandler.js"
+
 import {
     CheckStore
 } from '../photos/checkStore.js'
-import{
-    PhotosStore
-}from "../photos/photosStore.js"
+import {
+    PhotoStore
+} from "../galleryManager/photosShower/photoStore.js"
+import { createConfirmWindow } from '../confirmWindow/confirmWindow.js'
 
 /*
 generates root element for photo preview
@@ -79,7 +78,9 @@ function generateBackendButton(filename, callback, cssClass, text, title, versio
     button.value = version
     button.onclick = () => {
         if (version === "") {
-            callback(filename, refreshCallback)
+            createConfirmWindow("Do you really wish to delete this photo?", () =>{
+                callback(filename, refreshCallback)
+            })
         } else {
             callback(filename, version)
         }
@@ -124,22 +125,28 @@ function generatePhotoView(source = "") {
 /*
 sets new photo to be previewed
 */
-function setPhotoToPreview(photo) {
+function setPhotoToPreview(photo, isGalleryManager) {
     document.getElementById("photo").src = photo.getImageLink()
     const checkbox = document.getElementById("previewCheckbox")
     checkbox.checked = photo.checkBox.checked
     checkbox.onclick = () => {
         photo.checkBox.checked = checkbox.checked
-        if (checkbox.checked) {
-            CheckStore.addCheckedPhoto(photo.fileName)
+        if (isGalleryManager) {
+            PhotoStore.toggleTagOnPhoto(photo.fileName)
         } else {
-            CheckStore.removeCheckedPhoto(photo.fileName)
+            if (checkbox.checked) {
+                CheckStore.addCheckedPhoto(photo.fileName)
+            } else {
+                CheckStore.removeCheckedPhoto(photo.fileName)
+            }
         }
     }
 }
 
-function generateCheckBox(photo) {
-    console.log(photo)
+/*
+generates checkbox for preview
+*/
+function generateCheckBox(photo, isGalleryManager) {
     const checkbox = document.createElement("input")
     checkbox.setAttribute("type", "checkbox")
     checkbox.setAttribute("class", "preview-checkbox photo-checkbox")
@@ -147,19 +154,19 @@ function generateCheckBox(photo) {
     checkbox.checked = photo.checkBox.checked
     checkbox.onclick = () => {
         photo.checkBox.checked = checkbox.checked
-        if (checkbox.checked) {
-            CheckStore.addCheckedPhoto(photo.fileName)
+        if (isGalleryManager) {
+            PhotoStore.toggleTagOnPhoto(photo.fileName)
         } else {
-            CheckStore.removeCheckedPhoto(photo.fileName)
+            if (checkbox.checked) {
+                CheckStore.addCheckedPhoto(photo.fileName)
+            } else {
+                CheckStore.removeCheckedPhoto(photo.fileName)
+            }
         }
+
     }
     return checkbox
 }
-
-
-
-
-
 export {
     generateTopLine,
     generateRootElement,

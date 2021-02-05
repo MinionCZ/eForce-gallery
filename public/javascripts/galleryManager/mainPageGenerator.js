@@ -276,6 +276,9 @@ function saveDateToGallery(event) {
     console.log(event.srcElement.value)
     GalleryStore.getGallery().eventDate = event.srcElement.value
 }
+/*
+clears submit button
+*/
 
 function clearSubmitButton(){
     if(document.body.contains(document.getElementById("submitButton"))){
@@ -283,6 +286,9 @@ function clearSubmitButton(){
     }
 }
 
+/*
+clears main page from layout
+*/
 function clearMainPage(){
     GalleryStore.clearRoot()
     clearSideLayout()

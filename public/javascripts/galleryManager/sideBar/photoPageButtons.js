@@ -16,6 +16,9 @@ import {
 import {
     fetchGalleryByTitle
 }from"../galleryFetcher.js"
+/*
+generates photo side bars
+*/
 function generatePhotoSideBar() {
     const holderDiv = document.createElement("div")
     holderDiv.setAttribute("class", "side-bar-action-div")
@@ -26,6 +29,9 @@ function generatePhotoSideBar() {
     holderDiv.appendChild(generateActionButton("Delete selected photos", handleDelete))
     return holderDiv
 }
+/*
+creates page div 
+*/
 function createPageDiv() {
     const div = document.createElement("div")
     const textPageInput = document.createElement("input")
@@ -48,6 +54,9 @@ function createPageDiv() {
     div.appendChild(createChangePageButtons("increment", true))
     return div
 }
+/*
+creates change page buttons for increment and decrement buttons
+*/
 function createChangePageButtons(cssClass, increment) {
     const button = document.createElement("button")
     button.setAttribute("class", "change-page-button " + cssClass)
@@ -68,6 +77,9 @@ function createChangePageButtons(cssClass, increment) {
     }
     return button
 }
+/*
+updates actual page on GUI
+*/
 function updateActualPageInput() {
     document.getElementById("actualPageInput").value = PhotoStore.getActualPage()
     document.getElementById("incrementPageButton").disabled = PhotoStore.getActualPage() === PhotoStore.getMaxPage()
@@ -78,6 +90,9 @@ function updateActualPageInput() {
 
 }
 
+/*
+handles page input event
+*/
 function handlePageInput(event) {
     if (!checkInput(event.key)) {
         event.preventDefault()
@@ -91,6 +106,9 @@ function handlePageInput(event) {
 
 }
 
+/*
+checks input if it is valible key
+*/
 function checkInput(key) {
     if (key === "Backspace" || key === "Enter" || key === "Delete") {
         return true
@@ -99,6 +117,9 @@ function checkInput(key) {
     return allowedChars.has(key)
 }
 
+/*
+sets new Actual Page 
+*/
 function setNewActualPage() {
     const page = document.getElementById("actualPageInput").value
     let newPage = parseInt(page)
@@ -112,6 +133,9 @@ function setNewActualPage() {
     updateActualPageInput()
 }
 
+/*
+selects and tags all photos
+*/
 function selectAllPhotos(){
     if(PhotoStore.areAllPhotosTagged()){
         PhotoStore.unTagAllPhotos()
@@ -121,6 +145,9 @@ function selectAllPhotos(){
         document.getElementById("selectAllPhotosButton").innerText = "Deselect all photos"
     }
 }
+/*
+selects all photos on page and tag them
+*/
 function selectAllPhotosOnThisPage(){
     if(PhotoStore.isPageTagged()){
         PhotoStore.unTagAllPhotosOnPage()
@@ -130,6 +157,9 @@ function selectAllPhotosOnThisPage(){
         document.getElementById("selectAllPhotosOnPageButton").innerText = "Deselect all photos on page"
     }
 }
+/*
+changes text on button depending if is this page tagged
+*/
 function isThisPageTagged(){
     if(!PhotoStore.isPageTagged()){
         document.getElementById("selectAllPhotosOnPageButton").innerText = "Select all photos on page"
@@ -138,6 +168,9 @@ function isThisPageTagged(){
     }
 }
 
+/*
+handles download action
+*/
 function handleDownload(){
     const taggedPhotos = PhotoStore.getAllTaggedPhotos()
     if(taggedPhotos.length === 0){
@@ -153,6 +186,9 @@ function handleDownload(){
     buildDownloadLayout(selectedPhotos, size)
 }
 
+/*
+handles delete click event
+*/
 function handleDelete() {
     const selectedPhotos = PhotoStore.getAllTaggedPhotos()
     if(selectedPhotos.length === 0){
@@ -166,6 +202,9 @@ function handleDelete() {
     }
     
 }
+/*
+execute delete sequence of photos and layout refresh
+*/
 async function executeDelete() {
     const data = {
         galleryID: GalleryStore.getGallery().galleryID,
@@ -181,6 +220,9 @@ async function executeDelete() {
     refreshLayout()
     createPopupWindow((await response.json()).message)
 }
+/*
+refreshes layout after deleting or changes
+*/
 async function refreshLayout() {
     GalleryStore.buildNewGallery(await fetchGalleryByTitle(GalleryStore.getGallery().title))
     PhotoStore.obtainAllPhotos()

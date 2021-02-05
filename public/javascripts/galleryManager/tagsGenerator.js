@@ -161,6 +161,9 @@ function fillLastLineDiv(counter, lineDiv){
 	}
 	return lineDiv
 }
+/*
+clears all tags
+*/
 
 function clearTags(){
 	if(document.body.contains(tagDiv)){

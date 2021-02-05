@@ -28,6 +28,9 @@ import{
 import{
     createUploadWindow
 }from "../../galleriesUpload/singlePhotosUpload/uploadWindow.js"
+/*
+generates main page layout for side toggle button
+*/
 function generateMainPageButtons() {
     const holderDiv = document.createElement("div")
     holderDiv.setAttribute("class", "side-bar-action-div")
@@ -39,6 +42,9 @@ function generateMainPageButtons() {
     return holderDiv
 }
 
+/*
+download lite whole gallery
+*/
 function downloadLite() {
     if (GalleryStore.getGallery().photos.length > 0) {
         GalleryPreview.sendRequestToDownloadGallery(GalleryStore.getGallery().galleryID, "lite")
@@ -46,6 +52,9 @@ function downloadLite() {
         createPopupWindow("This gallery is empty, cannot be downloaded")
     }
 }
+/*
+downloads full gallery
+*/
 function downloadFull() {
     if (GalleryStore.getGallery().photos.length > 0) {
     GalleryPreview.sendRequestToDownloadGallery(GalleryStore.getGallery().galleryID, "full")
@@ -53,6 +62,9 @@ function downloadFull() {
         createPopupWindow("This gallery is empty, cannot be downloaded")
     }
 }
+/*
+deletes all photos after click
+*/
 async function deleteAllPhotos() {
     if(GalleryStore.getGallery().photos.length === 0){
         createPopupWindow("This gallery is already empty")
@@ -60,7 +72,9 @@ async function deleteAllPhotos() {
     }
     createConfirmWindow("Do you really wish to delete all photos in this gallery?", executeDeleteOfAllPhotos)
 }
-
+/*
+executes delete of all photos after button click
+*/
 async function executeDeleteOfAllPhotos(){
     const data = {
         galleryID: GalleryStore.getGallery().galleryID,
@@ -80,11 +94,16 @@ async function executeDeleteOfAllPhotos(){
 
 
 
-
+/*
+deletes gallery 
+*/
 function deleteGallery() {
     createConfirmWindow("Do you really wish to delete this gallery?", executeDeletionOfGallery)
 }
 
+/*
+executes deletion of gallery and sends request to the server
+*/
 async function executeDeletionOfGallery(){
     const title = GalleryStore.getGallery().title
     const url = new URL(window.location.href)
@@ -106,6 +125,11 @@ async function executeDeletionOfGallery(){
         reatePopupWindow("Something went wrong")
     }
 }
+
+/*
+handles upload of new photos
+*/
+
 function handleUpload(){
     createUploadWindow(GalleryStore.getGallery().galleryID, buildMainLayout)
 }

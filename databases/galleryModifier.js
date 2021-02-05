@@ -255,10 +255,12 @@ async function addPhotoToGallery(galleryID, photoName){
         }
     })
     const photo = await photos.findOne({fileName:photoName})
+    photo.galleryIDs.push(galleryID)
+    photo.galleryTitles.push(gallery.galleryTitle)
     await photos.updateOne({fileName:photoName},{
         $set:{
-            galleryIDs: photo.galleryIDs.push(galleryID),
-            galleryTitles: photo.galleryTitles.push(gallery.galleryTitle),
+            galleryIDs: photo.galleryIDs,
+            galleryTitles: photo.galleryTitles,
             dateOfEvent: gallery.dateOfEvent,
             tags:makeTagsUnique(photo.tags, gallery.tags)
         }

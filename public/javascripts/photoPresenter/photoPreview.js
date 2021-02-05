@@ -11,15 +11,16 @@ import{
     createPopupWindow
 } from "../photos/layoutGenerator.js"
 class PhotoPreview {
-    constructor(photo, lastCallback, nextCallback, indexOnPage, refreshCallback, isPreviousPhoto, isNextPhoto) {
+    constructor(photo, lastCallback, nextCallback, indexOnPage, refreshCallback, isPreviousPhoto, isNextPhoto, isGalleryManager = false) {
         this.indexOnPage = indexOnPage
         this.photo = photo
+        this.isGalleryManager = isGalleryManager
         this.rootElement = generateRootElement()
         this.sideButtons = generateSideButtons(lastCallback, nextCallback)
         this.rootElement.appendChild(this.sideButtons.leftButton)
         this.rootElement.appendChild(this.sideButtons.rightButton)
         this.rootElement.appendChild(generateTopLine(photo.fileName, this.downloadPhoto, this.deletePhoto, this.rootElement, refreshCallback))
-        this.rootElement.appendChild(generateCheckBox(photo))
+        this.rootElement.appendChild(generateCheckBox(photo, isGalleryManager))
         this.rootElement.appendChild(generatePhotoView(photo.getImageLink(false)))
         document.body.appendChild(this.rootElement)
         this.setButtonsState(isPreviousPhoto, isNextPhoto)
@@ -37,7 +38,6 @@ class PhotoPreview {
     deletes photo which is currently selected, sends it to the back end and refresh page
     */
     async deletePhoto(filename, refreshCallback) {
-        console.log([filename])
         const data = {
             photos: [filename],
             allPhotos: false
@@ -50,7 +50,6 @@ class PhotoPreview {
             body: JSON.stringify(data)
         })
         refreshCallback()
-        console.log(response)
         createPopupWindow((await response.json()).deleted)
     }
     /*
@@ -65,7 +64,7 @@ class PhotoPreview {
     */
     setPhotoToPreview(photo, isPreviousPhoto, isNextPhoto){
         this.photo = photo
-        setPhotoToPreview(photo)
+        setPhotoToPreview(photo, this.isGalleryManager)
         document.getElementById("leftSideButton").disabled = !isPreviousPhoto
         document.getElementById("rightSideButton").disabled = !isNextPhoto
     }
