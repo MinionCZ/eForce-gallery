@@ -5,12 +5,13 @@ const headerParser = require("./headersParser")
 const databaseHelper = require("../databases/databaseHelpers")
 
 function harvestTags(request) {
-
     let tags = JSON.parse(request.body.tagsValue)
     let tagArray = []
+    const tagSet = new Set()
     for (const tag of tags) {
-        if (tag.tagValue !== "") {
+        if (tag.tagValue !== "" && !tagSet.has(tag.tagValue)) {
             tagArray.push(tag.tagValue)
+            tagSet.add(tag.tagValue)
         }
     }
     return tagArray

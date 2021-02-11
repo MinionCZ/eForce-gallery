@@ -1,6 +1,6 @@
 let id = 0
 const tagsArray = []
-import {getDatalistWithTagsForInput} from "./dataVerifier.js"
+import { getDatalistWithTagsForInput } from "./dataVerifier.js"
 /*
 is button delete next to tag is clicked => this tag is deleted and other tags are reindexed and sorted, respecting their previous order
 */
@@ -17,9 +17,12 @@ function deleteTagAndSortOthers(child) {
     for (let i = 0; i < tagsArray.length; i++) {
         document.getElementById(tagsArray[i].id).id = "tagDivId=" + i
         tagsArray[i].id = "tagDivId=" + i
+        tagsArray[i].childNodes[0].id = "tagId=" + i
+        tagsArray[i].childNodes[0].name = "tagId=" + i
     }
     id = tagsArray.length
     document.getElementById("tagsCounter").value = JSON.stringify(id)
+    document.getElementById("tagId=" + (id - 1)).focus()
 }
 
 /*
@@ -34,7 +37,11 @@ function generateTagInput() {
     input.name = "tagId=" + id
     input.className = "tag-input"
     input.id = "tagId=" + id
-    input.setAttribute("list",  "list" + input.id)
+    input.setAttribute("list", "list" + input.id)
+    input.onkeydown = (event) => {
+        const splits = input.id.split("=")
+        checkInput(event, parseInt(splits[1]))
+    }
     let deleteButton = document.createElement("button")
     deleteButton.type = "button"
     deleteButton.addEventListener("click", function () {
@@ -45,6 +52,7 @@ function generateTagInput() {
     root.appendChild(input)
     root.appendChild(deleteButton)
     root.appendChild(getDatalistWithTagsForInput(input.id))
+    console.log(getDatalistWithTagsForInput(input.id))
 
     document.getElementById("tags").appendChild(root)
     tagsArray.push(root)
@@ -67,7 +75,29 @@ function submitForm() {
     document.getElementById("tagsValue").value = (JSON.stringify(tags))
     document.getElementById("galleryForm").submit()
 }
-export{
-    generateTagInput, 
+function checkInput(event, thisId) {
+    if (event.key === "Enter" || event.key === "Tab") {
+        event.preventDefault()
+        if (thisId + 1 < id) {
+            document.getElementById("tagId=" + thisId).blur()
+            document.getElementById("tagId=" + (thisId + 1)).focus()
+        } else {
+            document.getElementById("tagId=" + (id - 1)).blur()
+            generateTagInput()
+            document.getElementById("tagId=" + (thisId + 1)).focus()
+        }
+    }else if (event.key === "Delete" || event.key === "Backspace"){
+        if(document.getElementById("tagId=" + thisId).value.length === 0){
+            deleteTagAndSortOthers(document.getElementById("tagDivId=" + thisId))
+        }
+    }
+
+}
+
+
+
+
+export {
+    generateTagInput,
     submitForm
 }
