@@ -15,24 +15,30 @@ async function handleNewPhoto(fileName, galleryId, username, isTemp) {
         return thumbnail
     }
     const thumbnailName = getThumbnailName()
-    gm(pathToPhoto).thumbnail(420, 280).write(savingPath + thumbnailName, function (err) {})
+    gm(pathToPhoto).thumbnail(420, 280).write(savingPath + thumbnailName, function (err) { })
 
     gm(pathToPhoto).size(async function (err, size) {
         if (!err) {
             const height = size.height
             const width = size.width
-            if(isTemp){
+            if (isTemp) {
                 photoDatabase.insertTempPhoto(fileName, galleryId, username, width, height, thumbnailName)
-            }else{
+            } else {
+
                 await photoDatabase.addPhotoToPrimaryDatabase(fileName, width, height, fs.statSync(pathToPhoto).size / 10e5)
-                await photoDatabase.addPhotoToGallery(galleryId, fileName)
-                photoDatabase.getLiteSizes([{fileName:fileName}], galleryId)
+                if (galleryId !== null) {
+                    await photoDatabase.addPhotoToGallery(galleryId, fileName)
+                    photoDatabase.getLiteSizes([{ fileName: fileName }], galleryId)
+                }else{
+                    photoDatabase.getLiteSizes([{ fileName: fileName }])
+                }
+
             }
             createLitePhoto(pathToPhoto, fileName)
             if (width > 1920 || height > 1080) {
-                gm(pathToPhoto).thumbnail(1920, 1080).define("jpeg:extent=100kb").write(bigThumbnails + thumbnailName, () => {})
-            }else{
-                gm(pathToPhoto).define("jpeg:extent=100kb").write(bigThumbnails + thumbnailName, () => {})
+                gm(pathToPhoto).thumbnail(1920, 1080).define("jpeg:extent=100kb").write(bigThumbnails + thumbnailName, () => { })
+            } else {
+                gm(pathToPhoto).define("jpeg:extent=100kb").write(bigThumbnails + thumbnailName, () => { })
             }
         }
     })
@@ -54,7 +60,7 @@ async function createLitePhoto(pathToPhoto, fileName) {
             if (err) {
                 size = fs.statSync(lite).size / 1000 / 1000
                 if (size > 2.0) {
-                    gm(lite).define("jpeg:extent=2mb").write(lite, () => {})
+                    gm(lite).define("jpeg:extent=2mb").write(lite, () => { })
                 }
             }
 

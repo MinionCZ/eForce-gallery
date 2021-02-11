@@ -166,5 +166,6 @@ function getOnlyImages(files) {
 }
 
 export {
-    createUploadWindow
+    createUploadWindow,
+    getOnlyImages
 }

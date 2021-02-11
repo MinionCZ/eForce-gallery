@@ -3,10 +3,11 @@
 
 <head>
     <script src="/eforce-gallery/javascripts/urlMapping.js"></script>
-    <script src="/eforce-gallery/javascripts/photosUpload/uploadHandler.js"></script>
-    <script src="/eforce-gallery/javascripts/photosUpload/uploadRequests.js"></script>
+    <script type="module" src="/eforce-gallery/javascripts/photosUpload/uploadHandler.js"></script>
     <link rel="stylesheet" href="/eforce-gallery/css/navButtons.css">
     <link rel="stylesheet" href="/eforce-gallery/css/photos/upload.css">
+    <link rel="stylesheet" href="/eforce-gallery/css/confirmWindow/confirmWindow.css">
+    <link rel="stylesheet" href="/eforce-gallery/css/popupWindow.css">
 
 
 </head>
@@ -30,12 +31,10 @@
             <h3>OR</h3>
             <br>
             <input type="file" id="buttonFiles" name="buttonFiles" hidden multiple>
-            <label for="buttonFiles" name="upload_label" class="upload_label">Upload Files</label>
+            <label for="buttonFiles" name="upload_label" class="upload_label" id="uploadLabel">Upload Files</label>
         </div>
         <span class="data_upload_status" id="dataStatus">No Files Uploaded Yet</span>
     </div>
-    
-
 </body>
 
 </html>

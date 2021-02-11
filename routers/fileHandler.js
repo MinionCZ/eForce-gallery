@@ -121,7 +121,19 @@ router.post("/eforce-gallery/gallery-manager/photos/upload", async (request, res
         }
     })
 })
-
+router.post("/eforce-gallery/photos/upload/without-gallery", async (request, response) =>{
+    const parsedHeaders = headerParser.getHeaders(request)
+    upload(request, response, async (error) =>{
+        if(error){
+            response.json({"message" : "Something went wrong"})
+        }else{
+            PhotoConverter.handleNewPhoto(request.body.photoId, null, parsedHeaders.username, false)
+            response.json({
+                "message" : "ok"
+            })
+        }
+    })
+})
 
 
 
