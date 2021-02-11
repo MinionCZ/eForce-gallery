@@ -56,10 +56,10 @@ param clearInDatabase is optional and useable, when only photos are selected
 
 async function deletePhotos(photosToDelete, clearInDatabase = false) {
     databaseHelper.deleteManyPhotos(photosToDelete)
-    
-    if (clearInDatabase){
+
+    if (clearInDatabase) {
         const deleteMap = await getGalleriesToClear(photosToDelete)
-        for (const gallery of deleteMap){
+        for (const gallery of deleteMap) {
             deletePhotosFromGallery(gallery[0], gallery[1])
         }
     }
@@ -73,15 +73,15 @@ async function deletePhotos(photosToDelete, clearInDatabase = false) {
 /*
 creates map with databases and their photos which are going to be deleted and in which galleries they are
 */
-async function getGalleriesToClear(photosToDelete){
+async function getGalleriesToClear(photosToDelete) {
     const deleteDatabaseMap = new Map()
-    for (const filename of photosToDelete){
+    for (const filename of photosToDelete) {
         const photo = await findPhotoByFileName(filename)
-        for (const database of photo.galleryTitles){
-            if (!deleteDatabaseMap.has(database)){
+        for (const database of photo.galleryTitles) {
+            if (!deleteDatabaseMap.has(database)) {
                 deleteDatabaseMap.set(database, [])
                 deleteDatabaseMap.get(database).push(filename)
-            }else{
+            } else {
                 deleteDatabaseMap.get(database).push(filename)
             }
         }
@@ -92,15 +92,15 @@ async function getGalleriesToClear(photosToDelete){
 /*
 delete photos from galleries, clears their existence in photo list
 */
-async function deletePhotosFromGallery(galleryTitle, photos){
-    const gallery = await galleries.findOne({galleryTitle : galleryTitle})
+async function deletePhotosFromGallery(galleryTitle, photos) {
+    const gallery = await galleries.findOne({ galleryTitle: galleryTitle })
     const galleryPhotos = new Set(gallery.photos)
-    for (const photo of photos){
+    for (const photo of photos) {
         galleryPhotos.delete(photo)
     }
-    await galleries.updateOne({galleryTitle:galleryTitle}, {
-        $set:{
-            photos:Array.from(galleryPhotos)
+    await galleries.updateOne({ galleryTitle: galleryTitle }, {
+        $set: {
+            photos: Array.from(galleryPhotos)
         }
     })
     syncGallerySizes(gallery.galleryID)
@@ -151,8 +151,8 @@ async function syncGallerySizes(galleryID = "") {
                 })
             }
         }
-    }else{
-        const galleryToSync = await galleries.findOne({galleryID:galleryID})
+    } else {
+        const galleryToSync = await galleries.findOne({ galleryID: galleryID })
         const size = calculateSizeOfGallery(galleryToSync)
         await galleries.updateOne({
             galleryID: galleryToSync.galleryID
@@ -191,8 +191,8 @@ setInterval(syncGallerySizes, 24 * 60 * 60 * 1000)
 /*
 gets gallery by title
 */
-async function getGalleryByTitle(title){
-    const gallery = await galleries.findOne({galleryTitle: title})
+async function getGalleryByTitle(title) {
+    const gallery = await galleries.findOne({ galleryTitle: title })
     gallery.contributionDate = databaseHelper.convertDateToHTML(gallery.contributionDate)
     gallery.dateOfEvent = databaseHelper.convertDateToHTML(gallery.dateOfEvent)
     return gallery
@@ -201,16 +201,18 @@ async function getGalleryByTitle(title){
 /*
 updates gallery with information from frontend
 */
-async function updateGallery(galleryToUpdate){
-    await galleries.updateOne({galleryID:galleryToUpdate.galleryID},{ $set:{
-        galleryTitle: galleryToUpdate.title,
-        galleryLabel: galleryToUpdate.label,
-        dateOfEvent: databaseHelper.convertDateFromHTML(galleryToUpdate.eventDate),
-        lastChanges: databaseHelper.getToday(),
-        lastChangesTime: databaseHelper.getTime(),
-        photos: galleryToUpdate.photos,
-        tags: galleryToUpdate.tags
-    }})
+async function updateGallery(galleryToUpdate) {
+    await galleries.updateOne({ galleryID: galleryToUpdate.galleryID }, {
+        $set: {
+            galleryTitle: galleryToUpdate.title,
+            galleryLabel: galleryToUpdate.label,
+            dateOfEvent: databaseHelper.convertDateFromHTML(galleryToUpdate.eventDate),
+            lastChanges: databaseHelper.getToday(),
+            lastChangesTime: databaseHelper.getTime(),
+            photos: galleryToUpdate.photos,
+            tags: galleryToUpdate.tags
+        }
+    })
 
 
 }
@@ -218,17 +220,20 @@ async function updateGallery(galleryToUpdate){
 returns all tags
 */
 
-async function getAllTags(){
+async function getAllTags() {
     const tagSet = new Set()
     const allGalleries = await galleries.find({}).toArray()
-    for(const gallery of allGalleries){
-        for (const tag of gallery.tags){
+    for (const gallery of allGalleries) {
+        for (const tag of gallery.tags) {
             tagSet.add(tag)
         }
     }
     return Array.from(tagSet)
 }
-async function addPhotoToPrimaryDatabase(filename, width, height, fullSizeInMB){
+/*
+adds photo to primary photo database - to database photos
+*/
+async function addPhotoToPrimaryDatabase(filename, width, height, fullSizeInMB) {
     const photo = {
         galleryIDs: [],
         galleryTitles: [],
@@ -236,42 +241,104 @@ async function addPhotoToPrimaryDatabase(filename, width, height, fullSizeInMB){
         dateOfContribution: databaseHelper.getToday(),
         dateOfEvent: "01.01.0000",
         width: width,
-        height:height,
-        fileName:filename,
+        height: height,
+        fileName: filename,
         fullSizeInMB: fullSizeInMB,
         liteSizeInMB: -1000
     }
     await photos.insertOne(photo)
 }
 
+/*
+adds photo to gallery after adding it to photo database
+*/
 
-
-async function addPhotoToGallery(galleryID, photoName){
-    const gallery = await galleries.findOne({galleryID: galleryID})
+async function addPhotoToGallery(galleryID, photoName) {
+    const gallery = await galleries.findOne({ galleryID: galleryID })
     gallery.photos.push(photoName)
-    await galleries.updateOne({galleryID:galleryID},  {
-        $set:{
+    await galleries.updateOne({ galleryID: galleryID }, {
+        $set: {
             photos: gallery.photos
         }
     })
-    const photo = await photos.findOne({fileName:photoName})
+    const photo = await photos.findOne({ fileName: photoName })
     photo.galleryIDs.push(galleryID)
     photo.galleryTitles.push(gallery.galleryTitle)
-    await photos.updateOne({fileName:photoName},{
-        $set:{
+    await photos.updateOne({ fileName: photoName }, {
+        $set: {
             galleryIDs: photo.galleryIDs,
             galleryTitles: photo.galleryTitles,
             dateOfEvent: gallery.dateOfEvent,
-            tags:makeTagsUnique(photo.tags, gallery.tags)
+            tags: makeTagsUnique(photo.tags, gallery.tags)
         }
     })
 }
-function makeTagsUnique(oldTags, newTags){
+/*
+makes tags unique, deletes all duplicits
+*/
+function makeTagsUnique(oldTags, newTags) {
     const allTags = new Set(oldTags)
-    for(const tag of newTags){
+    for (const tag of newTags) {
         allTags.add(tag)
     }
     return Array.from(allTags)
+}
+
+/*
+links photos to gallery by its title
+also prevents from bad galery title
+*/
+async function linkPhotosToGallery(photosToLink, allSelected, galleryTitle) {
+    const gallery = await galleries.findOne({ galleryTitle: galleryTitle })
+    if (gallery === null) {
+        return "Not a valid gallery"
+    }
+    photosToLink = await getSelectedPhotos(photosToLink, allSelected)
+    const photosInGallery = new Set(gallery.photos)
+    let allreadyInsideCounter = 0
+    let addedPhotos = 0
+    for (const photo of photosToLink) {
+        if (photosInGallery.has(photo)) {
+            allreadyInsideCounter++
+        } else {
+            gallery.photos.push(photo)
+            addedPhotos++
+        }
+    }
+
+    await galleries.updateOne({ galleryTitle: galleryTitle }, {
+        $set: {
+            photos: gallery.photos
+        }
+    })
+    await syncGallerySizes(gallery.galleryID)
+
+    if (allreadyInsideCounter === 0) {
+        return "All " + addedPhotos + " were succesfully added to " + galleryTitle
+    } else if (allreadyInsideCounter > 0 && addedPhotos > 0) {
+        return addedPhotos + " were succesfully added to " + galleryTitle + " " + allreadyInsideCounter + " were already inside gallery"
+    } else {
+        return "Any of " + allreadyInsideCounter + " photos were added to gallery because, they are already inside"
+    }
+}
+/*
+gets selected photos 
+if photos are selected as extracted then will return all photos without this extracted ones
+else returns the same array that it received
+*/
+async function getSelectedPhotos(photosToLink, allSelected) {
+    if (!allSelected) {
+        return photosToLink
+    }
+    const allPhotos = await photos.find().toArray()
+    const photosToReturn = []
+    const extractedPhotos = new Set(photosToLink)
+    for (const photo of allPhotos) {
+        if (!extractedPhotos.has(photo.fileName)) {
+            photosToReturn.push(photo.fileName)
+        }
+    }
+    return photosToReturn
 }
 
 
@@ -285,7 +352,8 @@ module.exports = {
     getGalleryByTitle,
     updateGallery,
     getAllTags,
-    deletePhotosFromGallery, 
+    deletePhotosFromGallery,
     addPhotoToPrimaryDatabase,
-    addPhotoToGallery
+    addPhotoToGallery,
+    linkPhotosToGallery
 }

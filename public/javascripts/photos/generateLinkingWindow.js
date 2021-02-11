@@ -81,10 +81,16 @@ function calculateSelectedPhotos(selectedPhotos) {
 function executeLink() {
     const photosToLink = CheckStore.getSelectedPhotos()
     const galleryTitle = document.getElementById("gallerySelector").value
-    linkPhotosToDatabase(photosToLink.photos, photosToLink.allSelected, galleryTitle)
+    linkPhotosToDatabase(cropPhotos(photosToLink.photos), photosToLink.allSelected, galleryTitle)
     exitLinkingWindow()
 }
-
+function cropPhotos(photos) {
+    const cropped = []
+    for(const photo of photos){
+        cropped.push(photo.fileName)
+    }
+    return cropped
+}
 
 export{
     createLinkingWindow

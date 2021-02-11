@@ -60,6 +60,9 @@ async function deleteSelected(selectedPhotos, allPhotos){
     PhotosStore.fetchPage(1)
 }
 
+/*
+sends request to backend for adding photos to gallery
+*/
 async function linkPhotosToDatabase(photosToLink, allSelected, galleryTitle){
     const data = {
         photos: photosToLink,

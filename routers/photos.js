@@ -1,3 +1,4 @@
+const { request } = require('express')
 const express = require('express')
 const router = express.Router()
 const photoDatabase = require("../databases/photoDatabase")
@@ -35,6 +36,11 @@ router.get("/eforce-gallery/photos/upload-new-photos", async(request, response) 
     response.render("uploadPhotos.ejs")
 })
 
-
+router.post("/eforce-gallery/photos/link-photos-to-gallery", async(request, response) =>{
+    const responseText = await photoDatabase.linkPhotosToGallery(request.body.photos, request.body.allSelected, request.body.galleryTitle)
+    response.json({
+        "status": responseText
+    })
+})
 
 module.exports = router
