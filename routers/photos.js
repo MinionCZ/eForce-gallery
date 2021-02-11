@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const photoDatabase = require("../databases/photoDatabase")
+const { route } = require('./newGallery')
 
 
 router.get("/eforce-gallery/photos", async function (request, response) {
@@ -30,6 +31,9 @@ router.post("/eforce-gallery/photos/delete", async function(request, response){
     response.json(data)
 })
 
+router.get("/eforce-gallery/photos/upload-new-photos", async(request, response) => {
+    response.render("uploadPhotos.ejs")
+})
 
 
 

@@ -20,6 +20,10 @@ function changeMapping(mapping) {
             break
         case "galleryManager":
             window.location = "/eforce-gallery/gallery-manager"
+            break
+        case "uploadPhotos":
+            window.location = "/eforce-gallery/photos/upload-new-photos"
+            break
     }
 }
 
