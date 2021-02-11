@@ -16,6 +16,7 @@ import{
     handleWritePage,
     getPage
 } from "./pageHandler.js"
+import { createLinkingWindow } from "./generateLinkingWindow.js"
 
 const selectedPages = new Set()
 
@@ -89,6 +90,7 @@ function initTopSelector() {
     document.getElementById("decrementPageButton").addEventListener("click", decrementHandler)
     document.getElementById("pageInput").addEventListener("keydown", handleWritePage)
     document.getElementById("deleteButton").addEventListener("click", handleDelete)
+    document.getElementById("addToGalleryButton").addEventListener("click", createLinkingWindow)
 }
 
 /*

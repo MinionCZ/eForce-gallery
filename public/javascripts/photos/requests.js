@@ -60,6 +60,22 @@ async function deleteSelected(selectedPhotos, allPhotos){
     PhotosStore.fetchPage(1)
 }
 
+async function linkPhotosToDatabase(photosToLink, allSelected, galleryTitle){
+    const data = {
+        photos: photosToLink,
+        allSelected: allSelected,
+        galleryTitle: galleryTitle
+    }
+
+    const response = await fetch("/eforce-gallery/photos/link-photos-to-gallery",{
+        method:"POST",
+        headers:{
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    createPopupWindow((await response.json()).status)
+}
 
 
 
@@ -67,5 +83,6 @@ async function deleteSelected(selectedPhotos, allPhotos){
 
 export {
     downloadSelectedPhotos,
-    deleteSelected
+    deleteSelected,
+    linkPhotosToDatabase
 }
