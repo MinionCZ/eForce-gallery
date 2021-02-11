@@ -61,6 +61,7 @@ async function executeUpload(){
     }
 }
 async function uploadPhoto(file) {
+    changeStatus()
     const data = new FormData()
     data.append("photo", file)
     let url = "/eforce-gallery/photos/upload/without-gallery"
