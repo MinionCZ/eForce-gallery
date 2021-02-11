@@ -61,10 +61,10 @@ async function executeUpload(){
     }
 }
 async function uploadPhoto(file) {
-    changeStatus()
     const data = new FormData()
     data.append("photo", file)
     let url = "/eforce-gallery/photos/upload/without-gallery"
+    changeStatus()
     const response = await fetch(url, {
         method: "post",
         body: data
@@ -72,8 +72,8 @@ async function uploadPhoto(file) {
     const text = (await response.json()).message
     
     if(text === "ok"){
-        changeStatus()
         photoId++
+        changeStatus()
     }else{
         changeStatus("Something went wrong")
     }
@@ -84,11 +84,11 @@ function changeStatus(error = "") {
         textBar.innerText = error
         textBar.className = "data_upload_status error"
     }else{
-        if(photoId < maxPhotos){
+        if(photoId <= maxPhotos){
             textBar.innerText = "Uploading file " + photoId + "/" + maxPhotos
             textBar.className = "data_upload_status uploading"
         }else{
-            textBar.innerText = photoId + " files uploaded"
+            textBar.innerText = maxPhotos + " files uploaded"
             textBar.className = "data_upload_status done"
         }
     }
