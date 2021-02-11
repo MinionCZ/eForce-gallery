@@ -174,7 +174,7 @@ async function pushGalleryWithoutPhotos(galleryTitle, galleryLabel, tags, eventD
         galleryTitle: galleryTitle,
         galleryLabel: galleryLabel,
         tags: tags,
-        dateOfEvent: eventDate,
+        dateOfEvent: databaseHelper.convertDateFromHTML( eventDate),
         nameOfContributor: username,
         lastChanges: today,
         lastChangesTime: time,

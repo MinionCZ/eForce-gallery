@@ -42,7 +42,7 @@ checks if title is not already used
 function isTitleUsed(){
     
     if (document.getElementById("title").value.length > 0){
-        const title = document.getElementById("title").value.toLowerCase()
+        const title = document.getElementById("title").value
         document.getElementById("submitButton").disabled = titles.has(title)
     }else{
         document.getElementById("submitButton").disabled = true
