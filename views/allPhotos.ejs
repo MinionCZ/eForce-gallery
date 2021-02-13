@@ -23,6 +23,7 @@
     <script type="module" src="/eforce-gallery/javascripts/photos/requests.js"></script>
     <script type="module" src="/eforce-gallery/javascripts/photos/pageHandler.js"></script>
     <script type="module" src="/eforce-gallery/javascripts/photos/generateLinkingWindow.js"></script>
+    <script type="module" src="/eforce-gallery/javascripts/photos/sideBarsStore.js"></script>
 
 
     <script type="module" src="/eforce-gallery/javascripts/photoPresenter/photoPreview.js"></script>   
@@ -60,8 +61,8 @@
         <button class="close-btn" id="closeTags" value= "tags">&#10005</button>
         <h3>Tags:</h3>
         <div id="logicDiv" class="logic-div">
-            <button type="button" id="andButton" class="logic-button and-button logic-selected">AND</button>
-            <button type="button" id="orButton" class="logic-button or-button">OR</button>
+            <button type="button" id="andButtonTags" class="logic-button and-button logic-selected">AND</button>
+            <button type="button" id="orButtonTags" class="logic-button or-button">OR</button>
         </div>
         <button class="add-gallery-or-tag" id="addTagsButton">Add another tag</button>
         <div class= "data-div" id="tagsDataDiv">
@@ -74,8 +75,8 @@
         <button class="close-btn" id="closeGalleries" value= "galleries">&#10005</button>
         <h3>Galleries:</h3>
         <div id="logicDiv" class="logic-div">
-            <button type="button" id="andButton" class="logic-button and-button logic-selected">AND</button>
-            <button type="button" id="orButton" class="logic-button or-button">OR</button>
+            <button type="button" id="andButtonGallery" class="logic-button and-button logic-selected">AND</button>
+            <button type="button" id="orButtonGallery" class="logic-button or-button">OR</button>
         </div>
         <button class="add-gallery-or-tag" id="addGalleryButton">Add another gallery</button>
         <div class= "data-div" id="galleryDataDiv">
