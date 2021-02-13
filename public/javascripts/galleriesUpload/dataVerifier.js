@@ -7,26 +7,26 @@ fetchGalleryInformation()
 /*
 fetcher synchronous data from backend -> tags and gallery titles
 */
-async function fetchGalleryInformation(){
+async function fetchGalleryInformation() {
     let req = new XMLHttpRequest()
     req.open("GET", "/eforce-gallery/galleries/fetch-titles-and-tags", false)
-    req.onload = () =>{
+    req.onload = () => {
         const data = JSON.parse(req.response)
         titles = new Set(data.titles)
         tags = data.tags
     }
-     req.send()
+    req.send()
 }
 
 /*
 creates data list with already used tags for input
 */
 
-function getDatalistWithTagsForInput(id){
+function getDatalistWithTagsForInput(id) {
     let datalist = document.createElement("datalist")
-    if(options === null){
+    if (options === null) {
         options = ""
-        for (const option of tags){
+        for (const option of tags) {
             options += '<option value="' + option + '"/>'
         }
     }
@@ -39,18 +39,28 @@ function getDatalistWithTagsForInput(id){
 checks if title is not already used
 */
 
-function isTitleUsed(){
-    
-    if (document.getElementById("title").value.length > 0){
-        const title = document.getElementById("title").value
-        document.getElementById("submitButton").disabled = titles.has(title)
-    }else{
+function isTitleUsed() {
+    let value = document.getElementById("title").value
+    value = cropSpaces(value)
+    if (value.length > 0) {
+        document.getElementById("submitButton").disabled = titles.has(value)
+    } else {
         document.getElementById("submitButton").disabled = true
     }
 
 }
 
-export{
+function cropSpaces(string) {
+    while (string.charAt(string.length - 1) === ' ' && string.length > 0) {
+        string = string.slice(0, -1)
+    }
+    while(string.charAt(0) === ' ' && string.length > 0){
+        string = string.substring(1)
+    }
+    return string
+}
+export {
     getDatalistWithTagsForInput,
-    isTitleUsed
+    isTitleUsed,
+    cropSpaces
 }

@@ -9,6 +9,7 @@ function harvestTags(request) {
     let tagArray = []
     const tagSet = new Set()
     for (const tag of tags) {
+        tag.tagValue = databaseHelper.cropSpaces(tag.tagValue)
         if (tag.tagValue !== "" && !tagSet.has(tag.tagValue)) {
             tagArray.push(tag.tagValue)
             tagSet.add(tag.tagValue)
@@ -23,12 +24,13 @@ router.get("/eforce-gallery/gallery/add", async function (request, response) {
 router.post("/eforce-gallery/gallery/add", async function (request, response) {
     const tempGalleryId = request.cookies.galleryId
     const parsedHeaders = headerParser.getHeaders(request)
+    const title = databaseHelper.cropSpaces(request.body.title)
     if (parseInt(request.body.photoCounter) > 0) {
-        photoDatabase.pushGalleryWithPhotos(tempGalleryId, request.body.title, request.body.label, harvestTags(request), request.body.date, parsedHeaders.username)
+        photoDatabase.pushGalleryWithPhotos(tempGalleryId, title, request.body.label, harvestTags(request), request.body.date, parsedHeaders.username)
     } else {
-        photoDatabase.pushGalleryWithoutPhotos(request.body.title, request.body.label, harvestTags(request), request.body.date, parsedHeaders.username)
+        photoDatabase.pushGalleryWithoutPhotos(title, request.body.label, harvestTags(request), request.body.date, parsedHeaders.username)
     }
-    response.redirect("/eforce-gallery/gallery-manager?gallery-title=" +databaseHelper.stringToSearchParam(request.body.title))
+    response.redirect("/eforce-gallery/gallery-manager?gallery-title=" +databaseHelper.stringToSearchParam(title))
 })
 
 router.get("/eforce-gallery/galleries/fetch-titles-and-tags", async function (request, response) {
@@ -47,7 +49,6 @@ router.get("/eforce-gallery/galleries/fetch-titles-and-tags", async function (re
     }
     response.json(data)
 })
-
 
 
 

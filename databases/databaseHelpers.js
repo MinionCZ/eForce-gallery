@@ -106,6 +106,9 @@ function getToday() {
     }
     return date + "." + monthString + "." + now.getFullYear()
 }
+/*
+returns string as search param
+*/
 function stringToSearchParam(string) {
     const pieces = string.split(" ")
     let param = ""
@@ -117,6 +120,34 @@ function stringToSearchParam(string) {
     }
     return param
 }
+/*
+crops space on the end of string to prevent same strings
+*/
+function cropSpaces(string) {
+    while (string.charAt(string.length - 1) === ' ' && string.length > 0) {
+        string = string.slice(0, -1)
+    }
+    while(string.charAt(0) === ' ' && string.length > 0){
+        string = string.substring(1)
+    }
+   return string
+}
+/*
+params - array of strings that needs to be unificated
+*/
+function makeStringsInArrayUnique(array) {
+    const newArray = []
+    const usedStrings = new Set()
+    for(let string of array){
+        string = cropSpaces(string)
+        if(!usedStrings.has(string)){
+            newArray.push(string)
+        }
+    }
+    return newArray
+}
+
+
 
 module.exports = {
     convertDateToHTML,
@@ -128,5 +159,7 @@ module.exports = {
     stringToEnglish,
     getTime,
     getToday,
-    stringToSearchParam
+    stringToSearchParam,
+    cropSpaces,
+    makeStringsInArrayUnique
 }

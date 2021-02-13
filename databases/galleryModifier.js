@@ -204,13 +204,13 @@ updates gallery with information from frontend
 async function updateGallery(galleryToUpdate) {
     await galleries.updateOne({ galleryID: galleryToUpdate.galleryID }, {
         $set: {
-            galleryTitle: galleryToUpdate.title,
-            galleryLabel: galleryToUpdate.label,
+            galleryTitle: databaseHelper.cropSpaces(galleryToUpdate.title),
+            galleryLabel: databaseHelper.cropSpaces(galleryToUpdate.label),
             dateOfEvent: databaseHelper.convertDateFromHTML(galleryToUpdate.eventDate),
             lastChanges: databaseHelper.getToday(),
             lastChangesTime: databaseHelper.getTime(),
             photos: galleryToUpdate.photos,
-            tags: galleryToUpdate.tags
+            tags: databaseHelper.makeStringsInArrayUnique(galleryToUpdate.tags)
         }
     })
 

@@ -9,6 +9,7 @@ import {
 import{
     buildMainLayout
 }from "./mainPageGenerator.js"
+import { cropSpaces } from "../galleriesUpload/dataVerifier.js"
 
 /*
 submits gallery to backend to update information
@@ -54,6 +55,7 @@ function checkDataCorrection() {
 checks if title is not used and it is not empty
 */
 function checkTitleCorrection() {
+    GalleryStore.getGallery().title = cropSpaces(GalleryStore.getGallery().title)
     const title = GalleryStore.getGallery().title
     if (title.length === 0) {
         createPopupWindow("Gallery title cannot be empty")
@@ -90,7 +92,8 @@ filter tags, removing incidents and empty tags
 function filterTags() {
     const filteredTags = []
     const usedTags = new Set()
-    for (const tag of GalleryStore.getGallery().tags) {
+    for (let tag of GalleryStore.getGallery().tags) {
+        tag = cropSpaces(tag)
         if (tag.length > 0 && !usedTags.has(tag)) {
             filteredTags.push(tag)
             usedTags.add(tag)
@@ -105,7 +108,6 @@ function checkIfSomethingChanged() {
     const oldGal = GalleryStore.getOldGallery()
     const newGal = GalleryStore.getGallery()
     const changed = !(JSON.stringify(oldGal) === JSON.stringify(newGal))
-    console.log(oldGal, newGal)
     if (!changed) {
         createPopupWindow("There is nothing to submit")
     }
