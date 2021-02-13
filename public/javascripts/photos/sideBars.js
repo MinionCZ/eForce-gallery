@@ -35,6 +35,11 @@ async function addTagLayout(){
     }
     if(tags.length === usedTags.size){
         document.getElementById("addTagsButton").disabled = true
+        createPopupWindow("There are no more tags in use")
+    }
+    if(usedTags.size === 15){
+        document.getElementById("addTagsButton").disabled = true
+        createPopupWindow("Only 15 tags can be choosed")
     }
     render("tags")
 }
@@ -46,14 +51,19 @@ async function addGalleryLayout() {
     }
     if(galleries.length === usedGalleries.size){
         document.getElementById("addGalleryButton").disabled = true
-
+        createPopupWindow("There are no more galleries in use")
     }
+    if(usedGalleries.size === 15){
+        document.getElementById("addGalleryButton").disabled = true
+        createPopupWindow("Only 15 galeries can be choosed")
+    }
+
     render("gallery")
 }
 
 function createQueryLayout(type, list){
     const layout = document.createElement("div")
-    
+    layout.className = "query-data-div"
     layout.appendChild(createSelect(type, getUnusedItems(list, type)))
     if(type === "gallery"){
         layout.id = "layout-" + type + "-" + galleryId
