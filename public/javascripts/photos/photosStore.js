@@ -123,8 +123,10 @@ class PhotosStore {
     calculates photos per line in layout
     */
     static getPhotosPerLine() {
-        if (this.rightToggled || this.leftToggled) {
-            return 5
+        if (this.rightToggled && this.leftToggled) {
+            return 4
+        }else if(this.rightToggled || this.leftToggled){
+            return 4
         }
         return 6
     }
