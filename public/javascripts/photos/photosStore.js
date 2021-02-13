@@ -113,10 +113,26 @@ class PhotosStore {
         for (let i = 0; i < lines; i++) {
             const div = document.createElement("div")
             div.setAttribute("id", "lineDiv=" + i)
-            div.setAttribute("class", "line-div")
+            if (this.photosPerLine === 6 || this.photosPerLine === 4) {
+                div.setAttribute("class", "line-div")
+            } else {
+                if (this.rightToggled) {
+                    div.setAttribute("class", "line-div right")
+                } else {
+                    div.setAttribute("class", "line-div left")
+                }
+            }
             this.divs.push(div)
         }
-        this.divs[0].setAttribute("class", "first-line-div")
+        if (this.photosPerLine === 6 || this.photosPerLine === 4) {
+            this.divs[0].setAttribute("class", "first-line-div")
+        } else {
+            if (this.rightToggled) {
+                this.divs[0].setAttribute("class", "first-line-div right")
+            } else {
+                this.divs[0].setAttribute("class", "first-line-div left")
+            }
+        }
     }
 
     /*
@@ -125,8 +141,8 @@ class PhotosStore {
     static getPhotosPerLine() {
         if (this.rightToggled && this.leftToggled) {
             return 4
-        }else if(this.rightToggled || this.leftToggled){
-            return 4
+        } else if (this.rightToggled || this.leftToggled) {
+            return 5
         }
         return 6
     }

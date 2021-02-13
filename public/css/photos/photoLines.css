@@ -21,6 +21,7 @@ div.line-div{
     text-align: center;
     display:flex;
     justify-content: center;
+    width: 98%;
 }
 div.first-line-div{
     transition-duration: 0.2s;
@@ -29,6 +30,7 @@ div.first-line-div{
     display:flex;
     justify-content: center;
     margin-top: 100px;
+    width: 98%;
 
 }
 
@@ -45,4 +47,10 @@ input.photo-checkbox{
     margin-left: -40px;
     z-index: 1;
     cursor: pointer;
+}
+div.left{
+    justify-content: left;
+}
+div.right{
+    justify-content: flex-end;
 }

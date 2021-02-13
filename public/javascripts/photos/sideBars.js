@@ -16,7 +16,7 @@ function toggleSideBar(event) {
     let size = "0px"
     toggle = !PhotosStore.getToggleState(value)
     if (toggle) {
-        size = "16%"
+        size = "16.66%"
     }
     document.getElementById(value).style.width = size
     PhotosStore.setToggleState(toggle, value)
