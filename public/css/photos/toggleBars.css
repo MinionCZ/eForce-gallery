@@ -175,3 +175,24 @@ button.query-delete-button:active {
   color: red;
   border: 2px solid white;
 }
+button.clear-query-button{
+  position: absolute;
+  bottom: 15%;
+  font-size: 20px;
+  background-color: red;
+  color: white;
+  width: 80%;
+  left: 10%;
+  outline: none;
+  height: 40px;
+  border-radius: 20px;
+  border: 2px solid red;
+  transition: 200ms;
+}
+button.clear-query-button:hover{
+  background-color: white;
+  color: red;
+}
+button.clear-query-button:active{
+  border: 2px solid white;
+}

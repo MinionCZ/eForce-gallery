@@ -1,6 +1,8 @@
 class SideBarsStore{
     static tagsState = "and"
     static galleriesState = "and"
+    static galleries = []
+    static tags = []
     static setState(type, state){
         if(type === "gallery"){
            this.galleriesState = state
@@ -16,6 +18,18 @@ class SideBarsStore{
         }
     }
 
+    static updatePhotosByQuery(galleries, tags){
+        this.galleries = Array.from(galleries)
+        this.tags = Array.from(tags)
+    }
+    static exportData(){
+        return{
+            tagsState : this.tagsState,
+            galleriesState: this.galleriesState,
+            galleries: this.galleries,
+            tags: this.tags
+        }
+    }
 }
 export{
     SideBarsStore

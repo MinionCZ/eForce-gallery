@@ -15,6 +15,7 @@ import {
 import {
     PhotoPreview
 } from "../photoPresenter/photoPreview.js"
+import { SideBarsStore } from "./sideBarsStore.js"
 
 class PhotosStore {
     static photos = []
@@ -27,26 +28,35 @@ class PhotosStore {
     static liteSize = 0
     static fullSize = 0
     static photoPreview = null
-    static fetchPage(page) {
-        let request = new XMLHttpRequest()
-        request.open("GET", "/eforce-gallery/get-all-photos?page=" + page + "&photosPerPage=" + 60, false)
-        request.onload = () => {
-            this.fillPhotosArray(request.responseText)
+    static async fetchPage(page) {
+        const photosQuery = SideBarsStore.exportData()
+        const data = {
+            page: page,
+            tags: photosQuery.tags,
+            galleries: photosQuery.galleries,
+            tagsState: photosQuery.tagsState,
+            galleriesState: photosQuery.galleriesState
         }
-        request.send();
+        const response = await fetch("/eforce-gallery/get-all-photos", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        this.fillPhotosArray((await response.json()).photos)
     }
 
     /*
     fills array with photos from backend
     */
-    static fillPhotosArray(json) {
+    static async fillPhotosArray(json) {
         this.photos = []
-        const parsedJson = JSON.parse(json)
-        this.photosCount = parsedJson.photosCount
+        this.photosCount = json.photosCount
         setMaxPage(this.photosCount)
-        this.liteSize = parsedJson.liteSize
-        this.fullSize = parsedJson.fullSize
-        for (const photo of parsedJson.photos) {
+        this.liteSize = json.liteSize
+        this.fullSize = json.fullSize
+        for (const photo of json.photos) {
             const parsedPhoto = new Photo(photo)
             this.photos.push(parsedPhoto)
             this.allPhotosMap.set(parsedPhoto.fileName, parsedPhoto)

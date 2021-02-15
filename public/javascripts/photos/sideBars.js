@@ -3,10 +3,10 @@ import { createPopupWindow } from "./layoutGenerator.js"
 import { PhotosStore } from "./photosStore.js"
 import { SideBarsStore } from "./sideBarsStore.js"
 
-const usedTags = new Set()
-const usedGalleries = new Set()
-const gallerySelects = []
-const tagsSelects = []
+let usedTags = new Set()
+let usedGalleries = new Set()
+let gallerySelects = []
+let tagsSelects = []
 let galleryId = 0
 let tagsId = 0
 function toggleSideBar(event) {
@@ -126,6 +126,7 @@ function createDeleteButton(type, id) {
             tagsSelects.splice(getIndexOfSelect(divToRemove.childNodes[0].value, type), 1)
         }
         rootDiv.removeChild(divToRemove)
+        SideBarsStore.updatePhotosByQuery(usedGalleries, usedTags)
     }
     return exitButton
 }
@@ -157,6 +158,7 @@ async function render(type) {
             setNewOptionsForSelect(dataSelect.select, "tags", list)
         }
     }
+    SideBarsStore.updatePhotosByQuery(usedGalleries, usedTags)
 }
 function setNewOptionsForSelect(select, type, list) {
     const newOptions = getUnusedItems(list, type)
@@ -238,6 +240,35 @@ function initLogicButtonHandlers() {
         SideBarsStore.setState("tags", "or")
         createPopupWindow("Tags logic set to OR")
     }
+    document.getElementById("clearTagsQuery").onclick = () =>{
+        clearQuery("tags")
+    }
+    document.getElementById("clearGalleryQuery").onclick = () =>{
+        clearQuery("gallery")
+    }
+
+}
+function clearQuery(type) {
+    if(type === "gallery"){
+        if(gallerySelects.length > 0){
+            gallerySelects = []
+            usedGalleries = new Set()
+            galleryId = 0
+            document.getElementById("galleryDataDiv").innerHTML = ""
+        }else{
+            createPopupWindow("All galleries have been already removed from query")
+        }
+    }else{
+        if(tagsSelects.length > 0){
+            tagsSelects = []
+            usedTags = new Set()
+            tagsId = 0
+            document.getElementById("tagsDataDiv").innerHTML = ""
+        }else{
+            createPopupWindow("All tags have been already removed from query")
+        }
+    }
+    SideBarsStore.updatePhotosByQuery(usedGalleries, usedTags)
 }
 
 export { toggleSideBar, handleAddGalleryOrTag, initLogicButtonHandlers }
