@@ -18,8 +18,13 @@ router.post("/eforce-gallery/get-all-photos", async function (request, response)
     const page = request.body.page
     const galleries = request.body.galleries
     const tags = request.body.tags
+    const tagsLogic = request.body.tagsState
+    const galleryLogic = request.body.galleriesState
     if(galleries.length === 0 && tags.length === 0){
         response.json({photos : await photoDatabase.filterPhotosByTags([], page, 60)})
+        console.log("hola")
+    }else{
+        response.json({photos : await photoDatabase.filterPhotosByQuery(tags, galleries, page, galleryLogic, tagsLogic)})
     }
 })
 
