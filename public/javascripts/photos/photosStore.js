@@ -16,6 +16,7 @@ import {
     PhotoPreview
 } from "../photoPresenter/photoPreview.js"
 import { SideBarsStore } from "./sideBarsStore.js"
+import { createPopupWindow } from "./layoutGenerator.js"
 
 class PhotosStore {
     static photos = []
@@ -54,14 +55,19 @@ class PhotosStore {
         this.photos = []
         this.photosCount = json.photosCount
         setMaxPage(this.photosCount)
-        this.liteSize = json.liteSize
-        this.fullSize = json.fullSize
-        for (const photo of json.photos) {
-            const parsedPhoto = new Photo(photo)
-            this.photos.push(parsedPhoto)
-            this.allPhotosMap.set(parsedPhoto.fileName, parsedPhoto)
+        if(this.photosCount === 0){
+            createPopupWindow("There are no photos to be seen...")
+            this.destroyLineDivs()
+        }else{
+            this.liteSize = json.liteSize
+            this.fullSize = json.fullSize
+            for (const photo of json.photos) {
+                const parsedPhoto = new Photo(photo)
+                this.photos.push(parsedPhoto)
+                this.allPhotosMap.set(parsedPhoto.fileName, parsedPhoto)
+            }
+            this.renderPhotos()
         }
-        this.renderPhotos()
     }
     /*
     sets state of sidebar, true if it is open, false if it is closed

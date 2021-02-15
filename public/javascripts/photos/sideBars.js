@@ -210,7 +210,7 @@ function initLogicButtonHandlers() {
         }
         document.getElementById("andButtonGallery").className = "logic-button and-button logic-selected"
         document.getElementById("orButtonGallery").className = "logic-button or-button"
-        SideBarsStore.setState("gallery", "and")
+        SideBarsStore.setState("gallery", "and", usedGalleries, usedTags)
         createPopupWindow("Galleries logic set to AND")
     }
     document.getElementById("orButtonGallery").onclick = () => {
@@ -219,7 +219,7 @@ function initLogicButtonHandlers() {
         }
         document.getElementById("andButtonGallery").className = "logic-button and-button"
         document.getElementById("orButtonGallery").className = "logic-button or-button logic-selected"
-        SideBarsStore.setState("gallery", "or")
+        SideBarsStore.setState("gallery", "or", usedGalleries, usedTags)
         createPopupWindow("Galleries logic set to OR")
     }
     document.getElementById("andButtonTags").onclick = () => {
@@ -228,7 +228,7 @@ function initLogicButtonHandlers() {
         }
         document.getElementById("andButtonTags").className = "logic-button and-button logic-selected"
         document.getElementById("orButtonTags").className = "logic-button or-button"
-        SideBarsStore.setState("tags", "and")
+        SideBarsStore.setState("tags", "and", usedGalleries, usedTags)
         createPopupWindow("Tags logic set to AND")
     }
     document.getElementById("orButtonTags").onclick = () => {
@@ -237,7 +237,7 @@ function initLogicButtonHandlers() {
         }
         document.getElementById("andButtonTags").className = "logic-button and-button"
         document.getElementById("orButtonTags").className = "logic-button or-button logic-selected"
-        SideBarsStore.setState("tags", "or")
+        SideBarsStore.setState("tags", "or", usedGalleries, usedTags)
         createPopupWindow("Tags logic set to OR")
     }
     document.getElementById("clearTagsQuery").onclick = () =>{
