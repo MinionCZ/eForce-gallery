@@ -1,5 +1,5 @@
 FROM node:14
-WORKDIR /usr/picture-gallery/
+WORKDIR /usr/src/picture-gallery/
 COPY package*.json ./
 RUN npm install
 COPY . .
