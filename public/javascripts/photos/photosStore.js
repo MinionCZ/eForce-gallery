@@ -93,6 +93,9 @@ class PhotosStore {
     renders photos from photo array
     */
     static renderPhotos() {
+        if(this.photos.length === 0){
+            return
+        }
         this.destroyLineDivs()
         this.createPhotoDivs()
         for (let i = 0; i < this.photos.length; i++) {
