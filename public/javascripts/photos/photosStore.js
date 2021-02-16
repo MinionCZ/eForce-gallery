@@ -90,6 +90,7 @@ class PhotosStore {
     }
 
     /*
+    
     renders photos from photo array
     */
     static renderPhotos() {
