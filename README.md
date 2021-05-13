@@ -1,11 +1,11 @@
 **eForce Gallery**
-Upravit
+
 What is eForce gallery?
 eForce gallery is web app serving as cloud storage for team photos. Photos can be uploaded/added to multiple galleries in web app or just uploaded to mass storage. Each photo is resized to lite version, so its size is reduced under 2MB. Galleries can be tagged by multiple tags and this tags can be used to search photos or galleries.
 
-Upravit
 How eForce gallery works?
 eForce gallery is divided into 5 pages:
+
 
 Dashboard
 In dashobard you can find all galleries from web app each one is represented by preview image and description
@@ -36,7 +36,8 @@ After selecting gallery there will be 2 windows:
 First window is window, where can be gallery modified
 Second window is window with photos that are in this gallery
 Each window also contains one toggle side bar with functions - such as deleting photos, downloading photos, and selecting them
-Upravit
+
+
 How to upload photos?
 Photos can be uploaded in multiple ways:
 
@@ -53,6 +54,7 @@ Click in top menu on button add gallery
 Here will appear form to create new gallery in which you have to fill gallery name and event date
 You can drag&drop or use button to uplad photos
 After that you can submit newly created gallery
-Upravit
+
+
 Parts of program
 eForce gallery is programmed in NodeJS 14 and as database is used MongoDB. For resizing of photos is used programm GraphicsMagick.
